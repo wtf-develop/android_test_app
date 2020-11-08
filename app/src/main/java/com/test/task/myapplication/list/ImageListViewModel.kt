@@ -1,6 +1,7 @@
 package com.test.task.myapplication.list
 
 import android.widget.ImageView
+import androidx.lifecycle.Lifecycle
 import com.test.task.myapplication.INavigation
 import com.test.task.myapplication._models.ItemModel
 import com.test.task.myapplication.detail.DetailsRepository
@@ -15,7 +16,7 @@ interface IImageListViewModel {
     fun updateList()
     fun subscribeOnChange(callback: (data: List<ItemModel>) -> Unit)
     fun subscribeOnError(callback: (error: String) -> Unit)
-    fun setLifecycle(lifecycle: AutoDisposable)
+    fun setLifecycle(lifecycle: Lifecycle)
     fun selectItem(item: ItemModel)
     fun loadImageTo(img: ImageView, url: String)
 }
@@ -59,8 +60,10 @@ class ImageListViewModel private constructor() :
         )
     }
 
-    override fun setLifecycle(lifecycle: AutoDisposable) {
-        autoDisposable = lifecycle
+    override fun setLifecycle(lifecycle: Lifecycle) {
+        autoDisposable = AutoDisposable().apply {
+            bindTo(lifecycle)
+        }
     }
 
     override fun selectItem(item: ItemModel) {

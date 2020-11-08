@@ -52,7 +52,8 @@ class Network private constructor() : INetwork {
     override fun setImageMainThread(img: ImageView, url: String, maxSize: Int) {
         HttpURLConnection.setFollowRedirects(true)
         HttpsURLConnection.setFollowRedirects(true)
-        if (img.tag == null) {
+        val curUrl=img.tag as? String
+        if (curUrl == null||(!url.equals(curUrl,false))) {
             img.setImageResource(R.drawable.loading_img)
         }
         img.tag = url

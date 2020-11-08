@@ -22,7 +22,7 @@ class DetailsView : Fragment() {
             image_id = it.getString(IMAGE_ID)
         }
         viewModel = (activity as INavigation).getDetailsVModel()
-        viewModel.setLifecycle(AutoDisposable().bindTo(this.lifecycle))
+        viewModel.setLifecycle(lifecycle)
     }
 
     override fun onCreateView(
@@ -32,8 +32,8 @@ class DetailsView : Fragment() {
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onStart() {
+        super.onStart()
         viewModel.subscribeOnChange {
             detail_title.text = it.title
             detail_desc.text = it.id

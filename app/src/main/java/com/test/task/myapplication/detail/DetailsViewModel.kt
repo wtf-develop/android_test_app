@@ -1,6 +1,7 @@
 package com.test.task.myapplication.detail
 
 import android.widget.ImageView
+import androidx.lifecycle.Lifecycle
 import com.test.task.myapplication.INavigation
 import com.test.task.myapplication._models.ItemModel
 import com.test.task.myapplication.utils.AutoDisposable
@@ -13,7 +14,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 interface IDetailsViewModel {
     fun update()
     fun subscribeOnChange(callback: (data: ItemModel) -> Unit)
-    fun setLifecycle(lifecycle: AutoDisposable)
+    fun setLifecycle(lifecycle: Lifecycle)
     fun loadImageTo(img: ImageView, url: String)
 }
 
@@ -40,8 +41,10 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
         )
     }
 
-    override fun setLifecycle(lifecycle: AutoDisposable) {
-        autoDisposable = lifecycle
+    override fun setLifecycle(lifecycle: Lifecycle) {
+        autoDisposable = AutoDisposable().apply {
+            bindTo(lifecycle)
+        }
     }
 
     override fun loadImageTo(img: ImageView, url: String) {

@@ -22,8 +22,8 @@ class AutoDisposable : LifecycleObserver {
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroy() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun disconnectListener() {
         compositeDisposable.clear()
     }
 

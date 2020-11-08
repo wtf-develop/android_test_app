@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import com.test.task.myapplication.detail.DetailsView
 import com.test.task.myapplication.detail.DetailsViewModel
 import com.test.task.myapplication.detail.IDetailsViewModel

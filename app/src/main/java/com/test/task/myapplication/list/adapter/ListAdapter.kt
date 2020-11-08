@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.list_item.view.*
 
 class ListAdapter(private val viewModel: IImageListViewModel) :
     RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
-    var dataset = listOf<ItemModel>()
+    private var dataset = listOf<ItemModel>()
 
     class MyViewHolder(view: ViewGroup, onClick: (itemModel: ItemModel) -> Unit) :
         RecyclerView.ViewHolder(view) {
@@ -48,10 +48,8 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
         return dataset.size
     }
 
-    init {
-        viewModel.subscribeOnChange { data ->
-            dataset = data
-            notifyDataSetChanged()
-        }
+    fun setData(data: List<ItemModel>){
+        dataset = data
+        notifyDataSetChanged()
     }
 }

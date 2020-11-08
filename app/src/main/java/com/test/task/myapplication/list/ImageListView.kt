@@ -12,7 +12,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.test.task.myapplication.INavigation
 import com.test.task.myapplication.R
 import com.test.task.myapplication.list.adapter.ListAdapter
-import com.test.task.myapplication.utils.AutoDisposable
 import kotlinx.android.synthetic.main.fragment_image_list.*
 
 class ImageListView : Fragment() {
@@ -27,7 +26,7 @@ class ImageListView : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = (activity as INavigation).getImageListVModel()
-        viewModel.setLifecycle(AutoDisposable().bindTo(this.lifecycle))
+        viewModel.setLifecycle(lifecycle)
     }
 
     override fun onCreateView(
@@ -73,6 +72,19 @@ class ImageListView : Fragment() {
                 pull2refresh.isRefreshing = true
                 viewModel.updateList()
             }
+        pull2refresh.setOnRefreshListener {
+            viewModel.updateList()
+        }
+        pull2refresh.setColorSchemeResources(
+            android.R.color.holo_green_light,
+            android.R.color.holo_red_light
+        )
+    }
+
+
+    //resubscribe
+    override fun onStart() {
+        super.onStart()
         viewModel.subscribeOnChange {
             if (scrollList) {
                 scrollList = false
@@ -82,6 +94,7 @@ class ImageListView : Fragment() {
             snackbar.dismiss()
             pull2refresh.visibility = View.VISIBLE
             loader.visibility = View.GONE
+            (recycler_view.adapter as? ListAdapter)?.setData(it)
         }
         viewModel.subscribeOnError {
             pull2refresh.isRefreshing = false
@@ -89,15 +102,9 @@ class ImageListView : Fragment() {
             snackbar.show()
             loader.visibility = View.GONE
         }
-        pull2refresh.setOnRefreshListener {
-            viewModel.updateList()
-        }
-        pull2refresh.setColorSchemeResources(
-            android.R.color.holo_green_light,
-            android.R.color.holo_red_light
-        )
         viewModel.updateList()
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("scroll", viewManager?.findFirstVisibleItemPosition() ?: 0)
