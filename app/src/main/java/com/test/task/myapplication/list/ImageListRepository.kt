@@ -25,7 +25,9 @@ class ImageListRepository private constructor() : IImageListRepository {
     @Inject
     lateinit var network: INetwork
 
-    var jsonParser: Json = Json { ignoreUnknownKeys = true }
+    @Inject
+    lateinit var jsonParser: Json
+
     val mutableList = mutableListOf<ItemModel>()
     var selectedItem: ItemModel? = null
 

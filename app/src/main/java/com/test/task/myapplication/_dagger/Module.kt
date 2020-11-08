@@ -8,6 +8,8 @@ import com.test.task.myapplication.utils.INetwork
 import com.test.task.myapplication.utils.Network
 import dagger.Module
 import dagger.Provides
+import kotlinx.serialization.json.Json
+import javax.inject.Singleton
 
 @Module
 object Module {
@@ -20,6 +22,11 @@ object Module {
 
     @Provides
     fun getDetailsRepo(): IDetailsRepository = DetailsRepository.getInstance()
+
+    @Provides
+    fun getJsonProcessor(): Json {
+        return Json { ignoreUnknownKeys = true }
+    }
 
 
 }
