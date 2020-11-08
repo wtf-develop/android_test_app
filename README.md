@@ -1,2 +1,2 @@
-# android_test
-Test Android Application
+# Android Test Application
+Kitty list application
