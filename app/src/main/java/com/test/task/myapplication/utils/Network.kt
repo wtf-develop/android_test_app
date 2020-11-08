@@ -53,7 +53,7 @@ class Network private constructor() : INetwork {
         HttpURLConnection.setFollowRedirects(true)
         HttpsURLConnection.setFollowRedirects(true)
         if (img.tag == null) {
-            img.setImageResource(R.mipmap.ic_launcher_round)
+            img.setImageResource(R.drawable.loading_img)
         }
         img.tag = url
 
