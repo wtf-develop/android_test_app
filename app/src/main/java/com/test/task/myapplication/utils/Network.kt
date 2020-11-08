@@ -8,6 +8,7 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.test.task.myapplication.R
 import java.net.HttpURLConnection
+import javax.inject.Inject
 import javax.net.ssl.HttpsURLConnection
 
 
@@ -24,7 +25,7 @@ interface INetwork {
 
 
 //Implementation
-class Network private constructor() : INetwork {
+class Network @Inject constructor() : INetwork {
 
     val queue: RequestQueue by lazy { Volley.newRequestQueue(MyApp.ctx, MyHurlStack()) }
     val imageLoader: ImageLoader by lazy { ImageLoader(queue, LruBtimapCache.getInstance()) }

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
 import com.test.task.myapplication.detail.DetailsView
 import com.test.task.myapplication.detail.DetailsViewModel
 import com.test.task.myapplication.detail.IDetailsViewModel
@@ -49,21 +48,20 @@ class MainActivity : AppCompatActivity(), INavigation {
 
 
     private fun moveTo(tag: String, backstack: Boolean = true) {
-        var fragment: Fragment? = null
+        var fragment: Fragment?
         when (tag.toLowerCase()) {
             "startpage" -> fragment = ImageListView.newInstance()
             "detailspage" -> fragment = DetailsView.newInstance("id")
             else -> return
         }
-        fragment?.let {
-            var transaction = supportFragmentManager.beginTransaction()
-            transaction.add(R.id.fragments, it, tag)
-            if (backstack) {
-                transaction.addToBackStack(tag)
-                transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-            }
-            transaction.commit()
+        var transaction = supportFragmentManager.beginTransaction()
+        transaction.add(R.id.fragments, fragment, tag)
+        if (backstack) {
+            transaction.addToBackStack(tag)
+            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
         }
+        transaction.commit()
+
     }
 
     private fun getTitle(tag: String): String {

@@ -1,5 +1,6 @@
 package com.test.task.myapplication.detail
 
+import com.test.task.myapplication._dagger.DaggerComponent
 import com.test.task.myapplication._models.ItemModel
 
 //Interface
@@ -18,6 +19,11 @@ class DetailsRepository : IDetailsRepository {
         errorCallback: ((text: String) -> Unit)?
     ) {
         dataCallback(itemData)
+    }
+
+
+    init {
+        DaggerComponent.create().inject(this)
     }
 
     companion object {

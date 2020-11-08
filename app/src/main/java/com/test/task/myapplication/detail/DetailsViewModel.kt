@@ -3,11 +3,13 @@ package com.test.task.myapplication.detail
 import android.widget.ImageView
 import androidx.lifecycle.Lifecycle
 import com.test.task.myapplication.INavigation
+import com.test.task.myapplication._dagger.DaggerComponent
 import com.test.task.myapplication._models.ItemModel
 import com.test.task.myapplication.utils.AutoDisposable
 import com.test.task.myapplication.utils.Network
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import javax.inject.Inject
 
 
 //Interface
@@ -20,7 +22,9 @@ interface IDetailsViewModel {
 
 //Implementation
 class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
-    val repository: IDetailsRepository = DetailsRepository.getInstance()
+    @Inject
+    lateinit var repository: IDetailsRepository
+
     private val data = BehaviorSubject.create<ItemModel>()
     private var autoDisposable: AutoDisposable? = null
 
@@ -51,6 +55,10 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
         Network.getInstance().setImageMainThread(img, url, 1000)
     }
 
+
+    init {
+        DaggerComponent.create().inject(this)
+    }
     companion object {
         fun getInstance(navigationObj: INavigation): IDetailsViewModel {
             return DetailsViewModel(navigationObj)

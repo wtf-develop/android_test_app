@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.test.task.myapplication.INavigation
 import com.test.task.myapplication.R
+import com.test.task.myapplication._dagger.DaggerComponent
 import com.test.task.myapplication.list.adapter.ListAdapter
 import kotlinx.android.synthetic.main.fragment_image_list.*
 
@@ -25,8 +26,11 @@ class ImageListView : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerComponent.create().inject(this)
+
         viewModel = (activity as INavigation).getImageListVModel()
         viewModel.setLifecycle(lifecycle)
+
     }
 
     override fun onCreateView(

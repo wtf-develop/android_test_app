@@ -3,13 +3,16 @@ package com.test.task.myapplication.list
 import android.widget.ImageView
 import androidx.lifecycle.Lifecycle
 import com.test.task.myapplication.INavigation
+import com.test.task.myapplication._dagger.DaggerComponent
 import com.test.task.myapplication._models.ItemModel
 import com.test.task.myapplication.detail.DetailsRepository
 import com.test.task.myapplication.utils.AutoDisposable
+import com.test.task.myapplication.utils.INetwork
 import com.test.task.myapplication.utils.Network
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
+import javax.inject.Inject
 
 //Interface
 interface IImageListViewModel {
@@ -26,8 +29,12 @@ interface IImageListViewModel {
 class ImageListViewModel private constructor() :
     IImageListViewModel {
 
+    @Inject
+    lateinit var network: INetwork
+    @Inject
+    lateinit var repository: IImageListRepository
+
     private lateinit var navigation: INavigation
-    private val repository: IImageListRepository = ImageListRepository.getInstance()
     private val data = BehaviorSubject.create<List<ItemModel>>()
     private val error = PublishSubject.create<String>()
     private var autoDisposable: AutoDisposable? = null
@@ -75,7 +82,12 @@ class ImageListViewModel private constructor() :
     }
 
     override fun loadImageTo(img: ImageView, url: String) {
-        Network.getInstance().setImageMainThread(img, url, 400)
+        network.setImageMainThread(img, url, 400)
+    }
+
+
+    init {
+        DaggerComponent.create().inject(this)
     }
 
     companion object {

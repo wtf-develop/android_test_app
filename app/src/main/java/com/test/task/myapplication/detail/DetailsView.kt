@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.test.task.myapplication.INavigation
 import com.test.task.myapplication.R
+import com.test.task.myapplication._dagger.DaggerComponent
 import com.test.task.myapplication.utils.AutoDisposable
 import kotlinx.android.synthetic.main.fragment_details.*
 
@@ -18,6 +19,7 @@ class DetailsView : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerComponent.create().inject(this)
         arguments?.let {
             image_id = it.getString(IMAGE_ID)
         }

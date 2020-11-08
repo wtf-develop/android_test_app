@@ -1,10 +1,11 @@
 package com.test.task.myapplication.list
 
+import com.test.task.myapplication._dagger.DaggerComponent
 import com.test.task.myapplication._models.ItemModel
 import com.test.task.myapplication.utils.INetwork
-import com.test.task.myapplication.utils.Network
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
+import javax.inject.Inject
 
 interface IImageListRepository {
     fun fetchData(
@@ -20,10 +21,15 @@ interface IImageListRepository {
 
 
 class ImageListRepository private constructor() : IImageListRepository {
-    private val jsonParser: Json = Json { ignoreUnknownKeys = true }
-    val network: INetwork = Network.getInstance()
+
+    @Inject
+    lateinit var network: INetwork
+
+    var jsonParser: Json = Json { ignoreUnknownKeys = true }
     val mutableList = mutableListOf<ItemModel>()
     var selectedItem: ItemModel? = null
+
+
     override fun fetchData(
         callback: (data: List<ItemModel>) -> Unit,
         errorCallback: ((text: String) -> Unit)?
@@ -63,6 +69,10 @@ class ImageListRepository private constructor() : IImageListRepository {
                 call(mutableList)
             }
         }
+    }
+
+    init {
+        DaggerComponent.create().inject(this)
     }
 
     companion object {
