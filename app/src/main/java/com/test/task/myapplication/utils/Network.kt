@@ -43,7 +43,7 @@ class Network private constructor() : INetwork {
                 onData(response)
             },
             { error ->
-                onError?.let { it(error?.message ?: "undefined error") }
+                onError?.let { it(error?.toString() ?: "Network error") }
             }
         )
         queue.add(jsonRequest)
@@ -52,7 +52,7 @@ class Network private constructor() : INetwork {
     override fun setImageMainThread(img: ImageView, url: String, maxSize: Int) {
         HttpURLConnection.setFollowRedirects(true)
         HttpsURLConnection.setFollowRedirects(true)
-        if(img.tag==null){
+        if (img.tag == null) {
             img.setImageResource(R.mipmap.ic_launcher_round)
         }
         img.tag = url

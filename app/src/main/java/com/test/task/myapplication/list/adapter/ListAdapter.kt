@@ -1,6 +1,5 @@
 package com.test.task.myapplication.list.adapter
 
-import android.net.Network
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -21,6 +20,7 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
         val image: ImageView = view.list_image
         lateinit var itemModel: ItemModel
         var itemIndex: Int = -1
+
         init {
             view.setOnClickListener {
                 if (itemIndex >= 0) onClick(itemModel)

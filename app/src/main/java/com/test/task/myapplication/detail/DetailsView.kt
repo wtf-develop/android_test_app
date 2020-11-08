@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.test.task.myapplication.INavigation
 import com.test.task.myapplication.R
-import com.test.task.myapplication.list.IImageListViewModel
 import com.test.task.myapplication.utils.AutoDisposable
 import kotlinx.android.synthetic.main.fragment_details.*
 
@@ -36,9 +35,9 @@ class DetailsView : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.subscribeOnChange {
-            detail_title.text=it.title
-            detail_desc.text=it.id
-            viewModel.loadImageTo(detail_image,it.imageUrl)
+            detail_title.text = it.title
+            detail_desc.text = it.id
+            viewModel.loadImageTo(detail_image, it.imageUrl)
         }
         viewModel.update()
     }

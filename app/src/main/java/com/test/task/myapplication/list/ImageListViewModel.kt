@@ -17,7 +17,7 @@ interface IImageListViewModel {
     fun subscribeOnError(callback: (error: String) -> Unit)
     fun setLifecycle(lifecycle: AutoDisposable)
     fun selectItem(item: ItemModel)
-    fun loadImageTo(img: ImageView, url:String)
+    fun loadImageTo(img: ImageView, url: String)
 }
 
 
@@ -64,12 +64,15 @@ class ImageListViewModel private constructor() :
     }
 
     override fun selectItem(item: ItemModel) {
-        DetailsRepository.itemData=item
+        DetailsRepository.itemData = item
+        repository.changeOrder(item) { arr ->
+            data.onNext(arr)
+        }
         navigation.toDetails()
     }
 
     override fun loadImageTo(img: ImageView, url: String) {
-        Network.getInstance().setImageMainThread(img,url,400)
+        Network.getInstance().setImageMainThread(img, url, 400)
     }
 
     companion object {

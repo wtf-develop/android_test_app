@@ -3,7 +3,6 @@ package com.test.task.myapplication.detail
 import android.widget.ImageView
 import com.test.task.myapplication.INavigation
 import com.test.task.myapplication._models.ItemModel
-import com.test.task.myapplication.list.IImageListViewModel
 import com.test.task.myapplication.utils.AutoDisposable
 import com.test.task.myapplication.utils.Network
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
