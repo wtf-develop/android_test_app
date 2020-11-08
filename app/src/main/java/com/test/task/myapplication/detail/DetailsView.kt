@@ -34,14 +34,19 @@ class DetailsView : Fragment() {
         return inflater.inflate(R.layout.fragment_details, container, false)
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.subscribeOnChange {
             detail_title.text = it.title
             detail_desc.text = it.id
             viewModel.loadImageTo(detail_image, it.imageUrl)
         }
         viewModel.update()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
     }
 
     companion object {

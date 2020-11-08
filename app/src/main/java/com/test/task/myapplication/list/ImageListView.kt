@@ -83,12 +83,6 @@ class ImageListView : Fragment() {
             android.R.color.holo_green_light,
             android.R.color.holo_red_light
         )
-    }
-
-
-    //resubscribe
-    override fun onStart() {
-        super.onStart()
         viewModel.subscribeOnChange {
             if (scrollList) {
                 scrollList = false
@@ -107,6 +101,12 @@ class ImageListView : Fragment() {
             loader.visibility = View.GONE
         }
         viewModel.updateList()
+    }
+
+
+    //resubscribe
+    override fun onStart() {
+        super.onStart()
     }
 
 
