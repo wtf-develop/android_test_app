@@ -4,28 +4,22 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.test.task.myapplication.detail.DetailsFragment
+import com.test.task.myapplication.detail.DetailsView
+import com.test.task.myapplication.detail.DetailsViewModel
+import com.test.task.myapplication.detail.IDetailsViewModel
 import com.test.task.myapplication.list.IImageListViewModel
 import com.test.task.myapplication.list.ImageListView
 import com.test.task.myapplication.list.ImageListViewModel
-import com.test.task.myapplication.utils.INetwork
-import com.test.task.myapplication.utils.Network
-import kotlinx.serialization.json.Json
 
 
 interface INavigation {
     fun toList()
     fun toDetails()
     fun getImageListVModel(): IImageListViewModel
+    fun getDetailsVModel(): IDetailsViewModel
 }
 
 class MainActivity : AppCompatActivity(), INavigation {
-    val network: INetwork = Network.getInstance()
-    val imageListViewModel = ImageListViewModel.getInstance(
-        network,
-        this,
-        Json { ignoreUnknownKeys = true })
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,7 +51,7 @@ class MainActivity : AppCompatActivity(), INavigation {
         var fragment: Fragment? = null
         when (tag.toLowerCase()) {
             "startpage" -> fragment = ImageListView.newInstance()
-            "detailspage" -> fragment = DetailsFragment.newInstance("id")
+            "detailspage" -> fragment = DetailsView.newInstance("id")
             else -> return
         }
         fragment?.let {
@@ -87,7 +81,11 @@ class MainActivity : AppCompatActivity(), INavigation {
     }
 
     override fun getImageListVModel(): IImageListViewModel {
-        return imageListViewModel
+        return ImageListViewModel.getInstance(this)
+    }
+
+    override fun getDetailsVModel(): IDetailsViewModel {
+        return DetailsViewModel.getInstance(this)
     }
 
 

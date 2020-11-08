@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@android:color/background_light"
     android:padding="10dp"
-    tools:context=".detail.DetailsFragment">
+    tools:context=".detail.DetailsView">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/hello_blank_fragment"
+        android:text="Loading..."
         android:textSize="18sp" />
 
     <TextView
@@ -23,11 +23,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/hello_blank_fragment"
+        android:text="* * *"
         android:textSize="14sp" />
 
     <ImageView
-        android:id="@+id/list_image"
+        android:id="@+id/detail_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"

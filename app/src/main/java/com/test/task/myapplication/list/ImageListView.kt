@@ -90,7 +90,6 @@ class ImageListView : Fragment() {
             snackbar.show()
             loader.visibility = View.GONE
         }
-
         pull2refresh.setOnRefreshListener {
             viewModel.updateList()
         }
@@ -98,7 +97,6 @@ class ImageListView : Fragment() {
             android.R.color.holo_green_light,
             android.R.color.holo_red_light
         )
-
         viewModel.updateList()
     }
 
