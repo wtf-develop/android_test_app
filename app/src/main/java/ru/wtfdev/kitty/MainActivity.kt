@@ -15,6 +15,14 @@ import ru.wtfdev.kitty.list.ImageListViewModel
 import ru.wtfdev.kitty.utils.BaseFragment
 
 
+/**
+ * we use Activity only as Navigation object. There is no UI elements except toolbar
+ * we use Activity only as Navigation object. There is no UI elements except toolbar
+ * we use Activity only as Navigation object. There is no UI elements except toolbar
+ */
+//Navigation interface
+//Navigation interface
+//Navigation interface
 interface INavigation {
     fun toList()
     fun toDetails()
@@ -22,6 +30,10 @@ interface INavigation {
     fun getDetailsVModel(): IDetailsViewModel
 }
 
+
+//Navigation implementation
+//Navigation implementation
+//Navigation implementation
 class MainActivity : AppCompatActivity(), INavigation {
     private var topFragment: BaseFragment? = null
 
@@ -120,8 +132,8 @@ class MainActivity : AppCompatActivity(), INavigation {
                     supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
                 supportFragmentManager.popBackStack()
             }
-        }else if(id == R.id.menu_item_add){
-            Toast.makeText(this,"Soon",Toast.LENGTH_SHORT).show()
+        } else if (id == R.id.menu_item_add) {
+            Toast.makeText(this, "Soon", Toast.LENGTH_SHORT).show()
         }
         return true
     }

@@ -8,8 +8,8 @@ abstract class BaseFragment : Fragment() {
     var subscribeInited = false
     var startedOnce = false
 
-    abstract fun onDataBing()
-    abstract fun onDataUnBing()
+    protected abstract fun onDataBing()
+    protected abstract fun onDataUnBing()
 
 
     fun onSubscribeBindings() {

@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.util.LruCache
 import com.android.volley.toolbox.ImageLoader
 
-class LruBtimapCache private constructor(size: Int = defaultSize) : LruCache<String, Bitmap>(size),
+class BitmapCache private constructor(size: Int = defaultSize) : LruCache<String, Bitmap>(size),
     ImageLoader.ImageCache {
 
     override fun getBitmap(url: String): Bitmap? {
@@ -20,7 +20,7 @@ class LruBtimapCache private constructor(size: Int = defaultSize) : LruCache<Str
     }
 
     companion object {
-        private val singletoneCache: LruBtimapCache by lazy { LruBtimapCache(defaultSize) }
+        private val singletoneCache: BitmapCache by lazy { BitmapCache(defaultSize) }
         private val defaultSize: Int
             get() {
                 val maxMemory = (Runtime.getRuntime().maxMemory() / 1024).toInt()
@@ -28,7 +28,7 @@ class LruBtimapCache private constructor(size: Int = defaultSize) : LruCache<Str
                 return cacheSize
             }
 
-        fun getInstance(): LruBtimapCache {
+        fun getInstance(): BitmapCache {
             return singletoneCache
         }
     }
