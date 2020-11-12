@@ -77,8 +77,9 @@ class ImageListView : BaseFragment() {
             viewModel.updateList(true)
         }
         pull2refresh.setColorSchemeResources(
-            android.R.color.holo_green_light,
-            android.R.color.holo_red_light
+            R.color.base_main,
+            R.color.base_secondary1,
+            R.color.base_secondary2
         )
         viewModel.updateList()
     }

@@ -1,8 +1,11 @@
 package ru.wtfdev.kitty
 
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import ru.wtfdev.kitty.detail.DetailsView
 import ru.wtfdev.kitty.detail.DetailsViewModel
 import ru.wtfdev.kitty.detail.IDetailsViewModel
@@ -28,6 +31,8 @@ class MainActivity : AppCompatActivity(), INavigation {
         if (savedInstanceState == null) {
             moveTo("startpage", false)
         }
+        setSupportActionBar(my_toolbar)
+
         supportFragmentManager.addOnBackStackChangedListener {
             val count = supportFragmentManager.backStackEntryCount
             var tag = ""
@@ -35,15 +40,16 @@ class MainActivity : AppCompatActivity(), INavigation {
             var fragment: BaseFragment? = null
             if (count > 0) {
                 val backEntry = supportFragmentManager.getBackStackEntryAt(count - 1)
-                tag = backEntry.name ?: ""
+                tag = backEntry.name ?: tag
                 fragment = supportFragmentManager.findFragmentByTag(tag) as? BaseFragment
             } else {
                 fragment =
                     supportFragmentManager.findFragmentByTag(ImageListView.tag) as? BaseFragment
+                tag = ImageListView.tag
             }
             topFragment = fragment
             topFragment?.onSubscribeBindings()
-            title = getTitle(tag)
+            title = getString(getTitle(tag))
             supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton(tag))
         }
     }
@@ -75,12 +81,12 @@ class MainActivity : AppCompatActivity(), INavigation {
         transaction.commit()
     }
 
-    private fun getTitle(tag: String): String {
+    private fun getTitle(tag: String): Int {
         when (tag.toLowerCase()) {
-            ImageListView.tag -> return "Kitty app"
-            DetailsView.tag -> return "Details about kitty"
+            ImageListView.tag -> return R.string.app_name
+            DetailsView.tag -> return R.string.details
         }
-        return "Error"
+        return R.string.error
     }
 
     private fun getBackButton(tag: String): Boolean {
@@ -99,6 +105,13 @@ class MainActivity : AppCompatActivity(), INavigation {
     }
 
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == android.R.id.home) {
@@ -107,6 +120,8 @@ class MainActivity : AppCompatActivity(), INavigation {
                     supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
                 supportFragmentManager.popBackStack()
             }
+        }else if(id == R.id.menu_item_add){
+            Toast.makeText(this,"Soon",Toast.LENGTH_SHORT).show()
         }
         return true
     }

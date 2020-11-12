@@ -24,7 +24,11 @@ object Module {
 
     @Provides
     fun getJsonProcessor(): Json {
-        return Json { ignoreUnknownKeys = true }
+        return Json {
+            ignoreUnknownKeys = true
+            encodeDefaults = true
+            isLenient = true
+        }
     }
 
 
