@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 //Interface
 interface IImageListViewModel {
-    fun updateList(force: Boolean=false)
+    fun updateList(force: Boolean = false)
     fun subscribeOnChange(callback: (data: List<ItemModel>) -> Unit)
     fun subscribeOnError(callback: (error: String) -> Unit)
     fun unsubscribeAll()

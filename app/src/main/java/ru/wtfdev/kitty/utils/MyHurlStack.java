@@ -91,11 +91,11 @@ public class MyHurlStack extends BaseHttpStack {
             throws IOException, AuthFailureError {
         String url = request.getUrl();
         boolean keepConnectionOpen = false;
-        HttpURLConnection connection=null;
+        HttpURLConnection connection = null;
         try {
             int protect = 3; //hardcoded max redirections
-            int responseCode=-1;
-            do{
+            int responseCode = -1;
+            do {
                 protect--;
                 if (protect < 1) break;
                 if (mUrlRewriter != null) {
@@ -126,16 +126,16 @@ public class MyHurlStack extends BaseHttpStack {
                     // Signal to the caller that something was wrong with the connection.
                     throw new IOException("Could not retrieve response code from HttpUrlConnection.");
                 }
-                if((responseCode == 307) || (responseCode == HttpURLConnection.HTTP_MOVED_TEMP) || (responseCode == HttpURLConnection.HTTP_MOVED_PERM) || (responseCode == HttpURLConnection.HTTP_SEE_OTHER)){
+                if ((responseCode == 307) || (responseCode == HttpURLConnection.HTTP_MOVED_TEMP) || (responseCode == HttpURLConnection.HTTP_MOVED_PERM) || (responseCode == HttpURLConnection.HTTP_SEE_OTHER)) {
                     String newUrl = connection.getHeaderField("Location");
                     connection.disconnect();
-                    url=newUrl;
+                    url = newUrl;
                     continue;
-                }else{
+                } else {
                     break;
                 }
-            }while (true);
-            if(connection==null) throw new IOException("Connection internal error.");
+            } while (true);
+            if (connection == null) throw new IOException("Connection internal error.");
 
             if (!hasResponseBody(request.getMethod(), responseCode)) {
                 return new HttpResponse(responseCode, convertHeaders(connection.getHeaderFields()));

@@ -31,14 +31,18 @@ class MainActivity : AppCompatActivity(), INavigation {
         supportFragmentManager.addOnBackStackChangedListener {
             val count = supportFragmentManager.backStackEntryCount
             var tag = ""
+            topFragment?.onUnsubscribeBindings()
+            var fragment: BaseFragment? = null
             if (count > 0) {
-                topFragment?.onUnsubscribeBindings()
                 val backEntry = supportFragmentManager.getBackStackEntryAt(count - 1)
                 tag = backEntry.name ?: ""
-                val fragment = supportFragmentManager.findFragmentByTag(tag) as? BaseFragment
-                topFragment = fragment
-                topFragment?.onSubscribeBindings()
+                fragment = supportFragmentManager.findFragmentByTag(tag) as? BaseFragment
+            } else {
+                fragment =
+                    supportFragmentManager.findFragmentByTag(ImageListView.tag) as? BaseFragment
             }
+            topFragment = fragment
+            topFragment?.onSubscribeBindings()
             title = getTitle(tag)
             supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton(tag))
         }
@@ -65,10 +69,10 @@ class MainActivity : AppCompatActivity(), INavigation {
         if (backstack) {
             transaction.addToBackStack(tag)
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+        } else {
+            topFragment = fragment
         }
         transaction.commit()
-        topFragment = fragment
-
     }
 
     private fun getTitle(tag: String): String {

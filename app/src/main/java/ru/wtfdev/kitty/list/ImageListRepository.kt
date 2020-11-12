@@ -1,10 +1,10 @@
 package ru.wtfdev.kitty.list
 
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.ItemModel
 import ru.wtfdev.kitty.utils.INetwork
-import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 interface IImageListRepository {
@@ -46,7 +46,7 @@ class ImageListRepository private constructor() : IImageListRepository {
                     )
                 )
 
-                changeOrder(selectedItem)
+                //changeOrder(selectedItem)
                 callback(
                     mutableList
                 )

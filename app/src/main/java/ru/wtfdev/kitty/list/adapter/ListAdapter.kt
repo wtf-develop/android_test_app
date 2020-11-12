@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.list_item.view.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._models.ItemModel
 import ru.wtfdev.kitty.list.IImageListViewModel
-import kotlinx.android.synthetic.main.list_item.view.*
 
 class ListAdapter(private val viewModel: IImageListViewModel) :
     RecyclerView.Adapter<ListAdapter.MyViewHolder>() {
@@ -48,7 +48,7 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
         return dataset.size
     }
 
-    fun setData(data: List<ItemModel>){
+    fun setData(data: List<ItemModel>) {
         dataset = data
         notifyDataSetChanged()
     }

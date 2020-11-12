@@ -80,7 +80,6 @@ class ImageListView : BaseFragment() {
             android.R.color.holo_green_light,
             android.R.color.holo_red_light
         )
-
         viewModel.updateList()
     }
 
