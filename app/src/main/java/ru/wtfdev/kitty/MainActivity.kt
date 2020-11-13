@@ -36,40 +36,42 @@ interface INavigation {
 //Navigation implementation
 //Navigation implementation
 class MainActivity : AppCompatActivity(), INavigation {
-    private var topFragment: IBaseFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(my_toolbar)
         if (savedInstanceState == null) {
-            topFragment = moveTo(ImageListView.tag, false).apply {
+            moveTo(ImageListView.tag, false).apply {
                 this?.setIsForegroung(true)
             }
-        }else{
-            var count = supportFragmentManager.backStackEntryCount
-            count++
-
         }
-        setSupportActionBar(my_toolbar)
+
 
         supportFragmentManager.addOnBackStackChangedListener {
             val count = supportFragmentManager.backStackEntryCount
             var tag = ""
-            topFragment?.setIsForegroung(false)
-            topFragment?.onUnsubscribeBindings()
             var fragment: BaseFragment? = null
+            val mainFragment =
+                supportFragmentManager.findFragmentByTag(ImageListView.tag) as? BaseFragment
+            mainFragment?.setIsForegroung(false)
             if (count > 0) {
-                val backEntry = supportFragmentManager.getBackStackEntryAt(count - 1)
-                tag = backEntry.name ?: tag
-                fragment = supportFragmentManager.findFragmentByTag(tag) as? BaseFragment
+                for (i in 0 until count) {
+                    val backEntry = supportFragmentManager.getBackStackEntryAt(i)
+                    tag = backEntry.name ?: tag
+                    fragment = supportFragmentManager.findFragmentByTag(tag) as? BaseFragment
+                    fragment?.setIsForegroung(false)
+                    if (i < (count - 1)) {
+                        fragment?.onUnsubscribeBindings()
+                    }
+                }
+                mainFragment?.onUnsubscribeBindings()
             } else {
-                fragment =
-                    supportFragmentManager.findFragmentByTag(ImageListView.tag) as? BaseFragment
                 tag = ImageListView.tag
+                fragment = mainFragment
             }
-            topFragment = fragment
-            topFragment?.setIsForegroung(true)
-            topFragment?.onSubscribeBindings()
+            fragment?.setIsForegroung(true)
+            fragment?.onSubscribeBindings()
             title = getString(getTitle(tag))
             supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton(tag))
         }
