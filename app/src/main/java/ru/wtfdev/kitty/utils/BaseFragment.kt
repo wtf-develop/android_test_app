@@ -4,22 +4,41 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 
-abstract class BaseFragment : Fragment() {
+
+//Interface for Navigation object
+//Interface for Navigation object
+//Interface for Navigation object
+interface IBaseFragment {
+    fun setIsForegroung(b: Boolean)
+    fun onSubscribeBindings()
+    fun onUnsubscribeBindings()
+}
+
+
+//Fragment implementation
+//Fragment implementation
+//Fragment implementation
+abstract class BaseFragment : Fragment(), IBaseFragment {
     var subscribeInited = false
     var startedOnce = false
+    private var foreground = false
 
     protected abstract fun onDataBing()
     protected abstract fun onDataUnBing()
 
+    override fun setIsForegroung(b: Boolean) {
+        foreground = b
+    }
 
-    fun onSubscribeBindings() {
+    override fun onSubscribeBindings() {
+        if (!foreground) return
         if (!startedOnce) return
         if (subscribeInited) return
         subscribeInited = true
         onDataBing()
     }
 
-    fun onUnsubscribeBindings() {
+    override fun onUnsubscribeBindings() {
         if (!subscribeInited) return
         subscribeInited = false
         onDataUnBing()

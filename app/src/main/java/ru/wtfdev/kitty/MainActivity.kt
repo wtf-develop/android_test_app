@@ -13,6 +13,7 @@ import ru.wtfdev.kitty.list.IImageListViewModel
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.list.ImageListViewModel
 import ru.wtfdev.kitty.utils.BaseFragment
+import ru.wtfdev.kitty.utils.IBaseFragment
 
 
 /**
@@ -35,19 +36,22 @@ interface INavigation {
 //Navigation implementation
 //Navigation implementation
 class MainActivity : AppCompatActivity(), INavigation {
-    private var topFragment: BaseFragment? = null
+    private var topFragment: IBaseFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            moveTo("startpage", false)
+            topFragment = moveTo(ImageListView.tag, false).apply {
+                this?.setIsForegroung(true)
+            }
         }
         setSupportActionBar(my_toolbar)
 
         supportFragmentManager.addOnBackStackChangedListener {
             val count = supportFragmentManager.backStackEntryCount
             var tag = ""
+            topFragment?.setIsForegroung(false)
             topFragment?.onUnsubscribeBindings()
             var fragment: BaseFragment? = null
             if (count > 0) {
@@ -60,6 +64,7 @@ class MainActivity : AppCompatActivity(), INavigation {
                 tag = ImageListView.tag
             }
             topFragment = fragment
+            topFragment?.setIsForegroung(true)
             topFragment?.onSubscribeBindings()
             title = getString(getTitle(tag))
             supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton(tag))
@@ -75,22 +80,21 @@ class MainActivity : AppCompatActivity(), INavigation {
     }
 
 
-    private fun moveTo(tag: String, backstack: Boolean = true) {
+    private fun moveTo(tag: String, backstack: Boolean = true): IBaseFragment? {
         var fragment: BaseFragment?
         when (tag.toLowerCase()) {
             ImageListView.tag -> fragment = ImageListView.newInstance()
             DetailsView.tag -> fragment = DetailsView.newInstance("id")
-            else -> return
+            else -> return null
         }
         var transaction = supportFragmentManager.beginTransaction()
         transaction.add(R.id.fragments, fragment, tag)
         if (backstack) {
             transaction.addToBackStack(tag)
             transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-        } else {
-            topFragment = fragment
         }
         transaction.commit()
+        return fragment
     }
 
     private fun getTitle(tag: String): Int {
