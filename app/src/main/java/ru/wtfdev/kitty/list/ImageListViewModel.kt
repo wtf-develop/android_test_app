@@ -56,7 +56,6 @@ class ImageListViewModel private constructor() :
     }
 
     override fun subscribeOnError(callback: (error: String) -> Unit) {
-        if (autoDisposable == null) throw Exception("run setLifecycle first")
         autoDisposable.add(
             error.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

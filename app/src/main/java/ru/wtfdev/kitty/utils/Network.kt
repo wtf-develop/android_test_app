@@ -3,12 +3,11 @@ package ru.wtfdev.kitty.utils
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.http.GET
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
@@ -25,7 +24,6 @@ import javax.inject.Inject
 //Interface
 interface INetwork {
     fun getJsonArray(
-        url: String,
         onData: (json: List<ItemModel>) -> Unit,
         onError: ((text: String) -> Unit)? = null
     )
@@ -44,45 +42,30 @@ class Network @Inject constructor() : INetwork {
 
     interface APIService {
         @GET("cats.php")
-        fun loadList(): Call<List<ItemModel>>
+        fun loadList(): Observable<List<ItemModel>>
     }
-
 
 
     @Inject
     lateinit var jsonConverter: Json
 
-    val retrofit = Retrofit.Builder()
+    @kotlinx.serialization.ExperimentalSerializationApi
+    val service = Retrofit.Builder()
         .baseUrl("https://wtf-dev.ru/test/")
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(jsonConverter.asConverterFactory(MediaType.get("application/json; charset=utf-8")))
         .build()
-
-    val service = retrofit.create(APIService::class.java)
+        .create(APIService::class.java)
 
     override fun getJsonArray(
-        url: String,
         onData: (json: List<ItemModel>) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
+        service.loadList().subscribe({ response ->
+            onData(response)
 
-
-        service.loadList().enqueue(object : Callback<List<ItemModel>> {
-
-            override fun onResponse(
-                call: Call<List<ItemModel>>,
-                response: Response<List<ItemModel>>
-            ) {
-                val body = response.body()
-                if (response.isSuccessful && body != null) {
-                    onData(body)
-                } else {
-                    onError?.let { it(response.errorBody().toString()) }
-                }
-            }
-
-            override fun onFailure(call: Call<List<ItemModel>>, t: Throwable) {
-                onError?.let { it(t.toString()) }
-            }
+        }, { error ->
+            onError?.let { it(error.toString()) }
 
         })
     }

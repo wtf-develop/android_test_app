@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 interface IImageListRepository {
     fun fetchData(
-        dataCallback: (data: List<ItemModel>) -> Unit,
+        callback: (data: List<ItemModel>) -> Unit,
         errorCallback: ((text: String) -> Unit)? = null
     )
 }
@@ -33,7 +33,7 @@ class ImageListRepository private constructor() : IImageListRepository {
         callback: (data: List<ItemModel>) -> Unit,
         errorCallback: ((text: String) -> Unit)?
     ) {
-        network.getJsonArray("http://wtf-dev.ru/test/cats.php",
+        network.getJsonArray(
             { json ->
                 mutableList.clear()
                 mutableList.addAll(

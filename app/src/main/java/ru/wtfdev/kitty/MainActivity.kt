@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), INavigation {
             fragment?.setIsForegroung(true)
             fragment?.onSubscribeBindings()
             title = getString(getTitle(tag))
-            supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton(tag))
+            supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton())
         }
     }
 
@@ -111,7 +111,7 @@ class MainActivity : AppCompatActivity(), INavigation {
         return R.string.error
     }
 
-    private fun getBackButton(tag: String): Boolean {
+    private fun getBackButton(): Boolean {
         if (supportFragmentManager.backStackEntryCount > 0) {
             return true
         }
@@ -138,8 +138,6 @@ class MainActivity : AppCompatActivity(), INavigation {
         val id = item.itemId
         if (id == android.R.id.home) {
             if (supportFragmentManager.backStackEntryCount > 0) {
-                val backEntry =
-                    supportFragmentManager.getBackStackEntryAt(supportFragmentManager.backStackEntryCount - 1)
                 supportFragmentManager.popBackStack()
             }
         } else if (id == R.id.menu_item_add) {
