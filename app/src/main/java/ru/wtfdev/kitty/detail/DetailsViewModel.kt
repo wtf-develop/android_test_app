@@ -35,7 +35,7 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
     }
 
     override fun subscribeOnChange(callback: (data: ItemModel) -> Unit) {
-        autoDisposable?.add(
+        autoDisposable.add(
             data.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback(it)
@@ -44,7 +44,7 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
     }
 
     override fun unsubscribeAll() {
-        autoDisposable?.disconnectAllListeners()
+        autoDisposable.disconnectAllListeners()
     }
 
 

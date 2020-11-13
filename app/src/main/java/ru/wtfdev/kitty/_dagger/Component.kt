@@ -7,6 +7,7 @@ import ru.wtfdev.kitty.detail.DetailsViewModel
 import ru.wtfdev.kitty.list.ImageListRepository
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.list.ImageListViewModel
+import ru.wtfdev.kitty.utils.Network
 
 @Component(modules = [Module::class])
 interface Component {
@@ -17,5 +18,6 @@ interface Component {
     fun inject(obj: DetailsRepository)
     fun inject(obj: DetailsViewModel)
     fun inject(obj: DetailsView)
+    fun inject(obj: Network)
 
 }

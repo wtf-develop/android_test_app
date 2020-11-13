@@ -47,7 +47,7 @@ class ImageListViewModel private constructor() :
     }
 
     override fun subscribeOnChange(callback: (data: List<ItemModel>) -> Unit) {
-        autoDisposable?.add(
+        autoDisposable.add(
             data.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback(it)
@@ -57,7 +57,7 @@ class ImageListViewModel private constructor() :
 
     override fun subscribeOnError(callback: (error: String) -> Unit) {
         if (autoDisposable == null) throw Exception("run setLifecycle first")
-        autoDisposable?.add(
+        autoDisposable.add(
             error.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback(it)
@@ -66,7 +66,7 @@ class ImageListViewModel private constructor() :
     }
 
     override fun unsubscribeAll() {
-        autoDisposable?.disconnectAllListeners()
+        autoDisposable.disconnectAllListeners()
     }
 
     override fun selectItem(item: ItemModel) {

@@ -1,6 +1,5 @@
 package ru.wtfdev.kitty.list
 
-import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.ItemModel
@@ -11,11 +10,6 @@ interface IImageListRepository {
     fun fetchData(
         dataCallback: (data: List<ItemModel>) -> Unit,
         errorCallback: ((text: String) -> Unit)? = null
-    )
-
-    fun changeOrder(
-        item: ItemModel?,
-        callback: ((data: List<ItemModel>) -> Unit)? = null
     )
 }
 
@@ -37,40 +31,18 @@ class ImageListRepository private constructor() : IImageListRepository {
         errorCallback: ((text: String) -> Unit)?
     ) {
         network.getJsonArray("http://wtf-dev.ru/test/cats.php",
-            { jsonStr ->
+            { json ->
                 mutableList.clear()
                 mutableList.addAll(
-                    jsonParser.decodeFromString(
-                        ListSerializer(ItemModel.serializer()),
-                        jsonStr
-                    )
+                    json
                 )
 
-                //changeOrder(selectedItem)
                 callback(
                     mutableList
                 )
             }, { text ->
                 errorCallback?.let { it(text) }
             })
-    }
-
-    override fun changeOrder(item: ItemModel?, callback: ((data: List<ItemModel>) -> Unit)?) {
-        selectedItem = item
-        selectedItem?.let { itemSel ->
-            val list = mutableListOf<ItemModel>()
-            list.addAll(mutableList.filter { listitem ->
-                listitem.id.equals(itemSel.id, true)
-            })
-            list.addAll(mutableList.filter { listitem ->
-                !listitem.id.equals(itemSel.id, true)
-            })
-            mutableList.clear()
-            mutableList.addAll(list)
-            callback?.let { call ->
-                call(mutableList)
-            }
-        }
     }
 
     init {
