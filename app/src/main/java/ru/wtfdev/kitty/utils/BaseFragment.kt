@@ -44,6 +44,11 @@ abstract class BaseFragment : Fragment(), IBaseFragment {
         onDataUnBing()
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        foreground = savedInstanceState?.getBoolean("foreground", foreground) ?: foreground
+        super.onCreate(savedInstanceState)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -64,5 +69,11 @@ abstract class BaseFragment : Fragment(), IBaseFragment {
     override fun onDestroyView() {
         super.onDestroyView()
         onUnsubscribeBindings()
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putBoolean("foreground", foreground)
+        super.onSaveInstanceState(outState)
     }
 }

@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity(), INavigation {
             topFragment = moveTo(ImageListView.tag, false).apply {
                 this?.setIsForegroung(true)
             }
+        }else{
+            var count = supportFragmentManager.backStackEntryCount
+            count++
+
         }
         setSupportActionBar(my_toolbar)
 
