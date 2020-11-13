@@ -14,6 +14,10 @@ interface IDetailsRepository {
 //Implementation
 class DetailsRepository : IDetailsRepository {
 
+    init {
+        DaggerComponent.create().inject(this)
+    }
+
     override fun fetchData(
         dataCallback: (data: ItemModel) -> Unit,
         errorCallback: ((text: String) -> Unit)?
@@ -21,10 +25,6 @@ class DetailsRepository : IDetailsRepository {
         dataCallback(itemData)
     }
 
-
-    init {
-        DaggerComponent.create().inject(this)
-    }
 
     companion object {
         lateinit var itemData: ItemModel

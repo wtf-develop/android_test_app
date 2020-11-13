@@ -10,6 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.GET
+import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.ItemModel
 import javax.inject.Inject
@@ -37,7 +38,6 @@ interface INetwork {
 //Implementation
 //Implementation
 class Network @Inject constructor() : INetwork {
-
     init {
         DaggerComponent.create().inject(this)
     }
@@ -46,6 +46,8 @@ class Network @Inject constructor() : INetwork {
         @GET("cats.php")
         fun loadList(): Call<List<ItemModel>>
     }
+
+
 
     @Inject
     lateinit var jsonConverter: Json
@@ -73,7 +75,6 @@ class Network @Inject constructor() : INetwork {
                 val body = response.body()
                 if (response.isSuccessful && body != null) {
                     onData(body)
-
                 } else {
                     onError?.let { it(response.errorBody().toString()) }
                 }
@@ -90,32 +91,11 @@ class Network @Inject constructor() : INetwork {
         Glide
             .with(img.context)
             .load(url)
+            .placeholder(R.drawable.loading_img)
+            .error(android.R.drawable.ic_delete)
             .into(img)
-        /*HttpURLConnection.setFollowRedirects(true)
-        HttpsURLConnection.setFollowRedirects(true)
-        val curUrl = img.tag as? String
-        if (curUrl == null || (!url.equals(curUrl, false))) {
-            img.setImageResource(R.drawable.loading_img)
-        }
-        img.tag = url
-
-        imageLoader.get(url, object : ImageLoader.ImageListener {
-            override fun onErrorResponse(error: VolleyError?) {
-                if (url.equals(img.tag.toString(), true)) {
-                    img.setImageResource(android.R.drawable.ic_delete)//TODO may be need to cache error response image
-                }
-            }
-
-            override fun onResponse(response: ImageLoader.ImageContainer?, isImmediate: Boolean) {
-                if (url.equals(img.tag.toString(), true)) {
-                    response?.bitmap?.let {
-                        img.setImageBitmap(it)
-                    }
-                }
-            }
-
-        }, maxSize, maxSize, ImageView.ScaleType.CENTER)*/
     }
+
 
     companion object {
         val single = Network()

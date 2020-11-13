@@ -15,6 +15,9 @@ interface IImageListRepository {
 
 
 class ImageListRepository private constructor() : IImageListRepository {
+    init {
+        DaggerComponent.create().inject(this)
+    }
 
     @Inject
     lateinit var network: INetwork
@@ -43,10 +46,6 @@ class ImageListRepository private constructor() : IImageListRepository {
             }, { text ->
                 errorCallback?.let { it(text) }
             })
-    }
-
-    init {
-        DaggerComponent.create().inject(this)
     }
 
     companion object {
