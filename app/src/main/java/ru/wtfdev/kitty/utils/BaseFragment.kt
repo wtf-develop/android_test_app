@@ -18,7 +18,7 @@ interface IBaseFragment {
 //Fragment implementation
 //Fragment implementation
 //Fragment implementation
-abstract class BaseFragment : Fragment(), IBaseFragment {
+open abstract class BaseFragment : Fragment(), IBaseFragment {
     var subscribeInited = false
     var startedOnce = false
     private var foreground = false

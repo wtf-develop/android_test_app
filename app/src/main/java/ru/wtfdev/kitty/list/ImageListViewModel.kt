@@ -70,9 +70,6 @@ class ImageListViewModel private constructor() :
 
     override fun selectItem(item: ItemModel) {
         DetailsRepository.itemData = item
-        /*repository.changeOrder(item) { arr ->
-            data.onNext(arr)
-        }*/
         navigation.toDetails()
     }
 

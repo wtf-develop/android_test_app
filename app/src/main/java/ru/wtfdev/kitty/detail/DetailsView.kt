@@ -50,8 +50,6 @@ class DetailsView : BaseFragment() {
     }
 
     companion object {
-        val tag = "detailspage"
-
         @JvmStatic
         fun newInstance(param1: String) =
             DetailsView().apply {

@@ -116,8 +116,6 @@ class ImageListView : BaseFragment() {
     }
 
     companion object {
-        val tag = "startpage"
-
         @JvmStatic
         fun newInstance() = ImageListView()
     }
