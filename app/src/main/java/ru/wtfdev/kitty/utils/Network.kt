@@ -10,12 +10,14 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.data.PostUrlObject
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
+import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import javax.inject.Inject
 
 
@@ -46,17 +48,23 @@ interface INetwork {
 //Implementation
 //Implementation
 //Implementation
-class Network @Inject constructor() : INetwork {
+class Network private constructor() : INetwork {
     init {
         DaggerComponent.create().inject(this)
     }
 
+    @Inject
+    lateinit var localRepo: ILocalStorageRepository
+
     interface APIService {
         @GET("cats.php")
-        fun loadList(): Observable<List<ItemModel>>
+        fun loadList(@Header("Installation") uuid: String): Observable<List<ItemModel>>
 
         @POST("new_cats.php")
-        fun postImage(@Body obj: PostUrlObject): Observable<ServerBaseResponse>
+        fun postImage(
+            @Header("Installation") uuid: String,
+            @Body obj: PostUrlObject
+        ): Observable<ServerBaseResponse>
     }
 
 
@@ -75,7 +83,7 @@ class Network @Inject constructor() : INetwork {
         onData: (json: List<ItemModel>) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.loadList().subscribe({ response ->
+        service.loadList(localRepo.getUUID()).subscribe({ response ->
             onData(response)
 
         }, { error ->
@@ -97,7 +105,7 @@ class Network @Inject constructor() : INetwork {
         url: String, onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.postImage(PostUrlObject(url)).subscribe({ response ->
+        service.postImage(localRepo.getUUID(), PostUrlObject(url)).subscribe({ response ->
             onData(response)
         }, { error ->
             onError?.let { it(error.toString()) }

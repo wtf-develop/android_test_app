@@ -4,6 +4,7 @@ import dagger.Component
 import ru.wtfdev.kitty.DialogActivity
 import ru.wtfdev.kitty.MainActivity
 import ru.wtfdev.kitty._models.repo.ImageRepository
+import ru.wtfdev.kitty._models.repo.LocalStorageRepository
 import ru.wtfdev.kitty.add_link.AddLinkRepository
 import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.add_link.AddLinkViewModel
@@ -39,6 +40,7 @@ interface Component {
 
     fun inject(obj: BaseActivty)
     fun inject(obj: BaseFragment)
+    fun inject(obj: LocalStorageRepository)
 
 
 }
