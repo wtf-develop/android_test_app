@@ -2,7 +2,7 @@ package ru.wtfdev.kitty._navigation
 
 import androidx.fragment.app.FragmentManager
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.add_link.AddLinkViewModel
 import ru.wtfdev.kitty.detail.DetailsRepository

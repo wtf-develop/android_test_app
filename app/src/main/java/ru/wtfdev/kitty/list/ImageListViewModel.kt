@@ -5,11 +5,10 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.wtfdev.kitty._dagger.DaggerComponent
-import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._models.data.ItemModel
+import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
-import ru.wtfdev.kitty.detail.DetailsRepository
 import ru.wtfdev.kitty.utils.AutoDisposable
-import ru.wtfdev.kitty.utils.INetwork
 import javax.inject.Inject
 
 //Interface
@@ -27,15 +26,22 @@ interface IImageListViewModel {
 class ImageListViewModel private constructor(val navigation: INavigation) : //ViewModel(),
     IImageListViewModel {
 
-    @Inject
-    lateinit var network: INetwork
+    init {
+        DaggerComponent.create().inject(this)
+    }
 
     @Inject
     lateinit var repository: IImageListRepository
 
+    @Inject
+    lateinit var autoDisposable: AutoDisposable
+
+    @Inject
+    lateinit var imageRepo: IImageRepository
+
+
     private val data = BehaviorSubject.create<List<ItemModel>>()
     private val error = PublishSubject.create<String>()
-    private var autoDisposable: AutoDisposable = AutoDisposable()
 
     override fun updateList(force: Boolean) {
         repository.fetchData({ arr ->
@@ -72,13 +78,9 @@ class ImageListViewModel private constructor(val navigation: INavigation) : //Vi
     }
 
     override fun loadImageTo(img: ImageView, url: String) {
-        network.setImageMainThread(img, url, 400)
+        imageRepo.loadImageTo(img, url, 400)
     }
 
-
-    init {
-        DaggerComponent.create().inject(this)
-    }
 
     companion object {
         fun getInstance(navi: INavigation): IImageListViewModel =

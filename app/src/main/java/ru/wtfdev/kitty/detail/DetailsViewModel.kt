@@ -4,7 +4,8 @@ import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import ru.wtfdev.kitty._dagger.DaggerComponent
-import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._models.data.ItemModel
+import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.Network
@@ -24,8 +25,14 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
     @Inject
     lateinit var repository: IDetailsRepository
 
+    @Inject
+    lateinit var autoDisposable: AutoDisposable
+
+    @Inject
+    lateinit var imageRepo: IImageRepository
+
+
     private val data = BehaviorSubject.create<ItemModel>()
-    private var autoDisposable: AutoDisposable = AutoDisposable()
 
 
     override fun update(force: Boolean) {
@@ -49,7 +56,7 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
 
 
     override fun loadImageTo(img: ImageView, url: String) {
-        Network.getInstance().setImageMainThread(img, url, 1000)
+        imageRepo.loadImageTo(img, url, 1000)
     }
 
 

@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.list_item.view.*
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty.list.IImageListViewModel
 
 class ListAdapter(private val viewModel: IImageListViewModel) :

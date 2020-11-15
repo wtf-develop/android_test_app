@@ -1,7 +1,7 @@
 package ru.wtfdev.kitty.detail
 
 import ru.wtfdev.kitty._dagger.DaggerComponent
-import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._models.data.ItemModel
 
 //Interface
 interface IDetailsRepository {

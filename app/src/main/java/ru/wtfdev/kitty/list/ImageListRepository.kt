@@ -2,7 +2,7 @@ package ru.wtfdev.kitty.list
 
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._dagger.DaggerComponent
-import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty.utils.INetwork
 import javax.inject.Inject
 
