@@ -1,10 +1,12 @@
 package ru.wtfdev.kitty.add_link
 
 import android.widget.ImageView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
-import ru.wtfdev.kitty.detail.IDetailsRepository
 import ru.wtfdev.kitty.utils.AutoDisposable
 import javax.inject.Inject
 
@@ -12,6 +14,10 @@ import javax.inject.Inject
 interface IAddLinkViewModel {
     fun save(url: String)
     fun loadImageTo(img: ImageView, url: String)
+    fun subscribeOnChange(callback: (data: Boolean) -> Unit)
+    fun subscribeOnError(callback: (error: String) -> Unit)
+    fun unsubscribeAll()
+
 }
 
 
@@ -20,6 +26,8 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
         DaggerComponent.create().inject(this)
     }
 
+    private val data = BehaviorSubject.create<Boolean>()
+    private val error = PublishSubject.create<String>()
 
     @Inject
     lateinit var repository: IAddLinkRepository
@@ -31,11 +39,42 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
     lateinit var imageRepo: IImageRepository
 
     override fun save(url: String) {
-
+        repository.postLinkToServer(url, { result ->
+            if (result.status) {
+                data.onNext(true)
+                navigation.popBackStack()
+            } else {
+                error.onNext("Server error")
+            }
+        }, { errorstr ->
+            error.onNext(errorstr)
+        })
     }
 
     override fun loadImageTo(img: ImageView, url: String) {
+        imageRepo.loadImageTo(img, url, 300)
+    }
 
+    override fun subscribeOnChange(callback: (data: Boolean) -> Unit) {
+        autoDisposable.add(
+            data.observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    callback(it)
+                }
+        )
+    }
+
+    override fun subscribeOnError(callback: (error: String) -> Unit) {
+        autoDisposable.add(
+            error.observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    callback(it)
+                }
+        )
+    }
+
+    override fun unsubscribeAll() {
+        autoDisposable.disconnectAllListeners()
     }
 
 

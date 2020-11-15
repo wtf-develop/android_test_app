@@ -8,10 +8,14 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.data.ItemModel
+import ru.wtfdev.kitty._models.data.PostUrlObject
+import ru.wtfdev.kitty._models.data.ServerBaseResponse
 import javax.inject.Inject
 
 
@@ -28,7 +32,14 @@ interface INetwork {
         onError: ((text: String) -> Unit)? = null
     )
 
+    fun postImageUrl(
+        url: String,
+        onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)? = null
+    )
+
     fun setImageMainThread(img: ImageView, url: String, maxSize: Int)
+
 }
 
 
@@ -43,6 +54,9 @@ class Network @Inject constructor() : INetwork {
     interface APIService {
         @GET("cats.php")
         fun loadList(): Observable<List<ItemModel>>
+
+        @POST("new_cats.php")
+        fun postImage(@Body obj: PostUrlObject): Observable<ServerBaseResponse>
     }
 
 
@@ -77,6 +91,17 @@ class Network @Inject constructor() : INetwork {
             .placeholder(R.drawable.loading_img)
             .error(android.R.drawable.ic_delete)
             .into(img)
+    }
+
+    override fun postImageUrl(
+        url: String, onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)?
+    ) {
+        service.postImage(PostUrlObject(url)).subscribe({ response ->
+            onData(response)
+        }, { error ->
+            onError?.let { it(error.toString()) }
+        })
     }
 
 

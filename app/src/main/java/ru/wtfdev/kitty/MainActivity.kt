@@ -3,9 +3,9 @@ package ru.wtfdev.kitty
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.utils.BaseActivty
 
@@ -36,7 +36,7 @@ class MainActivity : BaseActivty() {
         super.onOptionsItemSelected(item)
         val id = item.itemId
         if (id == R.id.menu_item_add) {
-            Toast.makeText(this, "Soon", Toast.LENGTH_SHORT).show()
+            navigation.moveTo(AddLinkView::class.qualifiedName)
         }
         return true
     }

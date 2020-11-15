@@ -13,6 +13,8 @@ import ru.wtfdev.kitty.detail.DetailsViewModel
 import ru.wtfdev.kitty.list.ImageListRepository
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.list.ImageListViewModel
+import ru.wtfdev.kitty.utils.BaseActivty
+import ru.wtfdev.kitty.utils.BaseFragment
 import ru.wtfdev.kitty.utils.Network
 
 @Component(modules = [Module::class])
@@ -34,6 +36,9 @@ interface Component {
     fun inject(obj: MainActivity)
     fun inject(obj: DialogActivity)
     fun inject(obj: ImageRepository)
+
+    fun inject(obj: BaseActivty)
+    fun inject(obj: BaseFragment)
 
 
 }

@@ -22,9 +22,12 @@ import ru.wtfdev.kitty.utils.IBaseFragment
 
 //common navigation interface
 interface INavigation {
+    fun moveTo(tag: String?, backstack: Boolean = true): IBaseFragment?
+    fun popBackStack()
+
     fun toList()
     fun toDetails(obj: ItemModel)
-    fun moveTo(tag: String, backstack: Boolean = true): IBaseFragment?
+
     fun getTitle(tag: String): Int
 }
 
@@ -42,10 +45,11 @@ class Navigation private constructor(val navigateAction: INaviJump) : INavigatio
 
     override fun toDetails(obj: ItemModel) {
         DetailsRepository.itemData = obj //need to replace it - too bad for MVVM
-        moveTo(DetailsView::class.qualifiedName ?: "")
+        moveTo(DetailsView::class.qualifiedName)
     }
 
-    override fun moveTo(tag: String, backstack: Boolean): IBaseFragment? {
+    override fun moveTo(tag: String?, backstack: Boolean): IBaseFragment? {
+        if (tag == null) return null
         var fragment: BaseFragment?
         when (tag) {
             ImageListView::class.qualifiedName -> fragment =
@@ -67,6 +71,10 @@ class Navigation private constructor(val navigateAction: INaviJump) : INavigatio
         }
         transaction.commit()
         return fragment
+    }
+
+    override fun popBackStack() {
+        navigateAction.getNaviFragmentManager().popBackStack()
     }
 
 

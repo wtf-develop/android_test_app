@@ -8,14 +8,14 @@ import javax.inject.Inject
 //Interface for loading images
 //Interface for loading images
 //Interface for loading images
-interface IImageRepository{
+interface IImageRepository {
     fun loadImageTo(img: ImageView, url: String, size: Int)
 }
 
 //Implementation for loading images
 //Implementation for loading images
 //Implementation for loading images
-class ImageRepository private constructor(): IImageRepository {
+class ImageRepository private constructor() : IImageRepository {
     init {
         DaggerComponent.create().inject(this)
     }
@@ -26,8 +26,8 @@ class ImageRepository private constructor(): IImageRepository {
         network.setImageMainThread(img, url, size)
     }
 
-    companion object{
-        private val imageInst=ImageRepository()
+    companion object {
+        private val imageInst = ImageRepository()
         fun getInstance() = imageInst
 
     }

@@ -8,7 +8,6 @@ import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
-import ru.wtfdev.kitty.utils.Network
 import javax.inject.Inject
 
 

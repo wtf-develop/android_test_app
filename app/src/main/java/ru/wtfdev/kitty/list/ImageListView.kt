@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_image_list.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
@@ -32,7 +31,6 @@ class ImageListView private constructor(val viewModel: IImageListViewModel) : Ba
     var viewManager: LinearLayoutManager? = null
     private var scrollList = true
 
-    private lateinit var snackbar: Snackbar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         scroll = savedInstanceState?.getInt("scroll", 0) ?: 0
@@ -57,14 +55,6 @@ class ImageListView private constructor(val viewModel: IImageListViewModel) : Ba
         recycler_view.adapter = viewAdapter
         loader.visibility = View.VISIBLE
         pull2refresh.visibility = View.GONE
-        snackbar = Snackbar
-            .make(view, "Network error", Snackbar.LENGTH_INDEFINITE)
-            .setAction("Retry") {
-                loader.visibility = View.GONE
-                pull2refresh.visibility = View.VISIBLE
-                pull2refresh.isRefreshing = true
-                viewModel.updateList(true)
-            }
         pull2refresh.setOnRefreshListener {
             viewModel.updateList(true)
         }
@@ -84,15 +74,19 @@ class ImageListView private constructor(val viewModel: IImageListViewModel) : Ba
                 recycler_view.scrollToPosition(scroll)
             }
             pull2refresh.isRefreshing = false
-            snackbar.dismiss()
+            hideError()
             pull2refresh.visibility = View.VISIBLE
             loader.visibility = View.GONE
             (recycler_view.adapter as? ListAdapter)?.setData(it)
         }
         viewModel.subscribeOnError {
             pull2refresh.isRefreshing = false
-            snackbar.setText(it)
-            snackbar.show()
+            showError(it) {
+                loader.visibility = View.GONE
+                pull2refresh.visibility = View.VISIBLE
+                pull2refresh.isRefreshing = true
+                viewModel.updateList(true)
+            }
             loader.visibility = View.GONE
         }
     }

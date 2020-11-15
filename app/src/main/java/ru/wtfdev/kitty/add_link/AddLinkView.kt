@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_add_link.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty.utils.BaseFragment
@@ -11,11 +12,18 @@ import ru.wtfdev.kitty.utils.BaseFragment
 class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFragment() {
 
     override fun onDataBing() {
-
+        viewModel.subscribeOnChange {
+            if (it) hideError()
+        }
+        viewModel.subscribeOnError {
+            showError(it) {
+                viewModel.save(linkUrl.text.toString())
+            }
+        }
     }
 
     override fun onDataUnBing() {
-
+        viewModel.unsubscribeAll()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +40,22 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val url = activity?.intent?.extras?.getString("url") ?: ""
+        val urlIntent = activity?.intent?.extras?.getString("url") ?: ""
+        val url = savedInstanceState?.getString("img_url", urlIntent) ?: urlIntent
+        linkUrl.setText(url)
+        if (url.isNotEmpty()) {
+            viewModel.loadImageTo(imageUrl, url)
+        }
+        buttonUrl.setOnClickListener {
+            viewModel.save(linkUrl.text.toString())
+        }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString("img_url", linkUrl.text.toString())
+        super.onSaveInstanceState(outState)
+    }
+
 
     companion object {
         fun newInstance(vmodel: IAddLinkViewModel) = AddLinkView(vmodel)

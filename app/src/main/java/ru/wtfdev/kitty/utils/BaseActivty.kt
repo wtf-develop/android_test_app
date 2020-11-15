@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._navigation.INaviJump
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty._navigation.Navigation
@@ -17,12 +18,17 @@ abstract class BaseActivty : AppCompatActivity(), INaviJump {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DaggerComponent.create().inject(this)
         navigation = Navigation.getInstance(this)
         if (savedInstanceState == null) {
             navigation.moveTo(startFragment, false).apply {
                 this?.setIsForegroung(true)
             }
         }
+
+        //need to call onBind() and onUnBind() after changing BackStack in Fragments
+        //need to call onBind() and onUnBind() after changing BackStack in Fragments
+        //need to call onBind() and onUnBind() after changing BackStack in Fragments
         supportFragmentManager.addOnBackStackChangedListener {
             val count = supportFragmentManager.backStackEntryCount
             var tag = ""
@@ -65,7 +71,7 @@ abstract class BaseActivty : AppCompatActivity(), INaviJump {
         val id = item.itemId
         if (id == android.R.id.home) {
             if (supportFragmentManager.backStackEntryCount > 0) {
-                supportFragmentManager.popBackStack()
+                navigation.popBackStack()
             }
         }
         return b

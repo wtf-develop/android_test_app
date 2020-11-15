@@ -1,6 +1,5 @@
 package ru.wtfdev.kitty.list
 
-import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty.utils.INetwork
@@ -21,9 +20,6 @@ class ImageListRepository private constructor() : IImageListRepository {
 
     @Inject
     lateinit var network: INetwork
-
-    @Inject
-    lateinit var jsonParser: Json
 
     val mutableList = mutableListOf<ItemModel>()
     var selectedItem: ItemModel? = null

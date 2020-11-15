@@ -1,8 +1,12 @@
 package ru.wtfdev.kitty.utils
 
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import ru.wtfdev.kitty.R
+import ru.wtfdev.kitty._dagger.DaggerComponent
 
 
 //Interface for Navigation object
@@ -48,12 +52,46 @@ open abstract class BaseFragment : Fragment(), IBaseFragment {
     override fun onCreate(savedInstanceState: Bundle?) {
         foreground = savedInstanceState?.getBoolean("foreground", foreground) ?: foreground
         super.onCreate(savedInstanceState)
+        DaggerComponent.create().inject(this)
     }
 
 
+    private lateinit var snackbar: Snackbar
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         subscribeInited = false
+        snackbar = Snackbar
+            .make(view, "Error", Snackbar.LENGTH_INDEFINITE)
+        if (Build.VERSION.SDK_INT >= 23) {
+            snackbar.setTextColor(activity?.getColor(R.color.light_text_color) ?: 0xffffff)
+            snackbar.setActionTextColor(activity?.getColor(R.color.yellow_text_color) ?: 0xbfbf00)
+        } else {
+            snackbar.setTextColor(
+                activity?.resources?.getColor(R.color.light_text_color) ?: 0xffffff
+            )
+            snackbar.setActionTextColor(
+                activity?.resources?.getColor(R.color.yellow_text_color) ?: 0xbfbf00
+            )
+        }
+    }
+
+    fun showError(text: String, retry: (() -> Unit)? = null) {
+        snackbar.setText(text)
+        if (retry == null) {
+            snackbar.setAction("", null)
+            snackbar.duration = Snackbar.LENGTH_LONG
+        } else {
+            snackbar.setAction(R.string.try_again) {
+                hideError()
+                retry?.let { it() }
+            }
+            snackbar.duration = Snackbar.LENGTH_INDEFINITE
+        }
+        snackbar.show()
+    }
+
+    fun hideError() {
+        snackbar.dismiss()
     }
 
     override fun onStart() {
