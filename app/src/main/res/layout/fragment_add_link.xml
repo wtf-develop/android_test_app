@@ -1,58 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:id="@+id/close_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="@android:color/background_light"
+    android:background="#6f000000"
     android:foregroundGravity="center"
     android:gravity="center"
+    android:clickable="true"
+    android:focusable="false"
     android:orientation="vertical"
     tools:context=".add_link.AddLinkView">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/img_foreground"
+        android:background="@android:color/background_light"
         android:foregroundGravity="center"
         android:gravity="center"
-        android:orientation="vertical"
-        android:padding="15dp">
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical">
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:text="@string/add_link_view" />
+            android:layout_gravity="center"
+            android:background="@drawable/img_foreground"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="15dp">
 
-        <EditText
-            android:id="@+id/linkUrl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textUri|textNoSuggestions"
-            android:lines="1"
-            android:maxLines="1"
-            android:minLines="1"
-            android:singleLine="true" />
+            <!-- TODO: Update blank fragment layout -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/dark_text_color"
+                android:text="@string/add_link_view"
+                android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/imageUrl"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/loading_img" />
+            <EditText
+                android:id="@+id/linkUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:textSize="14sp"
+                android:textColor="@color/dark_text_color"
+                android:inputType="textUri|textNoSuggestions"
+                android:lines="1"
+                android:maxLines="1"
+                android:minLines="1"
+                android:singleLine="true" />
 
-        <Button
-            android:id="@+id/buttonUrl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/base_secondary1"
-            android:text="@android:string/ok"
-            android:textColor="@color/light_text_color"
-            android:textColorLink="@color/base_secondary2" />
+            <ImageView
+                android:id="@+id/imageUrl"
+                android:layout_width="295dp"
+                android:layout_height="270dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/loading_img" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/buttonUrl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/base_secondary1"
+                android:text="@android:string/ok"
+                android:textColor="@color/light_text_color"
+                android:textColorLink="@color/base_secondary2" />
+
+        </LinearLayout>
+    </FrameLayout>
 </FrameLayout>

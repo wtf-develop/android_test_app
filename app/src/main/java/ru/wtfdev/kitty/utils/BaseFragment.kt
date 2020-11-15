@@ -76,7 +76,7 @@ open abstract class BaseFragment : Fragment(), IBaseFragment {
     }
 
     fun showError(text: String, retry: (() -> Unit)? = null) {
-        snackbar.setText(text)
+        snackbar.setText(text.takeLast(20))
         if (retry == null) {
             snackbar.setAction("", null)
             snackbar.duration = Snackbar.LENGTH_LONG

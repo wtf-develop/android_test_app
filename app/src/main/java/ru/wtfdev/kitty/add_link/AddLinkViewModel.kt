@@ -1,5 +1,6 @@
 package ru.wtfdev.kitty.add_link
 
+import android.content.Intent
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -13,6 +14,8 @@ import javax.inject.Inject
 
 interface IAddLinkViewModel {
     fun save(url: String)
+    fun close()
+    fun getUrlFromIntent(intent: Intent?): String
     fun loadImageTo(img: ImageView, url: String)
     fun subscribeOnChange(callback: (data: Boolean) -> Unit)
     fun subscribeOnError(callback: (error: String) -> Unit)
@@ -50,6 +53,29 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
             error.onNext(errorstr)
         })
     }
+
+    override fun close() {
+        navigation.popBackStack()
+    }
+
+    override fun getUrlFromIntent(intnt: Intent?): String {
+        intnt?.let { intent ->
+            if ("text/plain" == intent.type) {
+                return getTextUrl(intent)
+            }
+        }
+        return ""
+    }
+
+    fun getTextUrl(intent: Intent): String {
+        var parsed = ""
+        intent.getStringExtra(Intent.EXTRA_TEXT)?.let {
+            // Update UI to reflect text being shared
+            parsed = it
+        }
+        return parsed
+    }
+
 
     override fun loadImageTo(img: ImageView, url: String) {
         imageRepo.loadImageTo(img, url, 300)

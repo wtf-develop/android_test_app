@@ -1,0 +1,7 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <share-target android:targetClass="ru.wtfdev.kitty.DialogActivity">
+        <data android:mimeType="text/plain" />
+        <category android:name="ru.wtfdev.kitty.category.TEXT_SHARE_TARGET" />
+    </share-target>
+
+</shortcuts>

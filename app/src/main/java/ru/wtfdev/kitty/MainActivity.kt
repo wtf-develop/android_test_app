@@ -8,6 +8,7 @@ import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.utils.BaseActivty
+import ru.wtfdev.kitty.utils.SharingShortcutsManager
 
 
 /**
@@ -18,11 +19,17 @@ import ru.wtfdev.kitty.utils.BaseActivty
 class MainActivity : BaseActivty() {
     override var startFragment: String = ImageListView::class.qualifiedName ?: ""
 
+    private lateinit var sharingShortcutsManager: SharingShortcutsManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerComponent.create().inject(this)
         setContentView(R.layout.activity_main)
+        DaggerComponent.create().inject(this)
         setSupportActionBar(my_toolbar)
+        val sharingShortcutsManager = SharingShortcutsManager().also {
+            it.removeAllDirectShareTargets(this)
+            it.pushDirectShareTargets(this)
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

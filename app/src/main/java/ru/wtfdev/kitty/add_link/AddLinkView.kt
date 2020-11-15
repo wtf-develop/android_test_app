@@ -11,6 +11,7 @@ import ru.wtfdev.kitty.utils.BaseFragment
 
 class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFragment() {
 
+    private val URL_KEY = "img_url"
     override fun onDataBing() {
         viewModel.subscribeOnChange {
             if (it) hideError()
@@ -40,14 +41,17 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val urlIntent = activity?.intent?.extras?.getString("url") ?: ""
-        val url = savedInstanceState?.getString("img_url", urlIntent) ?: urlIntent
+        val urlIntent = viewModel.getUrlFromIntent(activity?.intent)
+        val url = savedInstanceState?.getString(URL_KEY, urlIntent) ?: urlIntent
         linkUrl.setText(url)
         if (url.isNotEmpty()) {
             viewModel.loadImageTo(imageUrl, url)
         }
         buttonUrl.setOnClickListener {
             viewModel.save(linkUrl.text.toString())
+        }
+        close_fragment.setOnClickListener {
+            viewModel.close()
         }
     }
 
