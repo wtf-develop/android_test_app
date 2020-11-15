@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import kotlinx.android.synthetic.main.fragment_details.*
-import ru.wtfdev.kitty.INavigation
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty.utils.BaseFragment
 
 
-class DetailsView : BaseFragment() {
+class DetailsView private constructor(val viewModel: IDetailsViewModel) : BaseFragment() {
     private val IMAGE_ID = "imageid"
     private var image_id: String? = null
-    lateinit var viewModel: IDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +20,6 @@ class DetailsView : BaseFragment() {
         arguments?.let {
             image_id = it.getString(IMAGE_ID)
         }
-        viewModel = (activity as INavigation).getDetailsVModel()
     }
 
     override fun onCreateView(
@@ -51,11 +48,6 @@ class DetailsView : BaseFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String) =
-            DetailsView().apply {
-                arguments = Bundle().apply {
-                    putString(IMAGE_ID, param1)
-                }
-            }
+        fun newInstance(vmodel: IDetailsViewModel) = DetailsView(vmodel)
     }
 }

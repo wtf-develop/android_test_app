@@ -4,9 +4,9 @@ import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import ru.wtfdev.kitty.INavigation
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.detail.DetailsRepository
 import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.INetwork
@@ -24,7 +24,7 @@ interface IImageListViewModel {
 
 
 //Implementation
-class ImageListViewModel private constructor() :
+class ImageListViewModel private constructor(val navigation: INavigation) : //ViewModel(),
     IImageListViewModel {
 
     @Inject
@@ -33,7 +33,6 @@ class ImageListViewModel private constructor() :
     @Inject
     lateinit var repository: IImageListRepository
 
-    private lateinit var navigation: INavigation
     private val data = BehaviorSubject.create<List<ItemModel>>()
     private val error = PublishSubject.create<String>()
     private var autoDisposable: AutoDisposable = AutoDisposable()
@@ -69,8 +68,7 @@ class ImageListViewModel private constructor() :
     }
 
     override fun selectItem(item: ItemModel) {
-        DetailsRepository.itemData = item
-        navigation.toDetails()
+        navigation.toDetails(item)
     }
 
     override fun loadImageTo(img: ImageView, url: String) {
@@ -83,10 +81,7 @@ class ImageListViewModel private constructor() :
     }
 
     companion object {
-        private val listViewModel = ImageListViewModel()
-        fun getInstance(navigation: INavigation): IImageListViewModel {
-            listViewModel.navigation = navigation
-            return listViewModel
-        }
+        fun getInstance(navi: INavigation): IImageListViewModel =
+            ImageListViewModel(navi)
     }
 }

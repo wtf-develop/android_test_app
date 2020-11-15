@@ -9,25 +9,17 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_image_list.*
-import ru.wtfdev.kitty.INavigation
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty.list.adapter.ListAdapter
 import ru.wtfdev.kitty.utils.BaseFragment
 
-class ImageListView : BaseFragment() {
-    lateinit var viewModel: IImageListViewModel
+class ImageListView private constructor(val viewModel: IImageListViewModel) : BaseFragment() {
     private var scroll = 0
-
-    fun setVModel(vModel: IImageListViewModel): ImageListView {
-        viewModel = vModel
-        return this
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DaggerComponent.create().inject(this)
-        viewModel = (activity as INavigation).getImageListVModel()
     }
 
     override fun onCreateView(
@@ -116,7 +108,6 @@ class ImageListView : BaseFragment() {
     }
 
     companion object {
-        @JvmStatic
-        fun newInstance() = ImageListView()
+        fun newInstance(vmodel: IImageListViewModel) = ImageListView(vmodel)
     }
 }

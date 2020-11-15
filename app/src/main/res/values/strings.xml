@@ -3,5 +3,6 @@
     <string name="details">More about kitty</string>
     <string name="error">Error</string>
     <string name="add_link">Add link</string>
+    <string name="add_link_view">Sending new link</string>
 
 </resources>

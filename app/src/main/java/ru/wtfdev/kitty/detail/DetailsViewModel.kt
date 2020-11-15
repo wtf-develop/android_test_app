@@ -3,9 +3,9 @@ package ru.wtfdev.kitty.detail
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import ru.wtfdev.kitty.INavigation
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.ItemModel
+import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.Network
 import javax.inject.Inject
@@ -56,6 +56,7 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
     init {
         DaggerComponent.create().inject(this)
     }
+
 
     companion object {
         fun getInstance(navigationObj: INavigation): IDetailsViewModel {

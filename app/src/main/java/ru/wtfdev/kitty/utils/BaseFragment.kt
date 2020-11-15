@@ -26,6 +26,7 @@ open abstract class BaseFragment : Fragment(), IBaseFragment {
     protected abstract fun onDataBing()
     protected abstract fun onDataUnBing()
 
+
     override fun setIsForegroung(b: Boolean) {
         foreground = b
     }

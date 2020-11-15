@@ -3,18 +3,23 @@ package ru.wtfdev.kitty.utils
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty.detail.DetailsView
-import ru.wtfdev.kitty.list.ImageListView
+import androidx.fragment.app.FragmentManager
+import ru.wtfdev.kitty._navigation.INaviJump
+import ru.wtfdev.kitty._navigation.INavigation
+import ru.wtfdev.kitty._navigation.Navigation
 
-abstract class BaseActivty : AppCompatActivity() {
+
+abstract class BaseActivty : AppCompatActivity(), INaviJump {
 
     abstract var startFragment: String
 
+    lateinit var navigation: INavigation
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        navigation = Navigation.getInstance(this)
         if (savedInstanceState == null) {
-            moveTo(startFragment, false).apply {
+            navigation.moveTo(startFragment, false).apply {
                 this?.setIsForegroung(true)
             }
         }
@@ -42,7 +47,7 @@ abstract class BaseActivty : AppCompatActivity() {
             }
             fragment?.setIsForegroung(true)
             fragment?.onSubscribeBindings()
-            title = getString(getTitle(tag))
+            title = getString(navigation.getTitle(tag))
             supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton())
         }
     }
@@ -55,33 +60,6 @@ abstract class BaseActivty : AppCompatActivity() {
     }
 
 
-    protected fun getTitle(tag: String): Int {
-        when (tag) {
-            ImageListView::class.simpleName -> return R.string.app_name
-            DetailsView::class.simpleName -> return R.string.details
-        }
-        return R.string.error
-    }
-
-
-    protected fun moveTo(tag: String, backstack: Boolean = true): IBaseFragment? {
-        var fragment: BaseFragment?
-        when (tag) {
-            ImageListView::class.simpleName -> fragment = ImageListView.newInstance()
-            DetailsView::class.simpleName -> fragment = DetailsView.newInstance("id")
-            else -> return null
-        }
-        var transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragments, fragment, tag)
-        if (backstack) {
-            transaction.addToBackStack(tag)
-            transaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
-        transaction.commit()
-        return fragment
-    }
-
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val b = super.onOptionsItemSelected(item)
         val id = item.itemId
@@ -91,5 +69,9 @@ abstract class BaseActivty : AppCompatActivity() {
             }
         }
         return b
+    }
+
+    override fun getNaviFragmentManager(): FragmentManager {
+        return supportFragmentManager
     }
 }
