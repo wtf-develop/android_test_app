@@ -47,6 +47,7 @@ open abstract class BaseFragment : Fragment(), IBaseFragment {
         if (!subscribeInited) return
         subscribeInited = false
         onDataUnBing()
+        hideError()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
