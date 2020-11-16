@@ -1,4 +1,4 @@
-package ru.wtfdev.kitty.utils
+package ru.wtfdev.kitty._models
 
 import android.graphics.drawable.Drawable
 import android.widget.ImageView

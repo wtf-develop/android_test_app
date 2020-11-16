@@ -5,9 +5,9 @@ import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty._navigation.BaseActivty
 import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.list.ImageListView
-import ru.wtfdev.kitty.utils.BaseActivty
 import ru.wtfdev.kitty.utils.SharingShortcutsManager
 
 

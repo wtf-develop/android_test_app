@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_image_list.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty._navigation.BaseFragment
 import ru.wtfdev.kitty.list.adapter.ListAdapter
-import ru.wtfdev.kitty.utils.BaseFragment
 
 class ImageListView private constructor(val viewModel: IImageListViewModel) : BaseFragment() {
     private var scroll = 0

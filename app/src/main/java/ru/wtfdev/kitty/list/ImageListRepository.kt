@@ -1,8 +1,8 @@
 package ru.wtfdev.kitty.list
 
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.data.ItemModel
-import ru.wtfdev.kitty.utils.INetwork
 import javax.inject.Inject
 
 interface IImageListRepository {

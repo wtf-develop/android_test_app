@@ -1,4 +1,4 @@
-package ru.wtfdev.kitty.utils
+package ru.wtfdev.kitty._navigation
 
 import android.os.Build
 import android.os.Bundle

@@ -1,9 +1,9 @@
 package ru.wtfdev.kitty.add_link
 
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.data.PostUrlObject
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
-import ru.wtfdev.kitty.utils.INetwork
 import javax.inject.Inject
 
 

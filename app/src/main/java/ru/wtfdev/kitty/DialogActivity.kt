@@ -3,8 +3,8 @@ package ru.wtfdev.kitty
 import android.content.Intent
 import android.os.Bundle
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty._navigation.BaseActivty
 import ru.wtfdev.kitty.add_link.AddLinkView
-import ru.wtfdev.kitty.utils.BaseActivty
 
 
 class DialogActivity : BaseActivty() {

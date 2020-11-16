@@ -2,7 +2,7 @@ package ru.wtfdev.kitty._models.repo
 
 import android.widget.ImageView
 import ru.wtfdev.kitty._dagger.DaggerComponent
-import ru.wtfdev.kitty.utils.INetwork
+import ru.wtfdev.kitty._models.INetwork
 import javax.inject.Inject
 
 //Interface for loading images

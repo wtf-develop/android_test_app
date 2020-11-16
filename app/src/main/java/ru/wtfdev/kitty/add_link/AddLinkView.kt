@@ -17,7 +17,7 @@ import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_add_link.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
-import ru.wtfdev.kitty.utils.BaseFragment
+import ru.wtfdev.kitty._navigation.BaseFragment
 import ru.wtfdev.kitty.utils.CloseGestureListener
 
 class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFragment() {

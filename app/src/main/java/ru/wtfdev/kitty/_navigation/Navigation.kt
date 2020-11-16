@@ -10,8 +10,6 @@ import ru.wtfdev.kitty.detail.DetailsView
 import ru.wtfdev.kitty.detail.DetailsViewModel
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.list.ImageListViewModel
-import ru.wtfdev.kitty.utils.BaseFragment
-import ru.wtfdev.kitty.utils.IBaseFragment
 
 
 //TODO Need to migrate this to Dagger later

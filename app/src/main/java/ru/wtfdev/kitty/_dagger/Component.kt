@@ -3,8 +3,11 @@ package ru.wtfdev.kitty._dagger
 import dagger.Component
 import ru.wtfdev.kitty.DialogActivity
 import ru.wtfdev.kitty.MainActivity
+import ru.wtfdev.kitty._models.Network
 import ru.wtfdev.kitty._models.repo.ImageRepository
 import ru.wtfdev.kitty._models.repo.LocalStorageRepository
+import ru.wtfdev.kitty._navigation.BaseActivty
+import ru.wtfdev.kitty._navigation.BaseFragment
 import ru.wtfdev.kitty.add_link.AddLinkRepository
 import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.add_link.AddLinkViewModel
@@ -14,9 +17,6 @@ import ru.wtfdev.kitty.detail.DetailsViewModel
 import ru.wtfdev.kitty.list.ImageListRepository
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.list.ImageListViewModel
-import ru.wtfdev.kitty.utils.BaseActivty
-import ru.wtfdev.kitty.utils.BaseFragment
-import ru.wtfdev.kitty.utils.Network
 
 @Component(modules = [Module::class])
 interface Component {

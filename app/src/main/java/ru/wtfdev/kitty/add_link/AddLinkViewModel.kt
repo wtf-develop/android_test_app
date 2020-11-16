@@ -12,8 +12,7 @@ import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
-import java.util.regex.Matcher
-import java.util.regex.Pattern
+import ru.wtfdev.kitty.utils.StringUtils
 import javax.inject.Inject
 
 
@@ -95,23 +94,7 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
     }
 
     override fun extractUrl(text: String?): String {
-        if (text == null) return ""
-        val containedUrls = mutableListOf<String>()
-        val urlRegex = "((https?|ftp):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)"
-        val pattern: Pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE)
-        val urlMatcher: Matcher = pattern.matcher(text)
-
-        while (urlMatcher.find()) {
-            val founded = text.substring(urlMatcher.start(0), urlMatcher.end(0)).trim()
-            val low = founded.toLowerCase()
-            if (low.endsWith(".jpg")) return founded
-            if (low.endsWith(".png")) return founded
-            if (low.endsWith(".jpeg")) return founded
-            containedUrls.add(founded)
-        }
-
-        if (containedUrls.size < 1) return ""
-        return containedUrls[0]
+        return StringUtils.extractImgUrl(text)
     }
 
     private val URL_KEY = "img_url"

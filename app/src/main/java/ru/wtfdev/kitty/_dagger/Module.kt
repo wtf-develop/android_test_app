@@ -4,6 +4,8 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import kotlinx.serialization.json.Json
+import ru.wtfdev.kitty._models.INetwork
+import ru.wtfdev.kitty._models.Network
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._models.repo.ImageRepository
@@ -15,9 +17,7 @@ import ru.wtfdev.kitty.detail.IDetailsRepository
 import ru.wtfdev.kitty.list.IImageListRepository
 import ru.wtfdev.kitty.list.ImageListRepository
 import ru.wtfdev.kitty.utils.AutoDisposable
-import ru.wtfdev.kitty.utils.INetwork
 import ru.wtfdev.kitty.utils.MyApp
-import ru.wtfdev.kitty.utils.Network
 
 @Module
 object Module {

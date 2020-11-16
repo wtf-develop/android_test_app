@@ -1,13 +1,10 @@
-package ru.wtfdev.kitty.utils
+package ru.wtfdev.kitty._navigation
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import ru.wtfdev.kitty._dagger.DaggerComponent
-import ru.wtfdev.kitty._navigation.INaviJump
-import ru.wtfdev.kitty._navigation.INavigation
-import ru.wtfdev.kitty._navigation.Navigation
 
 
 abstract class BaseActivty : AppCompatActivity(), INaviJump {
