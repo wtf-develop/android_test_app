@@ -6,8 +6,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/light_text_color</item>
-        <item name="fontFamily">sans-serif-light</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="fontFamily">@string/default_font</item>
+        <item name="android:fontFamily">@string/default_font</item>
         <item name="android:textColor">@color/dark_text_color</item>
     </style>
 
@@ -22,8 +22,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/light_text_color</item>
-        <item name="fontFamily">sans-serif-light</item>
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="fontFamily">@string/default_font</item>
+        <item name="android:fontFamily">@string/default_font</item>
         <item name="android:textColor">@color/dark_text_color</item>
     </style>
 

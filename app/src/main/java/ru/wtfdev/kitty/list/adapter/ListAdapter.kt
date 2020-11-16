@@ -41,7 +41,7 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
         holder.title.text = item.title
         holder.itemIndex = position
         holder.itemModel = item
-        viewModel.loadImageTo(holder.image, item.imageUrl)
+        viewModel.loadImageTo(holder.image, item.link)
     }
 
     override fun getItemCount(): Int {

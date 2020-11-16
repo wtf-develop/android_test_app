@@ -32,6 +32,7 @@ interface INavigation {
 //interface for routing fragments
 interface INaviJump {
     fun getNaviFragmentManager(): FragmentManager
+    fun finish()
 }
 
 //implementation for INavigation
@@ -72,7 +73,11 @@ class Navigation private constructor(val navigateAction: INaviJump) : INavigatio
     }
 
     override fun popBackStack() {
-        navigateAction.getNaviFragmentManager().popBackStack()
+        if (navigateAction.getNaviFragmentManager().backStackEntryCount == 0) {
+            navigateAction.finish()
+        } else {
+            navigateAction.getNaviFragmentManager().popBackStack()
+        }
     }
 
 

@@ -47,8 +47,7 @@ class DetailsView private constructor(val viewModel: IDetailsViewModel) : BaseFr
     override fun onDataBing() {
         viewModel.subscribeOnChange {
             detail_title.text = it.title
-            detail_desc.text = it.id
-            viewModel.loadImageTo(detail_image, it.imageUrl)
+            viewModel.loadImageTo(detail_image, it.link)
         }
     }
 

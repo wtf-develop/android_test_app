@@ -71,7 +71,7 @@ class Network private constructor() : INetwork {
         @GET("cats.php")
         fun loadList(@Header("Installation") uuid: String): Observable<List<ItemModel>>
 
-        @POST("new_cats.php")
+        @POST("new_cat.php")
         fun postImage(
             @Header("Installation") uuid: String,
             @Body obj: PostUrlObject
@@ -84,7 +84,7 @@ class Network private constructor() : INetwork {
 
     @kotlinx.serialization.ExperimentalSerializationApi
     val service = Retrofit.Builder()
-        .baseUrl("https://wtf-dev.ru/test/")
+        .baseUrl("https://wtf-dev.ru/kitty/") //http://192.168.178.22/kitty/
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(jsonConverter.asConverterFactory(MediaType.get("application/json; charset=utf-8")))
         .build()

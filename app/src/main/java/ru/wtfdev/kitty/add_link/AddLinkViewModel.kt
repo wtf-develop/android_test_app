@@ -9,6 +9,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty._models.data.ServerDone
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
@@ -21,7 +22,7 @@ interface IAddLinkViewModel {
     fun close()
     fun getUrlFromIntent(intent: Intent?): String
     fun loadImageTo(img: ImageView, url: String)
-    fun subscribeOnChange(callback: (data: Boolean) -> Unit)
+    fun subscribeOnChange(callback: (data: ServerDone) -> Unit)
     fun subscribeOnError(callback: (error: String) -> Unit)
     fun subscribeOnImageSuccess(callback: (b: Boolean) -> Unit)
     fun unsubscribeAll()
@@ -42,7 +43,7 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
         DaggerComponent.create().inject(this)
     }
 
-    private val data = BehaviorSubject.create<Boolean>()
+    private val data = BehaviorSubject.create<ServerDone>()
     private val error = PublishSubject.create<String>()
     private val imageSuccess = PublishSubject.create<Boolean>()
 
@@ -61,9 +62,11 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
             return
         }
         repository.postLinkToServer(successImageUrl, title, { result ->
-            if (result.status) {
-                data.onNext(true)
+            if (result.done.state) {
+                data.onNext(result.done)
                 navigation.popBackStack()
+            } else if(result.error.state){
+                error.onNext(result.error.message)
             } else {
                 error.onNext("Server error")
             }
@@ -141,7 +144,7 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
 
     }
 
-    override fun subscribeOnChange(callback: (data: Boolean) -> Unit) {
+    override fun subscribeOnChange(callback: (data: ServerDone) -> Unit) {
         autoDisposable.add(
             data.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {

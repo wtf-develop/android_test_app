@@ -3,6 +3,7 @@ package ru.wtfdev.kitty
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._navigation.BaseActivty

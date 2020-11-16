@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
+import android.widget.Toast
 import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_add_link.*
 import ru.wtfdev.kitty.R
@@ -25,7 +26,10 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
 
     override fun onDataBing() {
         viewModel.subscribeOnChange {
-            if (it) hideError()
+            if (it.state) {
+                hideError()
+                Toast.makeText(context,it.message,Toast.LENGTH_SHORT).show()
+            }
         }
         viewModel.subscribeOnError {
             showError(it)
