@@ -5,6 +5,6 @@
     <string name="add_link">Add link</string>
     <string name="add_link_view">Sending a new link</string>
     <string name="try_again">Try again</string>
-    <string name="share_url">Kitty Links</string>
+    <string name="share_url">Kitty URL</string>
 
 </resources>
