@@ -13,10 +13,12 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
+import androidx.core.view.GestureDetectorCompat
 import kotlinx.android.synthetic.main.fragment_add_link.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty.utils.BaseFragment
+import ru.wtfdev.kitty.utils.CloseGestureListener
 
 class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFragment() {
 
@@ -100,7 +102,11 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
         }
         linkUrl.setOnEditorActionListener(submitListener)
         linkTitle.setOnEditorActionListener(submitListener)
-
+        val mDetector =
+            GestureDetectorCompat(this.context, CloseGestureListener { viewModel.close() })
+        parentLay.setOnTouchListener { _, motionEvent ->
+            mDetector.onTouchEvent(motionEvent)
+        }
     }
 
     private fun showKeyboard() {
