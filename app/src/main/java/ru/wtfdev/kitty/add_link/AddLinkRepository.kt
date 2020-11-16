@@ -1,6 +1,7 @@
 package ru.wtfdev.kitty.add_link
 
 import ru.wtfdev.kitty._dagger.DaggerComponent
+import ru.wtfdev.kitty._models.data.PostUrlObject
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
 import ru.wtfdev.kitty.utils.INetwork
 import javax.inject.Inject
@@ -8,7 +9,7 @@ import javax.inject.Inject
 
 interface IAddLinkRepository {
     fun postLinkToServer(
-        url: String, callback: (data: ServerBaseResponse) -> Unit,
+        url: String, title: String, callback: (data: ServerBaseResponse) -> Unit,
         errorCallback: ((text: String) -> Unit)?
     )
 }
@@ -23,10 +24,12 @@ class AddLinkRepository : IAddLinkRepository {
     lateinit var network: INetwork
 
     override fun postLinkToServer(
-        url: String, callback: (data: ServerBaseResponse) -> Unit,
+        url: String,
+        title: String,
+        callback: (data: ServerBaseResponse) -> Unit,
         errorCallback: ((text: String) -> Unit)?
     ) {
-        network.postImageUrl(url, { response ->
+        network.postImageUrl(PostUrlObject(url, title), { response ->
             callback(response)
         }, { error ->
             errorCallback?.let { it(error) }

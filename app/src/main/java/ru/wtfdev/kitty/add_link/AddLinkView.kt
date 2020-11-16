@@ -10,6 +10,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import android.widget.TextView.OnEditorActionListener
 import kotlinx.android.synthetic.main.fragment_add_link.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._dagger.DaggerComponent
@@ -25,10 +28,14 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
         viewModel.subscribeOnError {
             showError(it)
         }
+        viewModel.subscribeOnImageSuccess {
+            if (it) showKeyboard()
+        }
     }
 
     override fun onDataUnBing() {
         viewModel.unsubscribeAll()
+        hideKeyboard()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +53,7 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
     val handler = Handler(Looper.getMainLooper())
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        hideKeyboard()
         val url = viewModel.getUrlFlow(
             activity?.intent,
             savedInstanceState,
@@ -56,7 +64,7 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
             viewModel.loadImageTo(imageUrl, url)
         }
         buttonUrl.setOnClickListener {
-            viewModel.saveLoadedImageUrl()
+            viewModel.saveLoadedImageUrl(linkTitle.text.toString())
         }
         close_fragment.setOnClickListener {
             viewModel.close()
@@ -74,11 +82,44 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
                 handler.removeCallbacksAndMessages(null)
                 handler.postDelayed(Runnable {
                     viewModel.loadImageTo(imageUrl, viewModel.extractUrl(linkUrl.text.toString()))
-                }, 1000)
+                }, 1500)
                 hideError()
             }
 
         })
+
+        val submitListener = OnEditorActionListener { _, actionId, _ ->
+            when (actionId) {
+                EditorInfo.IME_ACTION_DONE, EditorInfo.IME_ACTION_SEND, EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH -> {
+                    viewModel.saveLoadedImageUrl(linkTitle.text.toString())
+                    hideKeyboard()
+                    return@OnEditorActionListener true
+                }
+            }
+            false
+        }
+        linkUrl.setOnEditorActionListener(submitListener)
+        linkTitle.setOnEditorActionListener(submitListener)
+
+    }
+
+    private fun showKeyboard() {
+        if (linkTitle.hasFocus()) return
+        try {
+            linkTitle.requestFocus()
+            val imm =
+                activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+            imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+            linkTitle.requestFocus()
+        } catch (e: Exception) {
+        }
+    }
+
+    private fun hideKeyboard() {
+        parentLay.requestFocus()
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(parentLay.windowToken, 0)
+        parentLay.requestFocus()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

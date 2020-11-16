@@ -17,6 +17,7 @@ interface IDetailsViewModel {
     fun subscribeOnChange(callback: (data: ItemModel) -> Unit)
     fun unsubscribeAll()
     fun loadImageTo(img: ImageView, url: String)
+    fun close()
 }
 
 //Implementation
@@ -56,6 +57,10 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
 
     override fun loadImageTo(img: ImageView, url: String) {
         imageRepo.loadImageTo(img, url, 1000)
+    }
+
+    override fun close() {
+        navigation.popBackStack()
     }
 
 

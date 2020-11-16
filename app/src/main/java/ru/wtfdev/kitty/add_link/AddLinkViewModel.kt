@@ -18,12 +18,13 @@ import javax.inject.Inject
 
 
 interface IAddLinkViewModel {
-    fun saveLoadedImageUrl()
+    fun saveLoadedImageUrl(title: String)
     fun close()
     fun getUrlFromIntent(intent: Intent?): String
     fun loadImageTo(img: ImageView, url: String)
     fun subscribeOnChange(callback: (data: Boolean) -> Unit)
     fun subscribeOnError(callback: (error: String) -> Unit)
+    fun subscribeOnImageSuccess(callback: (b: Boolean) -> Unit)
     fun unsubscribeAll()
     fun extractUrl(text: String?): String
     fun getUrlFlow(
@@ -44,6 +45,7 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
 
     private val data = BehaviorSubject.create<Boolean>()
     private val error = PublishSubject.create<String>()
+    private val imageSuccess = PublishSubject.create<Boolean>()
 
     @Inject
     lateinit var repository: IAddLinkRepository
@@ -54,12 +56,12 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
     @Inject
     lateinit var imageRepo: IImageRepository
 
-    override fun saveLoadedImageUrl() {
+    override fun saveLoadedImageUrl(title: String) {
         if ((!canSaveImage2Server) || (successImageUrl.isEmpty())) {
             error.onNext("Wrong image")
             return
         }
-        repository.postLinkToServer(successImageUrl, { result ->
+        repository.postLinkToServer(successImageUrl, title, { result ->
             if (result.status) {
                 data.onNext(true)
                 navigation.popBackStack()
@@ -150,6 +152,7 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
         imageRepo.loadImageTo(img, url, 300, success = { url ->
             canSaveImage2Server = true
             successImageUrl = url ?: ""
+            imageSuccess.onNext(true)
         })
 
 
@@ -167,6 +170,15 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
     override fun subscribeOnError(callback: (error: String) -> Unit) {
         autoDisposable.add(
             error.observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    callback(it)
+                }
+        )
+    }
+
+    override fun subscribeOnImageSuccess(callback: (b: Boolean) -> Unit) {
+        autoDisposable.add(
+            imageSuccess.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback(it)
                 }

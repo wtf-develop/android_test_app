@@ -40,7 +40,7 @@ interface INetwork {
     )
 
     fun postImageUrl(
-        url: String,
+        data: PostUrlObject,
         onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)? = null
     )
@@ -146,10 +146,10 @@ class Network private constructor() : INetwork {
     }
 
     override fun postImageUrl(
-        url: String, onData: (json: ServerBaseResponse) -> Unit,
+        data: PostUrlObject, onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.postImage(localRepo.getUUID(), PostUrlObject(url)).subscribe({ response ->
+        service.postImage(localRepo.getUUID(), data).subscribe({ response ->
             onData(response)
         }, { error ->
             onError?.let { it(error.toString()) }

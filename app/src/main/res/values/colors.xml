@@ -9,6 +9,7 @@
     <color name="base_secondary2">#47487C</color>
     <color name="base_backgroung">#b7b8fC</color>
     <color name="light_text_color">#eeeeee</color>
+    <color name="secondary_text_color">#cccccc</color>
     <color name="dark_text_color">#333333</color>
     <color name="yellow_text_color">#ffbf00</color>
 </resources>
