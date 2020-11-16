@@ -1,6 +1,5 @@
 package ru.wtfdev.kitty.add_link
 
-import android.content.ClipDescription.MIMETYPE_TEXT_PLAIN
 import android.content.ClipboardManager
 import android.content.Context
 import android.os.Bundle
@@ -18,15 +17,13 @@ import ru.wtfdev.kitty.utils.BaseFragment
 
 class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFragment() {
 
-    private val URL_KEY = "img_url"
+
     override fun onDataBing() {
         viewModel.subscribeOnChange {
             if (it) hideError()
         }
         viewModel.subscribeOnError {
-            showError(it) {
-                viewModel.save(linkUrl.text.toString())
-            }
+            showError(it)
         }
     }
 
@@ -49,23 +46,17 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
     val handler = Handler(Looper.getMainLooper())
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val urlIntent = viewModel.getUrlFromIntent(activity?.intent)
-        var url = savedInstanceState?.getString(URL_KEY, urlIntent) ?: urlIntent
-        if(url.isEmpty()){//clipboard
-            var clipboard = activity?.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-            clipboard?.let { clip->
-                if(clip.hasPrimaryClip()&&(true==clip.primaryClipDescription?.hasMimeType(MIMETYPE_TEXT_PLAIN))){
-                    val item = clip.primaryClip?.getItemAt(0)
-                    url = viewModel.extractUrl(item?.text?.toString())
-                }
-            }
-        }
-        linkUrl.setText(viewModel.extractUrl(url))
+        val url = viewModel.getUrlFlow(
+            activity?.intent,
+            savedInstanceState,
+            activity?.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+        )
+        linkUrl.setText(url)
         if (url.isNotEmpty()) {
             viewModel.loadImageTo(imageUrl, url)
         }
         buttonUrl.setOnClickListener {
-            viewModel.save(viewModel.extractUrl(linkUrl.text.toString()))
+            viewModel.saveLoadedImageUrl()
         }
         close_fragment.setOnClickListener {
             viewModel.close()
@@ -84,13 +75,14 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
                 handler.postDelayed(Runnable {
                     viewModel.loadImageTo(imageUrl, viewModel.extractUrl(linkUrl.text.toString()))
                 }, 1000)
+                hideError()
             }
 
         })
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        outState.putString(URL_KEY, linkUrl.text.toString())
+        viewModel.saveUrlState(outState, linkUrl.text.toString())
         super.onSaveInstanceState(outState)
     }
 

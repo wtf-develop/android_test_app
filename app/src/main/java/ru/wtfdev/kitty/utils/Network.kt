@@ -1,7 +1,12 @@
 package ru.wtfdev.kitty.utils
 
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.serialization.json.Json
@@ -40,7 +45,13 @@ interface INetwork {
         onError: ((text: String) -> Unit)? = null
     )
 
-    fun setImageMainThread(img: ImageView, url: String, maxSize: Int)
+    fun setImageMainThread(
+        img: ImageView,
+        url: String,
+        maxSize: Int,
+        success: ((url: String?) -> Unit)? = null,
+        error: (() -> Unit)? = null
+    )
 
 }
 
@@ -92,10 +103,43 @@ class Network private constructor() : INetwork {
         })
     }
 
-    override fun setImageMainThread(img: ImageView, url: String, maxSize: Int) {
+    //todo need to catch redirection urls
+    override fun setImageMainThread(
+        img: ImageView,
+        url: String,
+        maxSize: Int,
+        success: ((url: String?) -> Unit)?,
+        error: (() -> Unit)?
+    ) {
+
         Glide
             .with(img.context)
             .load(url)
+            .override(maxSize, maxSize)
+            .listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    error?.let { it() }
+                    return false
+                }
+
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    success?.let {
+                        it(model as? String)
+                    }
+                    return false
+                }
+            })
             .placeholder(R.drawable.loading_img)
             .error(android.R.drawable.ic_delete)
             .into(img)

@@ -77,14 +77,15 @@ open abstract class BaseFragment : Fragment(), IBaseFragment {
     }
 
     fun showError(text: String, retry: (() -> Unit)? = null) {
-        snackbar.setText(text.takeLast(20))
         if (retry == null) {
+            snackbar.setText(text.takeLast(30))
             snackbar.setAction("", null)
             snackbar.duration = Snackbar.LENGTH_LONG
         } else {
+            snackbar.setText(text.takeLast(20))
             snackbar.setAction(R.string.try_again) {
                 hideError()
-                retry?.let { it() }
+                retry.let { it() }
             }
             snackbar.duration = Snackbar.LENGTH_INDEFINITE
         }

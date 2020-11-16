@@ -9,7 +9,13 @@ import javax.inject.Inject
 //Interface for loading images
 //Interface for loading images
 interface IImageRepository {
-    fun loadImageTo(img: ImageView, url: String, size: Int)
+    fun loadImageTo(
+        img: ImageView,
+        url: String,
+        size: Int,
+        success: ((url: String?) -> Unit)? = null,
+        error: (() -> Unit)? = null
+    )
 }
 
 //Implementation for loading images
@@ -22,8 +28,14 @@ class ImageRepository private constructor() : IImageRepository {
 
     @Inject
     lateinit var network: INetwork
-    override fun loadImageTo(img: ImageView, url: String, size: Int) {
-        network.setImageMainThread(img, url, size)
+    override fun loadImageTo(
+        img: ImageView,
+        url: String,
+        size: Int,
+        success: ((url: String?) -> Unit)?,
+        error: (() -> Unit)?
+    ) {
+        network.setImageMainThread(img, url, size, success, error)
     }
 
     companion object {

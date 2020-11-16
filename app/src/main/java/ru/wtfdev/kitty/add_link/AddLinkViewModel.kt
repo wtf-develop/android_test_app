@@ -1,6 +1,9 @@
 package ru.wtfdev.kitty.add_link
 
+import android.content.ClipDescription
+import android.content.ClipboardManager
 import android.content.Intent
+import android.os.Bundle
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -15,7 +18,7 @@ import javax.inject.Inject
 
 
 interface IAddLinkViewModel {
-    fun save(url: String)
+    fun saveLoadedImageUrl()
     fun close()
     fun getUrlFromIntent(intent: Intent?): String
     fun loadImageTo(img: ImageView, url: String)
@@ -23,6 +26,13 @@ interface IAddLinkViewModel {
     fun subscribeOnError(callback: (error: String) -> Unit)
     fun unsubscribeAll()
     fun extractUrl(text: String?): String
+    fun getUrlFlow(
+        intent: Intent?,
+        savedInstanceState: Bundle?,
+        clipboard: ClipboardManager?
+    ): String
+
+    fun saveUrlState(outState: Bundle, url: String): Bundle
 
 }
 
@@ -44,8 +54,12 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
     @Inject
     lateinit var imageRepo: IImageRepository
 
-    override fun save(url: String) {
-        repository.postLinkToServer(url, { result ->
+    override fun saveLoadedImageUrl() {
+        if ((!canSaveImage2Server) || (successImageUrl.isEmpty())) {
+            error.onNext("Wrong image")
+            return
+        }
+        repository.postLinkToServer(successImageUrl, { result ->
             if (result.status) {
                 data.onNext(true)
                 navigation.popBackStack()
@@ -82,8 +96,8 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
         if (text == null) return ""
         val containedUrls = mutableListOf<String>()
         val urlRegex = "((https?|ftp):((//)|(\\\\))+[\\w\\d:#@%/;$()~_?\\+-=\\\\\\.&]*)"
-        val pattern: Pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE);
-        val urlMatcher: Matcher = pattern.matcher(text);
+        val pattern: Pattern = Pattern.compile(urlRegex, Pattern.CASE_INSENSITIVE)
+        val urlMatcher: Matcher = pattern.matcher(text)
 
         while (urlMatcher.find()) {
             val founded = text.substring(urlMatcher.start(0), urlMatcher.end(0)).trim()
@@ -98,8 +112,47 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
         return containedUrls[0]
     }
 
+    private val URL_KEY = "img_url"
+    override fun getUrlFlow(
+        intent: Intent?,
+        savedInstanceState: Bundle?,
+        clipboard: ClipboardManager?
+    ): String {
+        var url = savedInstanceState?.getString(URL_KEY, "") ?: ""
+        if (url.isEmpty()) {
+            url = getUrlFromIntent(intent)
+        }
+        if (url.isEmpty()) {//clipboard
+            clipboard?.let { clip ->
+                if (clip.hasPrimaryClip() && (true == clip.primaryClipDescription?.hasMimeType(
+                        ClipDescription.MIMETYPE_TEXT_PLAIN
+                    ))
+                ) {
+                    val item = clip.primaryClip?.getItemAt(0)
+                    url = extractUrl(item?.text?.toString())
+                }
+            }
+        }
+        return extractUrl(url)
+    }
+
+    override fun saveUrlState(outState: Bundle, url: String): Bundle {
+        outState.putString(URL_KEY, extractUrl(url))
+        return outState
+    }
+
+
+    private var canSaveImage2Server = false
+    private var successImageUrl: String = ""
     override fun loadImageTo(img: ImageView, url: String) {
-        imageRepo.loadImageTo(img, url, 300)
+        canSaveImage2Server = false
+        successImageUrl = ""
+        imageRepo.loadImageTo(img, url, 300, success = { url ->
+            canSaveImage2Server = true
+            successImageUrl = url ?: ""
+        })
+
+
     }
 
     override fun subscribeOnChange(callback: (data: Boolean) -> Unit) {
