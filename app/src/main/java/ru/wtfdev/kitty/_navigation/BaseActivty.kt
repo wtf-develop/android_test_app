@@ -23,6 +23,7 @@ abstract class BaseActivty : AppCompatActivity(), INaviJump {
             navigation.moveTo(startFragment, false).apply {
                 this?.setIsForegroung(true)
             }
+            title = getString(navigation.getTitle(startFragment))
         }
 
         //need to call onBind() and onUnBind() after changing BackStack in Fragments
