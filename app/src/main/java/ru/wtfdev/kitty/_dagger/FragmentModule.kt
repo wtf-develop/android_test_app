@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.android.scopes.FragmentScoped
 import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.repo.IImageRepository
@@ -27,10 +28,6 @@ import ru.wtfdev.kitty.utils.AutoDisposable
 @InstallIn(FragmentComponent::class)
 class FragmentModule {
 
-
-    @Provides
-    @FragmentScoped
-    fun getListRepo(network: INetwork): IImageListRepository = ImageListRepository(network)
 
     @Provides
     @FragmentScoped
@@ -74,5 +71,6 @@ class FragmentModule {
         autoDisposable: AutoDisposable,
         imageRepo: IImageRepository
     ): IImageListViewModel = ImageListViewModel(navigation, repository, autoDisposable, imageRepo)
+
 
 }

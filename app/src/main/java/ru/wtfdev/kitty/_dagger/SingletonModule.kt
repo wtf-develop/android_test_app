@@ -5,6 +5,7 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.INetwork
@@ -13,6 +14,8 @@ import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._models.repo.ImageRepository
 import ru.wtfdev.kitty._models.repo.LocalStorageRepository
+import ru.wtfdev.kitty.list.IImageListRepository
+import ru.wtfdev.kitty.list.ImageListRepository
 import javax.inject.Singleton
 
 @Module
@@ -35,6 +38,11 @@ class SingletonModule {
     @Provides
     @Singleton
     fun imageRepo(net: INetwork): IImageRepository = ImageRepository(net)
+
+
+    @Provides
+    @Singleton
+    fun getListRepo(network: INetwork): IImageListRepository = ImageListRepository(network)
 
 
     @Provides
