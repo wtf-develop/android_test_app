@@ -80,7 +80,7 @@ class Navigation(val navigateAction: INaviJump) : INavigation {
 
     override fun getTitle(tag: String): Int {
         when (tag) {
-            ImageListView::class.qualifiedName -> return R.string.app_name
+            ImageListView::class.qualifiedName -> return R.string.main_title
             DetailsView::class.qualifiedName -> return R.string.details
             AddLinkView::class.qualifiedName -> return R.string.add_link_view
         }

@@ -6,6 +6,7 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
+import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
 
@@ -25,7 +26,8 @@ class ImageListViewModel(
     val navigation: INavigation,
     val repository: IImageListRepository,
     val autoDisposable: AutoDisposable,
-    val imageRepo: IImageRepository
+    val imageRepo: IImageRepository,
+    val storage: ILocalStorageRepository
 ) : //ViewModel(),
     IImageListViewModel {
 
@@ -34,11 +36,16 @@ class ImageListViewModel(
     private val error = PublishSubject.create<String>()
 
     override fun updateList(force: Boolean) {
-        repository.fetchData({ arr ->
-            data.onNext(arr)
-        }, { text ->
-            error.onNext(text)
-        })
+        val temp = storage.getDailyList()
+        if ((temp == null) || (temp?.isEmpty()) || force) {
+            repository.fetchData({ arr ->
+                data.onNext(arr)
+            }, { text ->
+                error.onNext(text)
+            })
+        } else {
+            data.onNext(temp)
+        }
     }
 
     override fun subscribeOnChange(callback: (data: List<ItemModel>) -> Unit) {

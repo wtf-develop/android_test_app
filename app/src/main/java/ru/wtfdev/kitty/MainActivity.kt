@@ -1,5 +1,7 @@
 package ru.wtfdev.kitty
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -42,6 +44,13 @@ class MainActivity : BaseActivty() {
         val id = item.itemId
         if (id == R.id.menu_item_add) {
             navigation.moveTo(AddLinkView::class.qualifiedName)
+        } else if (id == R.id.menu_sources) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://github.com/wtf-develop/android_test_app")
+            try {
+                startActivity(intent)
+            } catch (_: Exception) {
+            }
         }
         return true
     }

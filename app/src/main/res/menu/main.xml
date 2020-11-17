@@ -9,4 +9,9 @@
         android:title="@string/add_link"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/menu_sources"
+        android:title="@string/sources"
+        app:showAsAction="never" />
+
 </menu>

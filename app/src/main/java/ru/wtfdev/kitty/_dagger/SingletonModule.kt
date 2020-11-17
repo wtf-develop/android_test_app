@@ -5,7 +5,6 @@ import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.scopes.ActivityScoped
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.INetwork
@@ -29,7 +28,8 @@ class SingletonModule {
 
     @Provides
     @Singleton
-    fun getLocalStorage(ctx: Context): ILocalStorageRepository = LocalStorageRepository(ctx)
+    fun getLocalStorage(ctx: Context, parser: Json): ILocalStorageRepository =
+        LocalStorageRepository(ctx, parser)
 
     @Provides
     @Singleton
@@ -42,7 +42,8 @@ class SingletonModule {
 
     @Provides
     @Singleton
-    fun getListRepo(network: INetwork): IImageListRepository = ImageListRepository(network)
+    fun getListRepo(network: INetwork, storage: ILocalStorageRepository): IImageListRepository =
+        ImageListRepository(network, storage)
 
 
     @Provides

@@ -1,7 +1,7 @@
 <resources>
     <string name="default_font" translatable="false">sans-serif-light</string>
-
     <string name="app_name">Kitty</string>
+    <string name="main_title">Daily Kitty List</string>
     <string name="details">More about kitty</string>
     <string name="error">Error</string>
     <string name="add_link">Add link</string>
@@ -9,5 +9,5 @@
     <string name="try_again">Try again</string>
     <string name="share_url">Kitty URL</string>
     <string name="image_title">Kitty name</string>
-
+    <string name="sources">Sources on GitHub</string>
 </resources>
