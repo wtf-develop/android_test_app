@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._dagger.DaggerComponent
 
 
 //Interface for Navigation object
@@ -22,7 +22,9 @@ interface IBaseFragment {
 //Fragment implementation
 //Fragment implementation
 //Fragment implementation
-open abstract class BaseFragment : Fragment(), IBaseFragment {
+
+@AndroidEntryPoint
+abstract class BaseFragment : Fragment(), IBaseFragment {
     var subscribeInited = false
     var startedOnce = false
     private var foreground = false
@@ -53,7 +55,6 @@ open abstract class BaseFragment : Fragment(), IBaseFragment {
     override fun onCreate(savedInstanceState: Bundle?) {
         foreground = savedInstanceState?.getBoolean("foreground", foreground) ?: foreground
         super.onCreate(savedInstanceState)
-        DaggerComponent.create().inject(this)
     }
 
 

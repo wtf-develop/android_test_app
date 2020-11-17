@@ -4,19 +4,21 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import ru.wtfdev.kitty._dagger.DaggerComponent
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
+@AndroidEntryPoint
 abstract class BaseActivty : AppCompatActivity(), INaviJump {
 
     abstract var startFragment: String
 
+
+    @Inject
     lateinit var navigation: INavigation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerComponent.create().inject(this)
-        navigation = Navigation.getInstance(this)
         if (savedInstanceState == null) {
             navigation.moveTo(startFragment, false).apply {
                 this?.setIsForegroung(true)

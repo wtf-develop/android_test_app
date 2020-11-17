@@ -18,12 +18,10 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.data.PostUrlObject
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
-import javax.inject.Inject
 
 
 /**
@@ -59,13 +57,7 @@ interface INetwork {
 //Implementation
 //Implementation
 //Implementation
-class Network private constructor() : INetwork {
-    init {
-        DaggerComponent.create().inject(this)
-    }
-
-    @Inject
-    lateinit var localRepo: ILocalStorageRepository
+class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) : INetwork {
 
     interface APIService {
         @GET("cats.php")
@@ -78,10 +70,6 @@ class Network private constructor() : INetwork {
         ): Observable<ServerBaseResponse>
     }
 
-
-    @Inject
-    lateinit var jsonConverter: Json
-
     @kotlinx.serialization.ExperimentalSerializationApi
     val service = Retrofit.Builder()
         .baseUrl("https://wtf-dev.ru/kitty/") //http://192.168.178.22/kitty/
@@ -90,6 +78,7 @@ class Network private constructor() : INetwork {
         .build()
         .create(APIService::class.java)
 
+    @kotlinx.serialization.ExperimentalSerializationApi
     override fun getJsonArray(
         onData: (json: List<ItemModel>) -> Unit,
         onError: ((text: String) -> Unit)?
@@ -145,6 +134,7 @@ class Network private constructor() : INetwork {
             .into(img)
     }
 
+    @kotlinx.serialization.ExperimentalSerializationApi
     override fun postImageUrl(
         data: PostUrlObject, onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)?
@@ -154,11 +144,5 @@ class Network private constructor() : INetwork {
         }, { error ->
             onError?.let { it(error.toString()) }
         })
-    }
-
-
-    companion object {
-        val single = Network()
-        fun getInstance(): INetwork = single
     }
 }

@@ -4,12 +4,10 @@ import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
-import javax.inject.Inject
 
 //Interface
 interface IImageListViewModel {
@@ -23,21 +21,13 @@ interface IImageListViewModel {
 
 
 //Implementation
-class ImageListViewModel private constructor(val navigation: INavigation) : //ViewModel(),
+class ImageListViewModel(
+    val navigation: INavigation,
+    val repository: IImageListRepository,
+    val autoDisposable: AutoDisposable,
+    val imageRepo: IImageRepository
+) : //ViewModel(),
     IImageListViewModel {
-
-    init {
-        DaggerComponent.create().inject(this)
-    }
-
-    @Inject
-    lateinit var repository: IImageListRepository
-
-    @Inject
-    lateinit var autoDisposable: AutoDisposable
-
-    @Inject
-    lateinit var imageRepo: IImageRepository
 
 
     private val data = BehaviorSubject.create<List<ItemModel>>()
@@ -81,9 +71,4 @@ class ImageListViewModel private constructor(val navigation: INavigation) : //Vi
         imageRepo.loadImageTo(img, url, 400)
     }
 
-
-    companion object {
-        fun getInstance(navi: INavigation): IImageListViewModel =
-            ImageListViewModel(navi)
-    }
 }

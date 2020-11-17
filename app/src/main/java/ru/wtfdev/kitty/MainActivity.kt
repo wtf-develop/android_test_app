@@ -3,9 +3,7 @@ package ru.wtfdev.kitty
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._navigation.BaseActivty
 import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.list.ImageListView
@@ -24,9 +22,8 @@ class MainActivity : BaseActivty() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        DaggerComponent.create().inject(this)
         setSupportActionBar(my_toolbar)
-        val sharingShortcutsManager = SharingShortcutsManager().also {
+        SharingShortcutsManager().also {
             it.removeAllDirectShareTargets(this)
             it.pushDirectShareTargets(this)
         }

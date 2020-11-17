@@ -25,6 +25,7 @@
         android:scaleType="fitXY"
         android:src="@drawable/img_foreground_black"
         app:srcCompat="@drawable/img_foreground_black" />
+
     <TextView
         android:id="@+id/list_title"
         android:layout_width="match_parent"

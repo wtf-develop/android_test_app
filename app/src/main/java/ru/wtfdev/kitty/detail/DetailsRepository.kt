@@ -1,6 +1,6 @@
 package ru.wtfdev.kitty.detail
 
-import ru.wtfdev.kitty._dagger.DaggerComponent
+
 import ru.wtfdev.kitty._models.data.ItemModel
 
 //Interface
@@ -14,9 +14,6 @@ interface IDetailsRepository {
 //Implementation
 class DetailsRepository : IDetailsRepository {
 
-    init {
-        DaggerComponent.create().inject(this)
-    }
 
     override fun fetchData(
         dataCallback: (data: ItemModel) -> Unit,
@@ -27,9 +24,6 @@ class DetailsRepository : IDetailsRepository {
 
 
     companion object {
-        lateinit var itemData: ItemModel
-        fun getInstance(): IDetailsRepository {
-            return DetailsRepository()
-        }
+        lateinit var itemData: ItemModel //Yes-yes, i know!!! Later!
     }
 }

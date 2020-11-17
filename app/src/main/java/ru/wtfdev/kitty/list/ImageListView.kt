@@ -7,18 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_image_list.*
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._navigation.BaseFragment
 import ru.wtfdev.kitty.list.adapter.ListAdapter
+import javax.inject.Inject
 
-class ImageListView private constructor(val viewModel: IImageListViewModel) : BaseFragment() {
+@AndroidEntryPoint
+class ImageListView : BaseFragment() {
     private var scroll = 0
+
+    @Inject
+    lateinit var viewModel: IImageListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerComponent.create().inject(this)
+
     }
 
     override fun onCreateView(
@@ -102,6 +107,6 @@ class ImageListView private constructor(val viewModel: IImageListViewModel) : Ba
     }
 
     companion object {
-        fun newInstance(vmodel: IImageListViewModel) = ImageListView(vmodel)
+        fun newInstance() = ImageListView()
     }
 }

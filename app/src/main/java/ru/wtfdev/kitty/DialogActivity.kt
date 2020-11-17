@@ -2,7 +2,6 @@ package ru.wtfdev.kitty
 
 import android.content.Intent
 import android.os.Bundle
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._navigation.BaseActivty
 import ru.wtfdev.kitty.add_link.AddLinkView
 
@@ -25,6 +24,5 @@ class DialogActivity : BaseActivty() {
         }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dialog)
-        DaggerComponent.create().inject(this)
     }
 }

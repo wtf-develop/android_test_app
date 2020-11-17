@@ -15,20 +15,25 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.view.GestureDetectorCompat
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_link.*
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._navigation.BaseFragment
 import ru.wtfdev.kitty.utils.CloseGestureListener
+import javax.inject.Inject
 
-class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFragment() {
 
+@AndroidEntryPoint
+class AddLinkView private constructor() : BaseFragment() {
+
+    @Inject
+    lateinit var viewModel: IAddLinkViewModel
 
     override fun onDataBing() {
         viewModel.subscribeOnChange {
             if (it.state) {
                 hideError()
-                Toast.makeText(context,it.message,Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, it.message, Toast.LENGTH_SHORT).show()
             }
         }
         viewModel.subscribeOnError {
@@ -46,7 +51,6 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerComponent.create().inject(this)
     }
 
     override fun onCreateView(
@@ -139,6 +143,6 @@ class AddLinkView private constructor(val viewModel: IAddLinkViewModel) : BaseFr
 
 
     companion object {
-        fun newInstance(vmodel: IAddLinkViewModel) = AddLinkView(vmodel)
+        fun newInstance() = AddLinkView()
     }
 }

@@ -4,12 +4,9 @@ import androidx.fragment.app.FragmentManager
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty.add_link.AddLinkView
-import ru.wtfdev.kitty.add_link.AddLinkViewModel
 import ru.wtfdev.kitty.detail.DetailsRepository
 import ru.wtfdev.kitty.detail.DetailsView
-import ru.wtfdev.kitty.detail.DetailsViewModel
 import ru.wtfdev.kitty.list.ImageListView
-import ru.wtfdev.kitty.list.ImageListViewModel
 
 
 //TODO Need to migrate this to Dagger later
@@ -36,7 +33,7 @@ interface INaviJump {
 }
 
 //implementation for INavigation
-class Navigation private constructor(val navigateAction: INaviJump) : INavigation {
+class Navigation(val navigateAction: INaviJump) : INavigation {
 
     override fun toList() {
         moveTo(ImageListView::class.qualifiedName ?: "", false)
@@ -52,13 +49,13 @@ class Navigation private constructor(val navigateAction: INaviJump) : INavigatio
         var fragment: BaseFragment?
         when (tag) {
             ImageListView::class.qualifiedName -> fragment =
-                ImageListView.newInstance(ImageListViewModel.getInstance(this))
+                ImageListView.newInstance()
 
             DetailsView::class.qualifiedName -> fragment =
-                DetailsView.newInstance(DetailsViewModel.getInstance(this))
+                DetailsView.newInstance()
 
             AddLinkView::class.qualifiedName -> fragment =
-                AddLinkView.newInstance(AddLinkViewModel.getInstance(this))
+                AddLinkView.newInstance()
 
             else -> return null
         }
@@ -88,9 +85,5 @@ class Navigation private constructor(val navigateAction: INaviJump) : INavigatio
             AddLinkView::class.qualifiedName -> return R.string.add_link_view
         }
         return R.string.error
-    }
-
-    companion object {
-        fun getInstance(myNavi: INaviJump): INavigation = Navigation(myNavi)
     }
 }

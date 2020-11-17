@@ -3,12 +3,10 @@ package ru.wtfdev.kitty.detail
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
-import javax.inject.Inject
 
 
 //Interface
@@ -21,15 +19,12 @@ interface IDetailsViewModel {
 }
 
 //Implementation
-class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
-    @Inject
-    lateinit var repository: IDetailsRepository
-
-    @Inject
-    lateinit var autoDisposable: AutoDisposable
-
-    @Inject
-    lateinit var imageRepo: IImageRepository
+class DetailsViewModel(
+    val navigation: INavigation,
+    val repository: IDetailsRepository,
+    val autoDisposable: AutoDisposable,
+    val imageRepo: IImageRepository
+) : IDetailsViewModel {
 
 
     private val data = BehaviorSubject.create<ItemModel>()
@@ -63,15 +58,4 @@ class DetailsViewModel(val navigation: INavigation) : IDetailsViewModel {
         navigation.popBackStack()
     }
 
-
-    init {
-        DaggerComponent.create().inject(this)
-    }
-
-
-    companion object {
-        fun getInstance(navigationObj: INavigation): IDetailsViewModel {
-            return DetailsViewModel(navigationObj)
-        }
-    }
 }

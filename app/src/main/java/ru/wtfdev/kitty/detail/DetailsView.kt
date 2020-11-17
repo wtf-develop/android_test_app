@@ -5,20 +5,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GestureDetectorCompat
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_details.*
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._dagger.DaggerComponent
+
 import ru.wtfdev.kitty._navigation.BaseFragment
 import ru.wtfdev.kitty.utils.CloseGestureListener
+import javax.inject.Inject
 
 
-class DetailsView private constructor(val viewModel: IDetailsViewModel) : BaseFragment() {
+@AndroidEntryPoint
+class DetailsView : BaseFragment() {
     private val IMAGE_ID = "imageid"
     private var image_id: String? = null
 
+
+    @Inject
+    lateinit var viewModel: IDetailsViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerComponent.create().inject(this)
         arguments?.let {
             image_id = it.getString(IMAGE_ID)
         }
@@ -56,7 +62,7 @@ class DetailsView private constructor(val viewModel: IDetailsViewModel) : BaseFr
     }
 
     companion object {
-        fun newInstance(vmodel: IDetailsViewModel) = DetailsView(vmodel)
+        fun newInstance() = DetailsView()
     }
 
 }

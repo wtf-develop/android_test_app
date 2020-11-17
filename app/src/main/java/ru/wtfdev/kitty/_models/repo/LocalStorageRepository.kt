@@ -2,26 +2,18 @@ package ru.wtfdev.kitty._models.repo
 
 import android.content.Context
 import android.provider.Settings
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty.utils.StringUtils
-import javax.inject.Inject
 
 
 interface ILocalStorageRepository {
     fun getUUID(): String
 }
 
-class LocalStorageRepository private constructor() : ILocalStorageRepository {
+class LocalStorageRepository constructor(val ctx: Context) : ILocalStorageRepository {
 
     private val PREF_NAME = "local_storage"
     private val INSTALLATION_ID = "installation_id"
 
-    init {
-        DaggerComponent.create().inject(this)
-    }
-
-    @Inject
-    lateinit var ctx: Context
 
     private var uniqInstallId: String? = null
     override fun getUUID(): String {
@@ -53,9 +45,4 @@ class LocalStorageRepository private constructor() : ILocalStorageRepository {
         return uniqInstallId ?: ""
     }
 
-
-    companion object {
-        private val inst = LocalStorageRepository()
-        fun getInstance(): ILocalStorageRepository = inst
-    }
 }

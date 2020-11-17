@@ -1,10 +1,9 @@
 package ru.wtfdev.kitty.add_link
 
-import ru.wtfdev.kitty._dagger.DaggerComponent
+
 import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.data.PostUrlObject
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
-import javax.inject.Inject
 
 
 interface IAddLinkRepository {
@@ -15,13 +14,7 @@ interface IAddLinkRepository {
 }
 
 
-class AddLinkRepository : IAddLinkRepository {
-    init {
-        DaggerComponent.create().inject(this)
-    }
-
-    @Inject
-    lateinit var network: INetwork
+class AddLinkRepository(val network: INetwork) : IAddLinkRepository {
 
     override fun postLinkToServer(
         url: String,
@@ -37,9 +30,4 @@ class AddLinkRepository : IAddLinkRepository {
     }
 
 
-    companion object {
-        fun getInstance(): IAddLinkRepository {
-            return AddLinkRepository()
-        }
-    }
 }

@@ -8,13 +8,11 @@ import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
-import ru.wtfdev.kitty._dagger.DaggerComponent
 import ru.wtfdev.kitty._models.data.ServerDone
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.StringUtils
-import javax.inject.Inject
 
 
 interface IAddLinkViewModel {
@@ -38,23 +36,17 @@ interface IAddLinkViewModel {
 }
 
 
-class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
-    init {
-        DaggerComponent.create().inject(this)
-    }
+class AddLinkViewModel(
+    val navigation: INavigation,
+    val repository: IAddLinkRepository,
+    val autoDisposable: AutoDisposable,
+    val imageRepo: IImageRepository
+) : IAddLinkViewModel {
 
     private val data = BehaviorSubject.create<ServerDone>()
     private val error = PublishSubject.create<String>()
     private val imageSuccess = PublishSubject.create<Boolean>()
 
-    @Inject
-    lateinit var repository: IAddLinkRepository
-
-    @Inject
-    lateinit var autoDisposable: AutoDisposable
-
-    @Inject
-    lateinit var imageRepo: IImageRepository
 
     override fun saveLoadedImageUrl(title: String) {
         if ((!canSaveImage2Server) || (successImageUrl.isEmpty())) {
@@ -65,7 +57,7 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
             if (result.done.state) {
                 data.onNext(result.done)
                 navigation.popBackStack()
-            } else if(result.error.state){
+            } else if (result.error.state) {
                 error.onNext(result.error.message)
             } else {
                 error.onNext("Server error")
@@ -79,10 +71,10 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
         navigation.popBackStack()
     }
 
-    override fun getUrlFromIntent(intnt: Intent?): String {
-        intnt?.let { intent ->
-            if ("text/plain" == intent.type) {
-                return getTextUrl(intent)
+    override fun getUrlFromIntent(intent: Intent?): String {
+        intent?.let { data ->
+            if ("text/plain" == data.type) {
+                return getTextUrl(data)
             }
         }
         return ""
@@ -135,9 +127,9 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
     override fun loadImageTo(img: ImageView, url: String) {
         canSaveImage2Server = false
         successImageUrl = ""
-        imageRepo.loadImageTo(img, url, 300, success = { url ->
+        imageRepo.loadImageTo(img, url, 300, success = { lasturl ->
             canSaveImage2Server = true
-            successImageUrl = url ?: ""
+            successImageUrl = lasturl ?: ""
             imageSuccess.onNext(true)
         })
 
@@ -173,11 +165,5 @@ class AddLinkViewModel(val navigation: INavigation) : IAddLinkViewModel {
 
     override fun unsubscribeAll() {
         autoDisposable.disconnectAllListeners()
-    }
-
-
-    companion object {
-        fun getInstance(navi: INavigation): IAddLinkViewModel =
-            AddLinkViewModel(navi)
     }
 }
