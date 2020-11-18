@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Кошаки</string>
+    <string name="main_title">Ежедневные Котаны</string>
+    <string name="details">Кошан в объеме</string>
+    <string name="error">Ошибка</string>
+    <string name="add_link">Новая ссылка</string>
+    <string name="add_link_view">Отправка новой ссылки</string>
+    <string name="try_again">Еще раз</string>
+    <string name="share_url">Ссылка на котика</string>
+    <string name="image_title">Имя котика</string>
+    <string name="sources">Исходники на GitHub</string>
+    <string name="wait">Подождите</string>
+</resources>

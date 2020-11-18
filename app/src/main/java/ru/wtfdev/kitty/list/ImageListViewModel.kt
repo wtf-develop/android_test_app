@@ -18,6 +18,14 @@ interface IImageListViewModel {
     fun unsubscribeAll()
     fun selectItem(item: ItemModel)
     fun loadImageTo(img: ImageView, url: String)
+    fun like(id: Int): Boolean
+    fun dislike(id: Int): Boolean
+    fun abuse(id: Int): Boolean
+
+    fun checkLike(id: Int): Boolean
+    fun checkDislike(id: Int): Boolean
+    fun checkAbuse(id: Int): Boolean
+
 }
 
 
@@ -76,6 +84,36 @@ class ImageListViewModel(
 
     override fun loadImageTo(img: ImageView, url: String) {
         imageRepo.loadImageTo(img, url, 400)
+    }
+
+    override fun like(id: Int): Boolean {
+        val b = storage.toggleLike(id)
+        repository.like(id, if (b) 1 else -1, {})
+        return b
+    }
+
+    override fun dislike(id: Int): Boolean {
+        val b = storage.toggleDislike(id)
+        repository.dislike(id, if (b) 1 else -1, {})
+        return b
+    }
+
+    override fun abuse(id: Int): Boolean {
+        val b = storage.toggleAbuse(id)
+        repository.abuse(id, if (b) 1 else -1, {})
+        return b
+    }
+
+    override fun checkLike(id: Int): Boolean {
+        return storage.checkLike(id)
+    }
+
+    override fun checkDislike(id: Int): Boolean {
+        return storage.checkDislike(id)
+    }
+
+    override fun checkAbuse(id: Int): Boolean {
+        return storage.checkAbuse(id)
     }
 
 }

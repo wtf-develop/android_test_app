@@ -13,10 +13,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.data.PostUrlObject
@@ -51,6 +48,25 @@ interface INetwork {
         error: (() -> Unit)? = null
     )
 
+    fun like(
+        id: Int, value: Int,
+        onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)? = null
+    )
+
+    fun dislike(
+        id: Int, value: Int,
+        onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)? = null
+    )
+
+    fun abuse(
+        id: Int, value: Int,
+        onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)? = null
+    )
+
+
 }
 
 
@@ -68,7 +84,30 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
             @Header("Installation") uuid: String,
             @Body obj: PostUrlObject
         ): Observable<ServerBaseResponse>
+
+        @GET("like.php")
+        fun updateLike(
+            @Header("Installation") uuid: String,
+            @Query("id") id: Int,
+            @Query("val") change: Int
+        ): Observable<ServerBaseResponse>
+
+        @GET("dislike.php")
+        fun updateDislike(
+            @Header("Installation") uuid: String,
+            @Query("id") id: Int,
+            @Query("val") change: Int
+        ): Observable<ServerBaseResponse>
+
+        @GET("abuse.php")
+        fun updateAbuse(
+            @Header("Installation") uuid: String,
+            @Query("id") id: Int,
+            @Query("val") change: Int
+        ): Observable<ServerBaseResponse>
+
     }
+
 
     @kotlinx.serialization.ExperimentalSerializationApi
     val service = Retrofit.Builder()
@@ -132,6 +171,45 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
             .placeholder(R.drawable.loading_img)
             .error(android.R.drawable.ic_delete)
             .into(img)
+    }
+
+    override fun like(
+        id: Int,
+        value: Int,
+        onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)?
+    ) {
+        service.updateLike(localRepo.getUUID(), id, value).subscribe({ response ->
+            onData(response)
+        }, { error ->
+            onError?.let { it(error.toString()) }
+        })
+    }
+
+    override fun dislike(
+        id: Int,
+        value: Int,
+        onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)?
+    ) {
+        service.updateDislike(localRepo.getUUID(), id, value).subscribe({ response ->
+            onData(response)
+        }, { error ->
+            onError?.let { it(error.toString()) }
+        })
+    }
+
+    override fun abuse(
+        id: Int,
+        value: Int,
+        onData: (json: ServerBaseResponse) -> Unit,
+        onError: ((text: String) -> Unit)?
+    ) {
+        service.updateAbuse(localRepo.getUUID(), id, value).subscribe({ response ->
+            onData(response)
+        }, { error ->
+            onError?.let { it(error.toString()) }
+        })
     }
 
     @kotlinx.serialization.ExperimentalSerializationApi

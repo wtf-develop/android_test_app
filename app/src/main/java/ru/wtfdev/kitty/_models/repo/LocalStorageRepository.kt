@@ -6,12 +6,22 @@ import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty.utils.StringUtils
+import java.util.*
 
 
 interface ILocalStorageRepository {
     fun getUUID(): String
     fun storeDailyList(listdata: List<ItemModel>)
     fun getDailyList(): List<ItemModel>?
+
+    fun toggleLike(id: Int): Boolean
+    fun toggleDislike(id: Int): Boolean
+    fun toggleAbuse(id: Int): Boolean
+
+    fun checkLike(id: Int): Boolean
+    fun checkDislike(id: Int): Boolean
+    fun checkAbuse(id: Int): Boolean
+
 }
 
 class LocalStorageRepository constructor(val ctx: Context, val parser: Json) :
@@ -24,6 +34,11 @@ class LocalStorageRepository constructor(val ctx: Context, val parser: Json) :
     private val LIST_DATA = "daily_list_data"
     private val LIST_TIME = "daily_list_time"
     private val LIST_DELAY = 10 * 60 * 60 * 1000L
+
+
+    private val LIKES = "likes"
+    private val DISLIKES = "dislikes"
+    private val ABUSE = "abuse"
 
 
     private var uniqInstallId: String? = null
@@ -92,6 +107,86 @@ class LocalStorageRepository constructor(val ctx: Context, val parser: Json) :
         } else {
             return data
         }
+    }
+
+    private fun storeArray(key: String, list: List<Int>) {
+        val prefs = ctx.getSharedPreferences(key, Context.MODE_PRIVATE)
+        val str = StringBuilder()
+        for (i in list.takeLast(250).indices) {
+            str.append(list[i]).append(",")
+        }
+        prefs.edit().putString(key, str.toString()).apply()
+    }
+
+    private fun loadArray(key: String): MutableList<Int> {
+        val prefs = ctx.getSharedPreferences(key, Context.MODE_PRIVATE)
+        val savedString: String = prefs.getString(key, "") ?: ""
+        val st = StringTokenizer(savedString, ",")
+        var counter = 250
+        val intArr = mutableListOf<Int>()
+        while (true) {
+            counter--
+            if (counter < 1) return intArr
+            if (!st.hasMoreTokens()) return intArr
+            val intValue = st.nextToken().toIntOrNull()
+            if (intValue == null) return intArr
+            intArr.add(intValue)
+        }
+        return intArr
+    }
+
+    val likes = loadArray(LIKES)
+    override fun toggleLike(id: Int): Boolean {
+        var removed = likes.indexOf(id)
+        var result = true
+        if (removed > -1) {
+            likes.removeAt(removed)
+            result = false
+        } else {
+            likes.add(id)
+        }
+        storeArray(LIKES, likes)
+        return result
+    }
+
+    val dislikes = loadArray(DISLIKES)
+    override fun toggleDislike(id: Int): Boolean {
+        var removed = dislikes.indexOf(id)
+        var result = true
+        if (removed > -1) {
+            dislikes.removeAt(removed)
+            result = false
+        } else {
+            dislikes.add(id)
+        }
+        storeArray(DISLIKES, dislikes)
+        return result
+    }
+
+    val abuse = loadArray(ABUSE)
+    override fun toggleAbuse(id: Int): Boolean {
+        var removed = abuse.indexOf(id)
+        var result = true
+        if (removed > -1) {
+            abuse.removeAt(removed)
+            result = false
+        } else {
+            abuse.add(id)
+        }
+        storeArray(ABUSE, abuse)
+        return result
+    }
+
+    override fun checkLike(id: Int): Boolean {
+        return likes.any { it == id }
+    }
+
+    override fun checkDislike(id: Int): Boolean {
+        return dislikes.any { it == id }
+    }
+
+    override fun checkAbuse(id: Int): Boolean {
+        return abuse.any { it == id }
     }
 
 }

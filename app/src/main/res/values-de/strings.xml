@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Katzen</string>
+    <string name="main_title">Tägliche Katzenliste</string>
+    <string name="details">Weitere Informationen</string>
+    <string name="error">Fehler</string>
+    <string name="add_link">Link hinzufügen</string>
+    <string name="add_link_view">Senden eines neuen Links</string>
+    <string name="try_again">Nochmal</string>
+    <string name="share_url">Cat-URL</string>
+    <string name="image_title">Katzenname</string>
+    <string name="sources">Source-code auf GitHub</string>
+    <string name="wait">Warten</string>
+</resources>

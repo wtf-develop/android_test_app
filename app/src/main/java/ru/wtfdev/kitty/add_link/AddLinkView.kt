@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class AddLinkView private constructor() : BaseFragment() {
+class AddLinkView : BaseFragment() {
 
     @Inject
     lateinit var viewModel: IAddLinkViewModel

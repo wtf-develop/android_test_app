@@ -8,6 +8,7 @@ data class ItemModel(
     val link: String,
     val title: String = "",
     val likes: Int = 0,
-    var dislakes: Int = 0
+    val dislakes: Int = 0,
+    val abuse: Int = 0
 )
 

@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:padding="14dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="14dp">
 
     <ImageView
         android:id="@+id/list_image"
         android:layout_width="match_parent"
-        android:gravity="center"
         android:layout_height="180dp"
+        android:gravity="center"
         android:scaleType="centerCrop" />
 
+    <TextView
+        android:id="@+id/domain"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignLeft="@id/list_image"
+        android:layout_alignTop="@id/list_image"
+        android:background="#3d333333"
+        android:gravity="center"
+        android:lines="1"
+        android:maxLines="1"
+        android:paddingTop="0dp"
+        android:paddingBottom="4dp"
+        android:singleLine="true"
+        android:text=""
+        android:textColor="#afffffff"
+        android:paddingHorizontal="3dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:paddingStart="3dp"
+        android:paddingEnd="3dp"
+        android:textSize="11sp" />
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="180dp"
@@ -30,16 +52,64 @@
         android:id="@+id/list_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:maxLines="1"
+        android:layout_below="@id/list_image"
+        android:background="@color/base_secondary1"
         android:gravity="center"
-        android:singleLine="true"
         android:lines="1"
+        android:maxLines="1"
         android:paddingTop="0dp"
         android:paddingBottom="4dp"
-        android:background="@color/base_secondary1"
+        android:singleLine="true"
         android:textColor="@color/light_text_color"
-        android:layout_below="@id/list_image"
         android:textSize="18sp" />
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/list_title"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginBottom="0dp"
+
+        android:background="@android:color/transparent"
+        android:gravity="right"
+        android:orientation="horizontal"
+        android:padding="0dp">
+
+        <ImageButton
+            android:id="@+id/abuse"
+            android:layout_width="46dp"
+            android:layout_height="38dp"
+            android:alpha="0.6"
+            android:background="@color/base_secondary2"
+            android:paddingHorizontal="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_abuse" />
+
+        <ImageButton
+            android:id="@+id/dislike"
+            android:layout_width="46dp"
+            android:layout_height="38dp"
+            android:alpha="0.6"
+            android:background="@color/base_main"
+            android:paddingHorizontal="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_dislike" />
+
+        <ImageButton
+            android:id="@+id/like"
+            android:layout_width="46dp"
+            android:layout_height="38dp"
+            android:alpha="0.6"
+            android:background="@color/base_secondary1"
+            android:paddingHorizontal="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_like" />
+
+    </LinearLayout>
 
 </RelativeLayout>
