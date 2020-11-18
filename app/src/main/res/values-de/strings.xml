@@ -11,4 +11,5 @@
     <string name="image_title">Katzenname</string>
     <string name="sources">Source-code auf GitHub</string>
     <string name="wait">Warten</string>
+    <string name="privacy">Datenschutz</string>
 </resources>

@@ -14,4 +14,9 @@
         android:title="@string/sources"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/menu_privacy"
+        android:title="@string/privacy"
+        app:showAsAction="never" />
+
 </menu>

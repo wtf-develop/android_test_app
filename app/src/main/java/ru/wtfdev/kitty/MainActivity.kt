@@ -51,6 +51,14 @@ class MainActivity : BaseActivty() {
                 startActivity(intent)
             } catch (_: Exception) {
             }
+        } else if (id == R.id.menu_privacy) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://docs.google.com/document/d/e/2PACX-1vRNNUb1h-Zw4FiKzvy0vNnWDv2cRU0KtyWzC-1_XrcIj-BuNce0ppXj7PAgFr7xEOqPYv7yoZSC4RjI/pub")
+            try {
+                startActivity(intent)
+            } catch (_: Exception) {
+            }
+
         }
         return true
     }

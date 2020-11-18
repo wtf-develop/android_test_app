@@ -11,4 +11,5 @@
     <string name="image_title">Имя котика</string>
     <string name="sources">Исходники на GitHub</string>
     <string name="wait">Подождите</string>
+    <string name="privacy">Конфиденциальность</string>
 </resources>
