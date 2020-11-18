@@ -1,5 +1,7 @@
 # Android Kitty Application
-Kitty list. 
+Kitty list. Daily updated list with cats. What i can tell yu more about this app?
+
+You can rate cats, you can add cats to the list. This app only supports direct web links starting with http:// or https://. There is no way to upload images from your device yet. Images are pre-moderated and will only be visible after approval
 
 # Technical details
 Single Activity application with multiple Fragments. 
@@ -20,5 +22,6 @@ I hope I have enough enthusiasm.
 
 # About Developer
 Visit the [Developer's website](https://wtf-dev.ru/)
+
 If you want to add a ray of light into this darkness, then you can always [>>Donate<<](https://paypal.me/LeonidDonate)
 
