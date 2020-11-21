@@ -1,6 +1,8 @@
 # Android Kitty Application
 Kitty list. Daily updated list with cats. What i can tell yu more about this app?
 
+[Published on GooglePlay](https://play.google.com/store/apps/details?id=ru.wtfdev.kitty)
+
 You can rate cats, you can add cats to the list. This app only supports direct web links starting with http:// or https://. There is no way to upload images from your device yet. Images are pre-moderated and will only be visible after approval
 
 ### Technical details
