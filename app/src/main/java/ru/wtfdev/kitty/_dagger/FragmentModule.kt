@@ -5,7 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.scopes.FragmentScoped
-import ru.wtfdev.kitty._models.INetwork
+import ru.wtfdev.kitty._models.network.INetwork
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation

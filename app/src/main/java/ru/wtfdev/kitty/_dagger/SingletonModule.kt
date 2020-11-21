@@ -7,12 +7,12 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
-import ru.wtfdev.kitty._models.INetwork
-import ru.wtfdev.kitty._models.Network
+import ru.wtfdev.kitty._models.network.INetwork
+import ru.wtfdev.kitty._models.network.implementation.Network
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
-import ru.wtfdev.kitty._models.repo.ImageRepository
-import ru.wtfdev.kitty._models.repo.LocalStorageRepository
+import ru.wtfdev.kitty._models.repo.implementation.ImageRepository
+import ru.wtfdev.kitty._models.repo.implementation.LocalStorageRepository
 import ru.wtfdev.kitty.list.IImageListRepository
 import ru.wtfdev.kitty.list.implementation.ImageListRepository
 import javax.inject.Singleton

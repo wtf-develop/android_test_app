@@ -1,28 +1,14 @@
-package ru.wtfdev.kitty._models.repo
+package ru.wtfdev.kitty._models.repo.implementation
 
 import android.content.Context
 import android.provider.Settings
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.data.ItemModel
+import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty.utils.StringUtils
 import java.util.*
 
-
-interface ILocalStorageRepository {
-    fun getUUID(): String
-    fun storeDailyList(listdata: List<ItemModel>)
-    fun getDailyList(): List<ItemModel>?
-
-    fun toggleLike(id: Int): Boolean
-    fun toggleDislike(id: Int): Boolean
-    fun toggleAbuse(id: Int): Boolean
-
-    fun checkLike(id: Int): Boolean
-    fun checkDislike(id: Int): Boolean
-    fun checkAbuse(id: Int): Boolean
-
-}
 
 class LocalStorageRepository constructor(val ctx: Context, val parser: Json) :
     ILocalStorageRepository {

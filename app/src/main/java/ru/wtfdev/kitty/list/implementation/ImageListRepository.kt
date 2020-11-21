@@ -1,8 +1,8 @@
 package ru.wtfdev.kitty.list.implementation
 
-import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
+import ru.wtfdev.kitty._models.network.INetwork
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty.list.IImageListRepository
 
