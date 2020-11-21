@@ -1,4 +1,4 @@
-package ru.wtfdev.kitty.list
+package ru.wtfdev.kitty.list.implementation
 
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -8,26 +8,9 @@ import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation
+import ru.wtfdev.kitty.list.IImageListRepository
+import ru.wtfdev.kitty.list.IImageListViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
-
-//Interface
-interface IImageListViewModel {
-    fun updateList(force: Boolean = false)
-    fun subscribeOnChange(callback: (data: List<ItemModel>) -> Unit)
-    fun subscribeOnError(callback: (error: String) -> Unit)
-    fun unsubscribeAll()
-    fun selectItem(item: ItemModel)
-    fun loadImageTo(img: ImageView, url: String)
-    fun like(id: Int): Boolean
-    fun dislike(id: Int): Boolean
-    fun abuse(id: Int): Boolean
-
-    fun checkLike(id: Int): Boolean
-    fun checkDislike(id: Int): Boolean
-    fun checkAbuse(id: Int): Boolean
-
-}
-
 
 //Implementation
 class ImageListViewModel(

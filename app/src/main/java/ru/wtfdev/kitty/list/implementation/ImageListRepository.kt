@@ -1,36 +1,10 @@
-package ru.wtfdev.kitty.list
+package ru.wtfdev.kitty.list.implementation
 
 import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
-
-interface IImageListRepository {
-    fun fetchData(
-        callback: (data: List<ItemModel>) -> Unit,
-        errorCallback: ((text: String) -> Unit)? = null
-    )
-
-
-    fun like(
-        id: Int, value: Int,
-        callback: (data: ServerBaseResponse) -> Unit,
-        errorCallback: ((text: String) -> Unit)? = null
-    )
-
-    fun dislike(
-        id: Int, value: Int,
-        callback: (data: ServerBaseResponse) -> Unit,
-        errorCallback: ((text: String) -> Unit)? = null
-    )
-
-    fun abuse(
-        id: Int, value: Int,
-        callback: (data: ServerBaseResponse) -> Unit,
-        errorCallback: ((text: String) -> Unit)? = null
-    )
-
-}
+import ru.wtfdev.kitty.list.IImageListRepository
 
 
 class ImageListRepository(val network: INetwork, val storage: ILocalStorageRepository) :

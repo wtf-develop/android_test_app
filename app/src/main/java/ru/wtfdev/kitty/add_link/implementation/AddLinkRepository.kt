@@ -1,17 +1,10 @@
-package ru.wtfdev.kitty.add_link
+package ru.wtfdev.kitty.add_link.implementation
 
 
 import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.data.PostUrlObject
 import ru.wtfdev.kitty._models.data.ServerBaseResponse
-
-
-interface IAddLinkRepository {
-    fun postLinkToServer(
-        url: String, title: String, callback: (data: ServerBaseResponse) -> Unit,
-        errorCallback: ((text: String) -> Unit)?
-    )
-}
+import ru.wtfdev.kitty.add_link.IAddLinkRepository
 
 
 class AddLinkRepository(val network: INetwork) : IAddLinkRepository {

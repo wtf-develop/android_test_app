@@ -6,9 +6,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.scopes.ActivityScoped
-import ru.wtfdev.kitty._navigation.INaviJump
 import ru.wtfdev.kitty._navigation.INavigation
-import ru.wtfdev.kitty._navigation.Navigation
+import ru.wtfdev.kitty._navigation.INavigationProvider
+import ru.wtfdev.kitty._navigation.implementation.Navigation
 
 
 @Module
@@ -17,10 +17,10 @@ class ActivityModules {
 
     @Provides
     @ActivityScoped
-    fun getINavi(act: Activity): INaviJump = act as INaviJump
+    fun getINavi(act: Activity): INavigationProvider = act as INavigationProvider
 
     @Provides
     @ActivityScoped
-    fun getNavigationObject(maniputator: INaviJump): INavigation = Navigation(maniputator)
+    fun getNavigationObject(maniputator: INavigationProvider): INavigation = Navigation(maniputator)
 
 }

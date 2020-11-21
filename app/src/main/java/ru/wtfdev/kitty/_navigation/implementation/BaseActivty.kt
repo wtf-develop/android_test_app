@@ -1,15 +1,17 @@
-package ru.wtfdev.kitty._navigation
+package ru.wtfdev.kitty._navigation.implementation
 
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import dagger.hilt.android.AndroidEntryPoint
+import ru.wtfdev.kitty._navigation.INavigation
+import ru.wtfdev.kitty._navigation.INavigationProvider
 import javax.inject.Inject
 
 
 @AndroidEntryPoint
-abstract class BaseActivty : AppCompatActivity(), INaviJump {
+abstract class BaseActivty : AppCompatActivity(), INavigationProvider {
 
     abstract var startFragment: String
 

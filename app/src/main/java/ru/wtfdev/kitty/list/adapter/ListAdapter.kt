@@ -115,7 +115,7 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
             str = murl.getHost()
         } catch (_: Exception) {
         }
-        holder.domain.text=str
+        holder.domain.text = str
 
     }
 

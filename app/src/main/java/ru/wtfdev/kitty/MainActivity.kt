@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.wtfdev.kitty._navigation.BaseActivty
+import ru.wtfdev.kitty._navigation.implementation.BaseActivty
 import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.utils.SharingShortcutsManager
@@ -53,7 +53,8 @@ class MainActivity : BaseActivty() {
             }
         } else if (id == R.id.menu_privacy) {
             val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("https://docs.google.com/document/d/e/2PACX-1vRNNUb1h-Zw4FiKzvy0vNnWDv2cRU0KtyWzC-1_XrcIj-BuNce0ppXj7PAgFr7xEOqPYv7yoZSC4RjI/pub")
+            intent.data =
+                Uri.parse("https://docs.google.com/document/d/e/2PACX-1vRNNUb1h-Zw4FiKzvy0vNnWDv2cRU0KtyWzC-1_XrcIj-BuNce0ppXj7PAgFr7xEOqPYv7yoZSC4RjI/pub")
             try {
                 startActivity(intent)
             } catch (_: Exception) {

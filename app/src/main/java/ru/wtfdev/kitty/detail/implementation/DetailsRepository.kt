@@ -1,15 +1,9 @@
-package ru.wtfdev.kitty.detail
+package ru.wtfdev.kitty.detail.implementation
 
 
 import ru.wtfdev.kitty._models.data.ItemModel
+import ru.wtfdev.kitty.detail.IDetailsRepository
 
-//Interface
-interface IDetailsRepository {
-    fun fetchData(
-        dataCallback: (data: ItemModel) -> Unit,
-        errorCallback: ((text: String) -> Unit)? = null
-    )
-}
 
 //Implementation
 class DetailsRepository : IDetailsRepository {
@@ -24,6 +18,6 @@ class DetailsRepository : IDetailsRepository {
 
 
     companion object {
-        lateinit var itemData: ItemModel //Yes-yes, i know!!! Later!
+        lateinit var itemData: ItemModel //todo - Yes-yes, i know!!! Later!
     }
 }

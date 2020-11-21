@@ -1,4 +1,4 @@
-package ru.wtfdev.kitty._navigation
+package ru.wtfdev.kitty._navigation.implementation
 
 import android.os.Build
 import android.os.Bundle
@@ -7,16 +7,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.wtfdev.kitty.R
-
-
-//Interface for Navigation object
-//Interface for Navigation object
-//Interface for Navigation object
-interface IBaseFragment {
-    fun setIsForegroung(b: Boolean)
-    fun onSubscribeBindings()
-    fun onUnsubscribeBindings()
-}
+import ru.wtfdev.kitty._navigation.IBaseFragment
 
 
 //Fragment implementation

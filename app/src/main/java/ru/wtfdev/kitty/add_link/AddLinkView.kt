@@ -18,7 +18,7 @@ import androidx.core.view.GestureDetectorCompat
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_link.*
 import ru.wtfdev.kitty.R
-import ru.wtfdev.kitty._navigation.BaseFragment
+import ru.wtfdev.kitty._navigation.implementation.BaseFragment
 import ru.wtfdev.kitty.utils.CloseGestureListener
 import javax.inject.Inject
 

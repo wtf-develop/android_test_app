@@ -1,39 +1,18 @@
-package ru.wtfdev.kitty._navigation
+package ru.wtfdev.kitty._navigation.implementation
 
-import androidx.fragment.app.FragmentManager
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._models.data.ItemModel
+import ru.wtfdev.kitty._navigation.IBaseFragment
+import ru.wtfdev.kitty._navigation.INavigation
+import ru.wtfdev.kitty._navigation.INavigationProvider
 import ru.wtfdev.kitty.add_link.AddLinkView
-import ru.wtfdev.kitty.detail.DetailsRepository
 import ru.wtfdev.kitty.detail.DetailsView
+import ru.wtfdev.kitty.detail.implementation.DetailsRepository
 import ru.wtfdev.kitty.list.ImageListView
 
 
-//TODO Need to migrate this to Dagger later
-//Create Fragment with ViewModel with Navigation
-//Create Fragment with ViewModel with Navigation
-//Create Fragment with ViewModel with Navigation
-
-
-//common navigation interface
-interface INavigation {
-    fun moveTo(tag: String?, backstack: Boolean = true): IBaseFragment?
-    fun popBackStack()
-
-    fun toList()
-    fun toDetails(obj: ItemModel)
-
-    fun getTitle(tag: String): Int
-}
-
-//interface for routing fragments
-interface INaviJump {
-    fun getNaviFragmentManager(): FragmentManager
-    fun finish()
-}
-
 //implementation for INavigation
-class Navigation(val navigateAction: INaviJump) : INavigation {
+class Navigation(val navigateAction: INavigationProvider) : INavigation {
 
     override fun toList() {
         moveTo(ImageListView::class.qualifiedName ?: "", false)

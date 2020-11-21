@@ -9,17 +9,17 @@ import ru.wtfdev.kitty._models.INetwork
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation
-import ru.wtfdev.kitty.add_link.AddLinkRepository
-import ru.wtfdev.kitty.add_link.AddLinkViewModel
 import ru.wtfdev.kitty.add_link.IAddLinkRepository
 import ru.wtfdev.kitty.add_link.IAddLinkViewModel
-import ru.wtfdev.kitty.detail.DetailsRepository
-import ru.wtfdev.kitty.detail.DetailsViewModel
+import ru.wtfdev.kitty.add_link.implementation.AddLinkRepository
+import ru.wtfdev.kitty.add_link.implementation.AddLinkViewModel
 import ru.wtfdev.kitty.detail.IDetailsRepository
 import ru.wtfdev.kitty.detail.IDetailsViewModel
+import ru.wtfdev.kitty.detail.implementation.DetailsRepository
+import ru.wtfdev.kitty.detail.implementation.DetailsViewModel
 import ru.wtfdev.kitty.list.IImageListRepository
 import ru.wtfdev.kitty.list.IImageListViewModel
-import ru.wtfdev.kitty.list.ImageListViewModel
+import ru.wtfdev.kitty.list.implementation.ImageListViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
 
 

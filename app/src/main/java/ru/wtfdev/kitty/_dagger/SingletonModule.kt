@@ -14,7 +14,7 @@ import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._models.repo.ImageRepository
 import ru.wtfdev.kitty._models.repo.LocalStorageRepository
 import ru.wtfdev.kitty.list.IImageListRepository
-import ru.wtfdev.kitty.list.ImageListRepository
+import ru.wtfdev.kitty.list.implementation.ImageListRepository
 import javax.inject.Singleton
 
 @Module

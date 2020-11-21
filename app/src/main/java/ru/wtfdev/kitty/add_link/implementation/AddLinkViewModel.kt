@@ -1,4 +1,4 @@
-package ru.wtfdev.kitty.add_link
+package ru.wtfdev.kitty.add_link.implementation
 
 import android.content.ClipDescription
 import android.content.ClipboardManager
@@ -11,29 +11,10 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.wtfdev.kitty._models.data.ServerDone
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
+import ru.wtfdev.kitty.add_link.IAddLinkRepository
+import ru.wtfdev.kitty.add_link.IAddLinkViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.StringUtils
-
-
-interface IAddLinkViewModel {
-    fun saveLoadedImageUrl(title: String)
-    fun close()
-    fun getUrlFromIntent(intent: Intent?): String
-    fun loadImageTo(img: ImageView, url: String)
-    fun subscribeOnChange(callback: (data: ServerDone) -> Unit)
-    fun subscribeOnError(callback: (error: String) -> Unit)
-    fun subscribeOnImageSuccess(callback: (b: Boolean) -> Unit)
-    fun unsubscribeAll()
-    fun extractUrl(text: String?): String
-    fun getUrlFlow(
-        intent: Intent?,
-        savedInstanceState: Bundle?,
-        clipboard: ClipboardManager?
-    ): String
-
-    fun saveUrlState(outState: Bundle, url: String): Bundle
-
-}
 
 
 class AddLinkViewModel(

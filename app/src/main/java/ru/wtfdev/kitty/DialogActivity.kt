@@ -2,7 +2,7 @@ package ru.wtfdev.kitty
 
 import android.content.Intent
 import android.os.Bundle
-import ru.wtfdev.kitty._navigation.BaseActivty
+import ru.wtfdev.kitty._navigation.implementation.BaseActivty
 import ru.wtfdev.kitty.add_link.AddLinkView
 
 

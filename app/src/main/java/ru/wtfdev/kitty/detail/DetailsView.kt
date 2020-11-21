@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_details.*
 import ru.wtfdev.kitty.R
 
-import ru.wtfdev.kitty._navigation.BaseFragment
+import ru.wtfdev.kitty._navigation.implementation.BaseFragment
 import ru.wtfdev.kitty.utils.CloseGestureListener
 import javax.inject.Inject
 

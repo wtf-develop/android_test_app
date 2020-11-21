@@ -1,4 +1,4 @@
-package ru.wtfdev.kitty.detail
+package ru.wtfdev.kitty.detail.implementation
 
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -6,17 +6,10 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
+import ru.wtfdev.kitty.detail.IDetailsRepository
+import ru.wtfdev.kitty.detail.IDetailsViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
 
-
-//Interface
-interface IDetailsViewModel {
-    fun update(force: Boolean = false)
-    fun subscribeOnChange(callback: (data: ItemModel) -> Unit)
-    fun unsubscribeAll()
-    fun loadImageTo(img: ImageView, url: String)
-    fun close()
-}
 
 //Implementation
 class DetailsViewModel(
