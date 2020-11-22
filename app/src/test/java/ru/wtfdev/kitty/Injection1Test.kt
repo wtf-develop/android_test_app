@@ -4,6 +4,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.HiltTestApplication
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,6 +23,11 @@ class Injection1Test {
 
     @Inject
     lateinit var injectedStorage: ILocalStorageRepository
+
+    @Before
+    fun init() {
+        hiltRule.inject()
+    }
 
     @Test
     fun testInjectedStorage() {
