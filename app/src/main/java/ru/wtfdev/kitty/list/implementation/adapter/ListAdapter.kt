@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.list_item.view.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._models.data.ItemModel
+import ru.wtfdev.kitty.databinding.ListItemBinding
 import ru.wtfdev.kitty.list.IImageListViewModel
 import java.net.URL
 
@@ -22,15 +22,15 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
     }
 
     class MyViewHolder(
-        view: ViewGroup,
+        view: ListItemBinding,
         onClick: (itemModel: ItemModel) -> Unit,
         onLike: (id: Int) -> Boolean,
         onDislike: (id: Int) -> Boolean,
         onAbuse: (id: Int) -> Boolean
     ) :
-        RecyclerView.ViewHolder(view) {
-        val title: TextView = view.list_title
-        val image: ImageView = view.list_image
+        RecyclerView.ViewHolder(view.root) {
+        val title: TextView = view.listTitle
+        val image: ImageView = view.listImage
         val like = view.like
         val dislike = view.dislike
         val abuse = view.abuse
@@ -39,7 +39,7 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
         var itemIndex: Int = -1
 
         init {
-            view.setOnClickListener {
+            view.root.setOnClickListener {
                 if (itemIndex >= 0) onClick(itemModel)
             }
             like.setOnClickListener {
@@ -67,9 +67,9 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.list_item, parent, false) as ViewGroup
-        return MyViewHolder(view, {
+        val binding = ListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        return MyViewHolder(binding, {
             viewModel.selectItem(it)
         }, {
             viewModel.like(it)

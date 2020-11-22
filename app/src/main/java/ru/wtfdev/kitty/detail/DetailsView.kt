@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GestureDetectorCompat
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_details.*
-import ru.wtfdev.kitty.R
 
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
+import ru.wtfdev.kitty.databinding.FragmentDetailsBinding
 import ru.wtfdev.kitty.utils.CloseGestureListener
 import javax.inject.Inject
 
@@ -23,6 +22,9 @@ class DetailsView : BaseFragment() {
     @Inject
     lateinit var viewModel: IDetailsViewModel
 
+    private var _binding: FragmentDetailsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +37,9 @@ class DetailsView : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_details, container, false)
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
 
@@ -45,20 +49,25 @@ class DetailsView : BaseFragment() {
 
         val mDetector =
             GestureDetectorCompat(this.context, CloseGestureListener { viewModel.close() })
-        touchHandler.setOnTouchListener { _, motionEvent ->
+        binding.touchHandler.setOnTouchListener { _, motionEvent ->
             mDetector.onTouchEvent(motionEvent)
         }
     }
 
     override fun onDataBing() {
         viewModel.subscribeOnChange {
-            detail_title.text = it.title
-            viewModel.loadImageTo(detail_image, it.link)
+            binding.detailTitle.text = it.title
+            viewModel.loadImageTo(binding.detailImage, it.link)
         }
     }
 
     override fun onDataUnBing() {
         viewModel.unsubscribeAll()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

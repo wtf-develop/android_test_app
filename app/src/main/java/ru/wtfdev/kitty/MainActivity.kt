@@ -5,9 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import kotlinx.android.synthetic.main.activity_main.*
 import ru.wtfdev.kitty._navigation.implementation.BaseActivty
 import ru.wtfdev.kitty.add_link.AddLinkView
+import ru.wtfdev.kitty.databinding.ActivityMainBinding
 import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.utils.SharingShortcutsManager
 
@@ -20,11 +20,12 @@ import ru.wtfdev.kitty.utils.SharingShortcutsManager
 class MainActivity : BaseActivty() {
     override var startFragment: String = ImageListView::class.qualifiedName ?: ""
 
-    private lateinit var sharingShortcutsManager: SharingShortcutsManager
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(my_toolbar)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        setSupportActionBar(binding.myToolbar)
         SharingShortcutsManager().also {
             it.removeAllDirectShareTargets(this)
             it.pushDirectShareTargets(this)

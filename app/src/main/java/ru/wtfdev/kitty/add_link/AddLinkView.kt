@@ -16,9 +16,8 @@ import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.view.GestureDetectorCompat
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_add_link.*
-import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
+import ru.wtfdev.kitty.databinding.FragmentAddLinkBinding
 import ru.wtfdev.kitty.utils.CloseGestureListener
 import javax.inject.Inject
 
@@ -53,11 +52,16 @@ class AddLinkView : BaseFragment() {
         super.onCreate(savedInstanceState)
     }
 
+    private var _binding: FragmentAddLinkBinding? = null
+    private val binding get() = _binding!!
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add_link, container, false)
+        _binding = FragmentAddLinkBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     val handler = Handler(Looper.getMainLooper())
@@ -69,17 +73,17 @@ class AddLinkView : BaseFragment() {
             savedInstanceState,
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
         )
-        linkUrl.setText(url)
+        binding.linkUrl.setText(url)
         if (url.isNotEmpty()) {
-            viewModel.loadImageTo(imageUrl, url)
+            viewModel.loadImageTo(binding.imageUrl, url)
         }
-        buttonUrl.setOnClickListener {
-            viewModel.saveLoadedImageUrl(linkTitle.text.toString())
+        binding.buttonUrl.setOnClickListener {
+            viewModel.saveLoadedImageUrl(binding.linkTitle.text.toString())
         }
-        close_fragment.setOnClickListener {
+        binding.closeFragment.setOnClickListener {
             viewModel.close()
         }
-        linkUrl.addTextChangedListener(object : TextWatcher {
+        binding.linkUrl.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 
             }
@@ -91,7 +95,10 @@ class AddLinkView : BaseFragment() {
             override fun afterTextChanged(p0: Editable?) {
                 handler.removeCallbacksAndMessages(null)
                 handler.postDelayed(Runnable {
-                    viewModel.loadImageTo(imageUrl, viewModel.extractUrl(linkUrl.text.toString()))
+                    viewModel.loadImageTo(
+                        binding.imageUrl,
+                        viewModel.extractUrl(binding.linkUrl.text.toString())
+                    )
                 }, 1500)
                 hideError()
             }
@@ -101,44 +108,50 @@ class AddLinkView : BaseFragment() {
         val submitListener = OnEditorActionListener { _, actionId, _ ->
             when (actionId) {
                 EditorInfo.IME_ACTION_DONE, EditorInfo.IME_ACTION_SEND, EditorInfo.IME_ACTION_GO, EditorInfo.IME_ACTION_NEXT, EditorInfo.IME_ACTION_SEARCH -> {
-                    viewModel.saveLoadedImageUrl(linkTitle.text.toString())
+                    viewModel.saveLoadedImageUrl(binding.linkTitle.text.toString())
                     hideKeyboard()
                     return@OnEditorActionListener true
                 }
             }
             false
         }
-        linkUrl.setOnEditorActionListener(submitListener)
-        linkTitle.setOnEditorActionListener(submitListener)
+        binding.linkUrl.setOnEditorActionListener(submitListener)
+        binding.linkTitle.setOnEditorActionListener(submitListener)
         val mDetector =
             GestureDetectorCompat(this.context, CloseGestureListener { viewModel.close() })
-        parentLay.setOnTouchListener { _, motionEvent ->
+        binding.parentLay.setOnTouchListener { _, motionEvent ->
             mDetector.onTouchEvent(motionEvent)
         }
     }
 
     private fun showKeyboard() {
-        if (linkTitle.hasFocus()) return
+        if (binding.linkTitle.hasFocus()) return
         try {
-            linkTitle.requestFocus()
+            binding.linkTitle.requestFocus()
             val imm =
                 activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-            linkTitle.requestFocus()
+            binding.linkTitle.requestFocus()
         } catch (e: Exception) {
         }
     }
 
     private fun hideKeyboard() {
-        parentLay.requestFocus()
+        binding.parentLay.requestFocus()
         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-        imm?.hideSoftInputFromWindow(parentLay.windowToken, 0)
-        parentLay.requestFocus()
+        imm?.hideSoftInputFromWindow(binding.parentLay.windowToken, 0)
+        binding.parentLay.requestFocus()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.saveUrlState(outState, linkUrl.text.toString())
+        viewModel.saveUrlState(outState, binding.linkUrl.text.toString())
         super.onSaveInstanceState(outState)
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 

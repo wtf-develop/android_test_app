@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_image_list.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
+import ru.wtfdev.kitty.databinding.FragmentImageListBinding
 import ru.wtfdev.kitty.list.implementation.adapter.ListAdapter
 import javax.inject.Inject
 
@@ -26,11 +26,15 @@ class ImageListView : BaseFragment() {
 
     }
 
+    private var _binding: FragmentImageListBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_image_list, container, false)
+        _binding = FragmentImageListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     var viewManager: LinearLayoutManager? = null
@@ -55,15 +59,15 @@ class ImageListView : BaseFragment() {
             }
         }
         var viewAdapter = ListAdapter(viewModel)
-        recycler_view.setHasFixedSize(true)
-        recycler_view.layoutManager = viewManager
-        recycler_view.adapter = viewAdapter
-        loader.visibility = View.VISIBLE
-        pull2refresh.visibility = View.GONE
-        pull2refresh.setOnRefreshListener {
+        binding.recyclerView.setHasFixedSize(true)
+        binding.recyclerView.layoutManager = viewManager
+        binding.recyclerView.adapter = viewAdapter
+        binding.loader.visibility = View.VISIBLE
+        binding.pull2refresh.visibility = View.GONE
+        binding.pull2refresh.setOnRefreshListener {
             viewModel.updateList(true)
         }
-        pull2refresh.setColorSchemeResources(
+        binding.pull2refresh.setColorSchemeResources(
             R.color.base_main,
             R.color.base_secondary1,
             R.color.base_secondary2
@@ -76,23 +80,23 @@ class ImageListView : BaseFragment() {
         viewModel.subscribeOnChange {
             if (scrollList) {
                 scrollList = false
-                recycler_view.scrollToPosition(scroll)
+                binding.recyclerView.scrollToPosition(scroll)
             }
-            pull2refresh.isRefreshing = false
+            binding.pull2refresh.isRefreshing = false
             hideError()
-            pull2refresh.visibility = View.VISIBLE
-            loader.visibility = View.GONE
-            (recycler_view.adapter as? ListAdapter)?.setData(it)
+            binding.pull2refresh.visibility = View.VISIBLE
+            binding.loader.visibility = View.GONE
+            (binding.recyclerView.adapter as? ListAdapter)?.setData(it)
         }
         viewModel.subscribeOnError {
-            pull2refresh.isRefreshing = false
+            binding.pull2refresh.isRefreshing = false
             showError(it) {
-                loader.visibility = View.GONE
-                pull2refresh.visibility = View.VISIBLE
-                pull2refresh.isRefreshing = true
+                binding.loader.visibility = View.GONE
+                binding.pull2refresh.visibility = View.VISIBLE
+                binding.pull2refresh.isRefreshing = true
                 viewModel.updateList(true)
             }
-            loader.visibility = View.GONE
+            binding.loader.visibility = View.GONE
         }
     }
 
@@ -104,6 +108,11 @@ class ImageListView : BaseFragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putInt("scroll", viewManager?.findFirstVisibleItemPosition() ?: 0)
         super.onSaveInstanceState(outState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

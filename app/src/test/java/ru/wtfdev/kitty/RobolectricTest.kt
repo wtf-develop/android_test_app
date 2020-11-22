@@ -3,8 +3,7 @@ package ru.wtfdev.kitty
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import kotlinx.serialization.json.Json
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
@@ -27,7 +26,7 @@ class RobolectricTest {
     })
 
     @Test
-    fun readStringFromContext_LocalizedString() {
+    fun checkDataStorageLogic() {
 
         val uuid = storageTest.getUUID()
         assertTrue(uuid.length >= 15)
@@ -42,6 +41,11 @@ class RobolectricTest {
         assertNotNull(list)
         assertTrue(list?.size == 2)
         assertTrue(list?.get(0)?.link.equals("link"))
+        assertTrue(list?.get(1)?.link.equals("link2"))
+
+        assertFalse(storageTest.checkAbuse(100))
+        assertTrue(storageTest.toggleAbuse(100))
+        assertTrue(storageTest.checkAbuse(100))
 
 
     }

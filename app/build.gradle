@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlinx-serialization'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
@@ -52,6 +51,11 @@ android {
         }
     }
 
+    buildFeatures {
+        viewBinding true
+    }
+
+
 }
 
 kapt {
@@ -99,7 +103,6 @@ dependencies {
     kapt 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
 
 
-
     ////// for tests
     ////// for tests
     ////// for tests
@@ -115,7 +118,6 @@ dependencies {
     // Optional -- Mockito framework
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
     //testImplementation 'org.mockito:mockito-core:3.6.0'
-
 
 
     // For instrumentation tests
