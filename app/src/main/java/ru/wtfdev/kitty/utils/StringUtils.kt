@@ -8,10 +8,10 @@ object StringUtils {
     private val AB = "0123456789abcdefghijklmnopqrstuvwxyz".toLowerCase()
     private val rnd = SecureRandom()
 
-    fun randomString(len: Int): String? {
+    fun randomString(len: Int): String {
         val sb = StringBuilder(len)
         for (i in 0 until len) {
-            sb.append(AB.get(rnd.nextInt(AB.length)))
+            sb.append(AB[rnd.nextInt(AB.length)])
         }
         return sb.toString().toLowerCase()
     }

@@ -3,7 +3,7 @@ package ru.wtfdev.kitty.utils
 import android.view.GestureDetector
 import android.view.MotionEvent
 
-class CloseGestureListener(val closeMe: () -> Unit) :
+open class CloseGestureListener(val closeMe: () -> Unit) :
     GestureDetector.SimpleOnGestureListener() {
     override fun onDown(event: MotionEvent): Boolean {
         return true
@@ -18,8 +18,10 @@ class CloseGestureListener(val closeMe: () -> Unit) :
     ): Boolean {
         if (Math.abs(velocityX) * 3f < Math.abs(velocityY)) {
             closeMe()
+            return true
         }
-        return super.onFling(e1, e2, velocityX, velocityY)
+        return false
+        //return super.onFling(e1, e2, velocityX, velocityY)
     }
 }
 

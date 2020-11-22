@@ -44,6 +44,14 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            //unitTests.returnDefaultValues = true !!!-- (--NO--) ---!!!
+        }
+    }
+
 }
 
 kapt {
@@ -90,6 +98,12 @@ dependencies {
     implementation 'com.google.dagger:hilt-android:2.29.1-alpha'
     kapt 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
 
+
+
+    ////// for tests
+    ////// for tests
+    ////// for tests
+
     // For instrumentation tests
     androidTestImplementation 'com.google.dagger:hilt-android-testing:2.29.1-alpha'
     kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
@@ -100,6 +114,13 @@ dependencies {
 
 
     testImplementation 'junit:junit:4.13.1'
+    // Optional -- Robolectric environment
+    testImplementation 'androidx.test:core:1.3.0'
+    // Optional -- Mockito framework
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    //testImplementation 'org.mockito:mockito-core:3.6.0'
+
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
