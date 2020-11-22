@@ -13,11 +13,10 @@ import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._models.repo.implementation.LocalStorageRepository
 
 
-private const val FAKE_STRING = "HELLO_WORLD"
-
-@Config(sdk = [28]) //I have now java 8 only
+@Config(sdk = [28]) //I have now java8 only
 @RunWith(RobolectricTestRunner::class)
 class RobolectricTest {
+
     val context = ApplicationProvider.getApplicationContext<Context>()
     val storageTest: ILocalStorageRepository = LocalStorageRepository(context, Json {
         ignoreUnknownKeys = true
@@ -46,8 +45,6 @@ class RobolectricTest {
         assertFalse(storageTest.checkAbuse(100))
         assertTrue(storageTest.toggleAbuse(100))
         assertTrue(storageTest.checkAbuse(100))
-
-
     }
 
 }
