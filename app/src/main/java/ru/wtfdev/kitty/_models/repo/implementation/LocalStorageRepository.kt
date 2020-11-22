@@ -35,7 +35,7 @@ class LocalStorageRepository constructor(val ctx: Context, val parser: Json) :
         if ((uniqInstallId?.length ?: 0) <= 10) {//try to load from storage
             val pref = ctx.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
             uniqInstallId = pref.getString(INSTALLATION_ID, "")
-            if ((uniqInstallId?.length ?: 0) <= 10) {//if nothing in storage - create it
+            if ((uniqInstallId?.length ?: 0) < 15) {//if nothing in storage - create it
                 try {//try to use DEVICEID
                     uniqInstallId =
                         Settings.Secure.getString(ctx.contentResolver, Settings.Secure.ANDROID_ID)
@@ -46,7 +46,7 @@ class LocalStorageRepository constructor(val ctx: Context, val parser: Json) :
                     uniqInstallId = ""
                 }
                 //if deviceID is bad - create it as random string
-                if ((uniqInstallId?.length ?: 0) <= 10) {
+                if ((uniqInstallId?.length ?: 0) < 15) {
                     uniqInstallId = StringUtils.randomString(15)
                 }
                 val ed = pref.edit()

@@ -23,6 +23,10 @@ class UtilsTest {
         var rndStr = StringUtils.randomString(100)
         assertEquals(rndStr.length, 100)
         assertEquals(rndStr.toLowerCase(), rndStr)
+        rndStr = StringUtils.randomString(15)
+        assertEquals(rndStr.length, 15)
+        assertEquals(rndStr.toLowerCase(), rndStr)
+
     }
 
     @Test
@@ -34,6 +38,10 @@ class UtilsTest {
             StringUtils.extractImgUrl("hgfjkh HJGr http://rty.com/hhtp?y=76 skjb dfghoj srt https://gfkj.ty/Gutyawkjeg/hgfytwreqe.bmp sdlfkjht awejrht rtseurht")
         assertEquals(url, "http://rty.com/hhtp?y=76")
 
+        url =
+            StringUtils.extractImgUrl("https://wtd-dev.ru/sync")
+        assertEquals(url, "https://wtd-dev.ru/sync")
+
     }
 
 
@@ -41,8 +49,12 @@ class UtilsTest {
     fun gestureCloseDetection() {
         val callback = mock<(() -> Unit)>()
         val mockGesture = Mockito.spy(CloseGestureListener(callback))
-        /*Mockito.doReturn(true).`when`((mockGesture as GestureDetector.SimpleOnGestureListener))
-            .onFling(any(), any(), any(), any())*/
+        /** can not mock final superClass
+
+        Mockito.doReturn(true).`when`((mockGesture as GestureDetector.SimpleOnGestureListener))
+        .onFling(any(), any(), any(), any())
+         */
+
         mockGesture.onFling(null, null, 100f, 501f)
         verify(callback, times(1)).invoke()
         mockGesture.onFling(null, null, 100f, 301f)

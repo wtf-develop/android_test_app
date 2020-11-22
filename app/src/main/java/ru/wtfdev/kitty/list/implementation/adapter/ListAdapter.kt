@@ -1,4 +1,4 @@
-package ru.wtfdev.kitty.list.adapter
+package ru.wtfdev.kitty.list.implementation.adapter
 
 import android.os.Build
 import android.view.LayoutInflater

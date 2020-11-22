@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_image_list.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
-import ru.wtfdev.kitty.list.adapter.ListAdapter
+import ru.wtfdev.kitty.list.implementation.adapter.ListAdapter
 import javax.inject.Inject
 
 @AndroidEntryPoint
