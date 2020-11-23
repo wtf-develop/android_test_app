@@ -14,7 +14,12 @@ Dependency injection: HILT
 
 Retrofit, Glide, RxKotlin
 
-Tests, tests, tests!!! Some later... Its not a TDD
+### Tests
+- Unit test
+- Robolectric test
+- Hilt test
+- Espresso test coming soon...
+
 I use Interfaces where its possible for good testable code. 
 
 ### Abstract
