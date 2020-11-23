@@ -14,11 +14,11 @@ Dependency injection: HILT
 
 Retrofit, Glide, RxKotlin
 
-### Tests
-- Unit test
-- Robolectric test
-- Hilt test
-- Espresso test coming soon...
+### Tests onboard
+- Unit tests
+- Robolectric integration test
+- Espresso integration UI-test
+- Hilt injection test with real app object provided by interfaces
 
 I use Interfaces where its possible for good testable code. 
 

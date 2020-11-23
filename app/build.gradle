@@ -15,8 +15,8 @@ android {
         targetSdkVersion 30
         versionCode 2
         versionName "1.01"
-//        testInstrumentationRunner "ru.wtfdev.kitty.HiltTestRunner"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "ru.wtfdev.kitty.HiltTestRunner"
+//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
 
         /*useLibrary 'android.test.runner'
@@ -55,7 +55,6 @@ android {
             //unitTests.returnDefaultValues = true !!!-- (--NO--) ---!!!
         }
     }
-
 
 
     buildFeatures {
@@ -124,5 +123,8 @@ dependencies {
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+
 
 }
