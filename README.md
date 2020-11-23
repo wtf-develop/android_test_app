@@ -1,5 +1,5 @@
 # Android Kitty Application
-Kitty list. Daily updated list with cats. What i can tell yu more about this app?
+Kitty list. Daily updated list with cats. What i can tell you more about this app?
 
 [Published on GooglePlay](https://play.google.com/store/apps/details?id=ru.wtfdev.kitty)
 
