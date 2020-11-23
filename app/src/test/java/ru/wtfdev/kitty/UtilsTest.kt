@@ -3,9 +3,11 @@ package ru.wtfdev.kitty
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
-import org.junit.Assert.assertEquals
+import io.reactivex.rxjava3.subjects.BehaviorSubject
+import org.junit.Assert.*
 import org.junit.Test
 import org.mockito.Mockito
+import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.CloseGestureListener
 import ru.wtfdev.kitty.utils.StringUtils
 
@@ -61,5 +63,22 @@ class UtilsTest {
         verify(callback, times(2)).invoke()
         mockGesture.onFling(null, null, 100f, 250f)
         verify(callback, times(2)).invoke()
+    }
+
+    @Test
+    fun autoDisposableTest() {
+        val disposable = AutoDisposable()
+        val bSubject = BehaviorSubject.create<String>()
+        assertFalse(bSubject.hasObservers())//no observers
+        var toDispose = bSubject.subscribe {}
+        var toDispose2 = bSubject.subscribe {}
+        var toDispose3 = bSubject.subscribe {}
+        assertTrue(bSubject.hasObservers())//3 observers
+        disposable.add(toDispose)
+        disposable.add(toDispose2)
+        disposable.add(toDispose3)
+        assertTrue(bSubject.hasObservers())//3observers
+        disposable.disconnectAllListeners()
+        assertFalse(bSubject.hasObservers())//no observers
     }
 }
