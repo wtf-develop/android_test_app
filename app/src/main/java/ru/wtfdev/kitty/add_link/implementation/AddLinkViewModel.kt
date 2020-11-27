@@ -37,7 +37,7 @@ class AddLinkViewModel(
         repository.postLinkToServer(successImageUrl, title, { result ->
             if (result.done.state) {
                 data.onNext(result.done)
-                navigation.popBackStack()
+                navigation.pop()
             } else if (result.error.state) {
                 error.onNext(result.error.message)
             } else {
@@ -49,7 +49,7 @@ class AddLinkViewModel(
     }
 
     override fun close() {
-        navigation.popBackStack()
+        navigation.pop()
     }
 
     override fun getUrlFromIntent(intent: Intent?): String {

@@ -48,7 +48,7 @@ class DetailsViewModel(
     }
 
     override fun close() {
-        navigation.popBackStack()
+        navigation.pop()
     }
 
 }

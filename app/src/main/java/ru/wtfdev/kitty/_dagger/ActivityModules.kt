@@ -1,6 +1,7 @@
 package ru.wtfdev.kitty._dagger
 
 import android.app.Activity
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +22,7 @@ class ActivityModules {
 
     @Provides
     @ActivityScoped
-    fun getNavigationObject(maniputator: INavigationProvider): INavigation = Navigation(maniputator)
+    fun getNavigationObject(provider: INavigationProvider, ctx: Context): INavigation =
+        Navigation(provider, ctx)
 
 }

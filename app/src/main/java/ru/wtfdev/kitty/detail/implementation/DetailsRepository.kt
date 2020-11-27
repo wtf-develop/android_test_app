@@ -18,6 +18,7 @@ class DetailsRepository : IDetailsRepository {
 
 
     companion object {
+        //todo - Yes-yes, i know!!! Later I will fix it!
         lateinit var itemData: ItemModel //todo - Yes-yes, i know!!! Later!
     }
 }

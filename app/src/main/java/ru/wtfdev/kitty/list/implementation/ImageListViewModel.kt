@@ -8,6 +8,7 @@ import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation
+import ru.wtfdev.kitty.detail.implementation.DetailsRepository
 import ru.wtfdev.kitty.list.IImageListRepository
 import ru.wtfdev.kitty.list.IImageListViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
@@ -62,7 +63,8 @@ class ImageListViewModel(
     }
 
     override fun selectItem(item: ItemModel) {
-        navigation.toDetails(item)
+        DetailsRepository.itemData = item //TODO Yes,yes, I know ;-) Need to replace it - too bad for MVVM or MVP or whatever
+        navigation.push("/details")
     }
 
     override fun loadImageTo(img: ImageView, url: String) {

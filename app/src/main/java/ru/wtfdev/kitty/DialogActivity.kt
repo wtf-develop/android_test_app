@@ -15,7 +15,7 @@ class DialogActivity : BaseActivty() {
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Intent.ACTION_SEND == intent?.action) {
             if ("text/plain" == intent.type) {
-                startFragment = AddLinkView::class.qualifiedName ?: ""
+                startFragment = "/add" ?: ""
             }
         } else {
             startFragment = intent?.getStringExtra("startFragment") ?: ""

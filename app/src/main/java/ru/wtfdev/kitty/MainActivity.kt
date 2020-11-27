@@ -18,7 +18,7 @@ import ru.wtfdev.kitty.utils.SharingShortcutsManager
  * we use Activity only as Navigation object. There is no UI elements except toolbar
  */
 class MainActivity : BaseActivty() {
-    override var startFragment: String = ImageListView::class.qualifiedName ?: ""
+    override var startFragment: String = "/list"
 
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class MainActivity : BaseActivty() {
         super.onOptionsItemSelected(item)
         val id = item.itemId
         if (id == R.id.menu_item_add) {
-            navigation.moveTo(AddLinkView::class.qualifiedName)
+            navigation.push("/add")
         } else if (id == R.id.menu_sources) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse("https://github.com/wtf-develop/android_test_app")

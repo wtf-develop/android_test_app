@@ -19,13 +19,15 @@ abstract class BaseActivty : AppCompatActivity(), INavigationProvider {
     @Inject
     lateinit var navigation: INavigation
 
+    var backEntryCount=0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            navigation.moveTo(startFragment, false).apply {
+            navigation.push(startFragment, false).apply {
                 this?.setIsForegroung(true)
             }
-            title = getString(navigation.getTitle(startFragment))
+            title = navigation.getTitle()
         }
 
         //need to call onBind() and onUnBind() after changing BackStack in Fragments
@@ -53,9 +55,13 @@ abstract class BaseActivty : AppCompatActivity(), INavigationProvider {
                 tag = startFragment
                 fragment = mainFragment
             }
+            if(backEntryCount>count){
+                navigation.pop(auto = true)
+            }
+            backEntryCount=count
             fragment?.setIsForegroung(true)
             fragment?.onSubscribeBindings()
-            title = getString(navigation.getTitle(tag))
+            title = navigation.getTitle()
             supportActionBar?.setDisplayHomeAsUpEnabled(getBackButton())
         }
     }
@@ -73,7 +79,7 @@ abstract class BaseActivty : AppCompatActivity(), INavigationProvider {
         val id = item.itemId
         if (id == android.R.id.home) {
             if (supportFragmentManager.backStackEntryCount > 0) {
-                navigation.popBackStack()
+                navigation.pop()
             }
         }
         return b
