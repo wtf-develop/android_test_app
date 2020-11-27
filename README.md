@@ -15,7 +15,7 @@ Dependency injection: HILT
 Retrofit, Glide, RxKotlin
 
 ### Tests onboard
-- Unit tests
+- Unit tests (with Mockito also)
 - Robolectric integration test
 - Espresso integration UI-test
 - Hilt injection test with real app object provided by interfaces
