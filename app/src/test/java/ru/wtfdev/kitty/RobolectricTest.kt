@@ -101,7 +101,7 @@ class RobolectricTest {
         assertTrue(navigation.getTitle().equals(context.getString(R.string.error)))
         navigation.push("/add")
         assertTrue(navigation.getTitle().equals(context.getString(R.string.add_link_view)))
-        navigation.push("/details", false)
+        navigation.push("/details", backstack = false)
         assertTrue(navigation.getTitle().equals(context.getString(R.string.details)))
         navigation.push("/list")
         assertTrue(navigation.getTitle().equals(context.getString(R.string.main_title)))

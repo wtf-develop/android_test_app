@@ -26,6 +26,13 @@ class Injection1Test {
 
     @Before
     fun init() {
+        /**
+         * Until bug is not fixed
+         * URL: https://issuetracker.google.com/issues/37076369
+         * - hiltRule.inject()
+         * is necessary for normal work of injection
+         * tests from Android Studio UI.
+         */
         hiltRule.inject()
     }
 
