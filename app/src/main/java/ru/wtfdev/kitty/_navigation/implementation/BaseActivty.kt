@@ -19,12 +19,12 @@ abstract class BaseActivty : AppCompatActivity(), INavigationProvider {
     @Inject
     lateinit var navigation: INavigation
 
-    var backEntryCount=0
+    var backEntryCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (savedInstanceState == null) {
-            navigation.push(startFragment, false).apply {
+            navigation.push(startFragment, backstack = false).apply {
                 this?.setIsForegroung(true)
             }
             title = navigation.getTitle()
@@ -55,10 +55,10 @@ abstract class BaseActivty : AppCompatActivity(), INavigationProvider {
                 tag = startFragment
                 fragment = mainFragment
             }
-            if(backEntryCount>count){
+            if (backEntryCount > count) {
                 navigation.pop(auto = true)
             }
-            backEntryCount=count
+            backEntryCount = count
             fragment?.setIsForegroung(true)
             fragment?.onSubscribeBindings()
             title = navigation.getTitle()

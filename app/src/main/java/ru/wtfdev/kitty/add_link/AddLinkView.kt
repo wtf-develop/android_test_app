@@ -48,10 +48,6 @@ class AddLinkView : BaseFragment() {
         hideKeyboard()
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     private var _binding: FragmentAddLinkBinding? = null
     private val binding get() = _binding!!
 

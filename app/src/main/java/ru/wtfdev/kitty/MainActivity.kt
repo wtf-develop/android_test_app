@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import ru.wtfdev.kitty._navigation.implementation.BaseActivty
-import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.databinding.ActivityMainBinding
-import ru.wtfdev.kitty.list.ImageListView
 import ru.wtfdev.kitty.utils.SharingShortcutsManager
 
 

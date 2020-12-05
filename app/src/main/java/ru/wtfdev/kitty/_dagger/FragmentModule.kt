@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.scopes.FragmentScoped
+import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.network.INetwork
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
@@ -58,8 +59,10 @@ class FragmentModule {
         navigation: INavigation,
         repository: IDetailsRepository,
         autoDisposable: AutoDisposable,
-        imageRepo: IImageRepository
-    ): IDetailsViewModel = DetailsViewModel(navigation, repository, autoDisposable, imageRepo)
+        imageRepo: IImageRepository,
+        jsonParser: Json
+    ): IDetailsViewModel =
+        DetailsViewModel(navigation, repository, autoDisposable, imageRepo, jsonParser)
 
 
     @Provides
@@ -69,9 +72,10 @@ class FragmentModule {
         repository: IImageListRepository,
         autoDisposable: AutoDisposable,
         imageRepo: IImageRepository,
-        storage: ILocalStorageRepository
+        storage: ILocalStorageRepository,
+        jsonParser: Json
     ): IImageListViewModel =
-        ImageListViewModel(navigation, repository, autoDisposable, imageRepo, storage)
+        ImageListViewModel(navigation, repository, autoDisposable, imageRepo, storage, jsonParser)
 
 
 }

@@ -3,6 +3,7 @@ package ru.wtfdev.kitty.detail.implementation
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
@@ -16,7 +17,8 @@ class DetailsViewModel(
     val navigation: INavigation,
     val repository: IDetailsRepository,
     val autoDisposable: AutoDisposable,
-    val imageRepo: IImageRepository
+    val imageRepo: IImageRepository,
+    val parser: Json
 ) : IDetailsViewModel {
 
 
@@ -49,6 +51,10 @@ class DetailsViewModel(
 
     override fun close() {
         navigation.pop()
+    }
+
+    override fun setDataString(json: String) {
+        repository.setParameter(parser.decodeFromString(ItemModel.serializer(), json))
     }
 
 }

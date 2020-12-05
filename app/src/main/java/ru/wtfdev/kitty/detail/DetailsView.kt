@@ -15,21 +15,23 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailsView : BaseFragment() {
-    private val IMAGE_ID = "imageid"
-    private var image_id: String? = null
-
+    private val BUNDLE_KEY = "JSON"
+    private lateinit var external_data: String
 
     @Inject
     lateinit var viewModel: IDetailsViewModel
+
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        external_data = ""
         arguments?.let {
-            image_id = it.getString(IMAGE_ID)
+            external_data = it.getString(BUNDLE_KEY) ?: ""
         }
+        viewModel.setDataString(external_data)
     }
 
 
@@ -70,8 +72,17 @@ class DetailsView : BaseFragment() {
         _binding = null
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putString(BUNDLE_KEY, external_data)
+        super.onSaveInstanceState(outState)
+    }
+
     companion object {
-        fun newInstance() = DetailsView()
+        fun newInstance(bundle: Bundle?): DetailsView {
+            return DetailsView().apply {
+                arguments = bundle
+            }
+        }
     }
 
 }

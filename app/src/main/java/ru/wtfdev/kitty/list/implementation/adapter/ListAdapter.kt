@@ -112,7 +112,7 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
         var str = ""
         try {
             val murl = URL(item.link)
-            str = murl.getHost()
+            str = murl.host
         } catch (_: Exception) {
         }
         holder.domain.text = str

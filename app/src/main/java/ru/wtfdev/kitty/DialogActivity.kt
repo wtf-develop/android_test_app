@@ -3,7 +3,6 @@ package ru.wtfdev.kitty
 import android.content.Intent
 import android.os.Bundle
 import ru.wtfdev.kitty._navigation.implementation.BaseActivty
-import ru.wtfdev.kitty.add_link.AddLinkView
 import ru.wtfdev.kitty.databinding.ActivityDialogBinding
 
 
@@ -15,7 +14,7 @@ class DialogActivity : BaseActivty() {
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Intent.ACTION_SEND == intent?.action) {
             if ("text/plain" == intent.type) {
-                startFragment = "/add" ?: ""
+                startFragment = "/add"
             }
         } else {
             startFragment = intent?.getStringExtra("startFragment") ?: ""

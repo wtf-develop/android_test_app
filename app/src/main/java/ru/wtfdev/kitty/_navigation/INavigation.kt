@@ -1,10 +1,10 @@
 package ru.wtfdev.kitty._navigation
 
-import ru.wtfdev.kitty._models.data.ItemModel
+import android.os.Bundle
 
 //common navigation interface
 interface INavigation {
-    fun push(tag: String?, backstack: Boolean = true): IBaseFragment?
-    fun pop(auto: Boolean=false)
+    fun push(tag: String?, data: Bundle? = null, backstack: Boolean = true): IBaseFragment?
+    fun pop(auto: Boolean = false)
     fun getTitle(): String
 }

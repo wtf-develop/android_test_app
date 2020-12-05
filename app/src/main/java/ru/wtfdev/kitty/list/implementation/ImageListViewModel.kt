@@ -1,14 +1,15 @@
 package ru.wtfdev.kitty.list.implementation
 
+import android.os.Bundle
 import android.widget.ImageView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
+import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation
-import ru.wtfdev.kitty.detail.implementation.DetailsRepository
 import ru.wtfdev.kitty.list.IImageListRepository
 import ru.wtfdev.kitty.list.IImageListViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
@@ -19,7 +20,8 @@ class ImageListViewModel(
     val repository: IImageListRepository,
     val autoDisposable: AutoDisposable,
     val imageRepo: IImageRepository,
-    val storage: ILocalStorageRepository
+    val storage: ILocalStorageRepository,
+    val parser: Json
 ) : //ViewModel(),
     IImageListViewModel {
 
@@ -29,7 +31,7 @@ class ImageListViewModel(
 
     override fun updateList(force: Boolean) {
         val temp = storage.getDailyList()
-        if ((temp == null) || (temp?.isEmpty()) || force) {
+        if ((temp == null) || (temp.isEmpty()) || force) {
             repository.fetchData({ arr ->
                 data.onNext(arr)
             }, { text ->
@@ -63,8 +65,9 @@ class ImageListViewModel(
     }
 
     override fun selectItem(item: ItemModel) {
-        DetailsRepository.itemData = item //TODO Yes,yes, I know ;-) Need to replace it - too bad for MVVM or MVP or whatever
-        navigation.push("/details")
+        val bundle = Bundle()
+        bundle.putString("JSON", parser.encodeToString(ItemModel.serializer(), item))
+        navigation.push("/details", data = bundle)
     }
 
     override fun loadImageTo(img: ImageView, url: String) {

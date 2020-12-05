@@ -8,6 +8,7 @@ import ru.wtfdev.kitty.detail.IDetailsRepository
 //Implementation
 class DetailsRepository : IDetailsRepository {
 
+    lateinit var itemData: ItemModel
 
     override fun fetchData(
         dataCallback: (data: ItemModel) -> Unit,
@@ -16,9 +17,9 @@ class DetailsRepository : IDetailsRepository {
         dataCallback(itemData)
     }
 
-
-    companion object {
-        //todo - Yes-yes, i know!!! Later I will fix it!
-        lateinit var itemData: ItemModel //todo - Yes-yes, i know!!! Later!
+    override fun setParameter(item: ItemModel) {
+        itemData = item
     }
+
+
 }

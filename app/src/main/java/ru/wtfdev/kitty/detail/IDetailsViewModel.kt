@@ -10,4 +10,5 @@ interface IDetailsViewModel {
     fun unsubscribeAll()
     fun loadImageTo(img: ImageView, url: String)
     fun close()
+    fun setDataString(json: String)
 }

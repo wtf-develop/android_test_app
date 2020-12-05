@@ -1,6 +1,7 @@
 package ru.wtfdev.kitty._navigation.implementation
 
 import android.content.Context
+import android.os.Bundle
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._navigation.IBaseFragment
 import ru.wtfdev.kitty._navigation.INavigation
@@ -27,12 +28,12 @@ class Navigation(private val navigateAction: INavigationProvider, private val ct
     }
 
 
-    override fun push(tag: String?, backstack: Boolean): IBaseFragment? {
+    override fun push(tag: String?, data: Bundle?, backstack: Boolean): IBaseFragment? {
         if (tag == null) return null
         var fragment: BaseFragment?
         when (tag) {
             "/list" -> fragment = ImageListView.newInstance()
-            "/details" -> fragment = DetailsView.newInstance()
+            "/details" -> fragment = DetailsView.newInstance(data)
             "/add" -> fragment = AddLinkView.newInstance()
             else -> return null
         }

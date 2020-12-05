@@ -8,4 +8,6 @@ interface IDetailsRepository {
         dataCallback: (data: ItemModel) -> Unit,
         errorCallback: ((text: String) -> Unit)? = null
     )
+
+    fun setParameter(item: ItemModel)
 }

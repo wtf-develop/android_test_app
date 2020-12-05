@@ -21,11 +21,6 @@ class ImageListView : BaseFragment() {
     @Inject
     lateinit var viewModel: IImageListViewModel
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     private var _binding: FragmentImageListBinding? = null
     private val binding get() = _binding!!
 
