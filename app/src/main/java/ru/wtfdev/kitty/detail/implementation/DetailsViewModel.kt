@@ -1,49 +1,46 @@
 package ru.wtfdev.kitty.detail.implementation
 
 import android.widget.ImageView
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.detail.IDetailsRepository
 import ru.wtfdev.kitty.detail.IDetailsViewModel
-import ru.wtfdev.kitty.utils.AutoDisposable
 
 
 //Implementation
-class DetailsViewModel(
+class DetailsViewModel @ViewModelInject constructor(
     val navigation: INavigation,
     val repository: IDetailsRepository,
-    val autoDisposable: AutoDisposable,
     val imageRepo: IImageRepository,
     val parser: Json
-) : IDetailsViewModel {
+) : IDetailsViewModel, ViewModel() {
 
 
-    private val data = BehaviorSubject.create<ItemModel>()
+    private val data = MutableLiveData<ItemModel>()//BehaviorSubject.create<ItemModel>()
 
 
     override fun update(force: Boolean) {
         repository.fetchData({ item ->
-            data.onNext(item)
+            data.value = item
         })
     }
 
     override fun subscribeOnChange(callback: (data: ItemModel) -> Unit) {
-        autoDisposable.add(
-            data.observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    callback(it)
-                }
-        )
+        data.observe(lifecycle) {
+            callback(it)
+        }
     }
 
-    override fun unsubscribeAll() {
-        autoDisposable.disconnectAllListeners()
+    lateinit var lifecycle: LifecycleOwner
+    override fun setLifeCycle(lifeC: LifecycleOwner) {
+        lifecycle = lifeC
     }
-
 
     override fun loadImageTo(img: ImageView, url: String) {
         imageRepo.loadImageTo(img, url, 1000)

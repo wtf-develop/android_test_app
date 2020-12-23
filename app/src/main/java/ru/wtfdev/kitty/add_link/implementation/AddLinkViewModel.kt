@@ -11,30 +11,25 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.wtfdev.kitty._models.data.ServerDone
 import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.add_link.IAddLinkRepository
 import ru.wtfdev.kitty.add_link.IAddLinkViewModel
-import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.StringUtils
-import javax.inject.Inject
 
 /// Here i will test LiveData module
 class AddLinkViewModel @ViewModelInject constructor(
     val navigation: INavigation,
     val repository: IAddLinkRepository,
-    val autoDisposable: AutoDisposable,
     val imageRepo: IImageRepository,
     @Assisted private val savedStateHandle: SavedStateHandle
 
 ) : IAddLinkViewModel, ViewModel() {
 
     private val data = MutableLiveData<ServerDone>() //BehaviorSubject.create<ServerDone>()
-    private val error = PublishSubject.create<String>()
-    private val imageSuccess = PublishSubject.create<Boolean>()
+    private val error = MutableLiveData<String>() //PublishSubject.create<String>()
+    private val imageSuccess = MutableLiveData<Boolean>() //PublishSubject.create<Boolean>()
     lateinit var lifecycle: LifecycleOwner
 
     override fun setLifeCycle(lifeC: LifecycleOwner) {
@@ -44,7 +39,7 @@ class AddLinkViewModel @ViewModelInject constructor(
 
     override fun saveLoadedImageUrl(title: String) {
         if ((!canSaveImage2Server) || (successImageUrl.isEmpty())) {
-            error.onNext("Wrong image")
+            error.value = "Wrong image"
             return
         }
         repository.postLinkToServer(successImageUrl, title, { result ->
@@ -52,12 +47,12 @@ class AddLinkViewModel @ViewModelInject constructor(
                 data.value = result.done
                 navigation.pop()
             } else if (result.error.state) {
-                error.onNext(result.error.message)
+                error.value = result.error.message
             } else {
-                error.onNext("Server error")
+                error.value = "Server error"
             }
         }, { errorstr ->
-            error.onNext(errorstr)
+            error.value = errorstr
         })
     }
 
@@ -124,7 +119,7 @@ class AddLinkViewModel @ViewModelInject constructor(
         imageRepo.loadImageTo(img, url, 300, success = { lasturl ->
             canSaveImage2Server = true
             successImageUrl = lasturl ?: ""
-            imageSuccess.onNext(true)
+            imageSuccess.value = true
         })
 
 
@@ -134,33 +129,18 @@ class AddLinkViewModel @ViewModelInject constructor(
         data.observe(lifecycle) {
             callback(it)
         }
-        /*autoDisposable.add(
-            data.observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    callback(it)
-                }
-        )*/
     }
 
     override fun subscribeOnError(callback: (error: String) -> Unit) {
-        autoDisposable.add(
-            error.observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    callback(it)
-                }
-        )
+        error.observe(lifecycle) {
+            callback(it)
+        }
     }
 
     override fun subscribeOnImageSuccess(callback: (b: Boolean) -> Unit) {
-        autoDisposable.add(
-            imageSuccess.observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    callback(it)
-                }
-        )
+        imageSuccess.observe(lifecycle) {
+            callback(it)
+        }
     }
 
-    override fun unsubscribeAll() {
-        autoDisposable.disconnectAllListeners()
-    }
 }

@@ -8,12 +8,13 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import io.reactivex.rxjava3.core.Observable
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.http.*
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._models.data.ItemModel
@@ -39,34 +40,34 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
 
     interface APIService {
         @GET("cats.php")
-        fun loadList(@Header("Installation") uuid: String): Observable<List<ItemModel>>
+        fun loadList(@Header("Installation") uuid: String): Call<List<ItemModel>>
 
         @POST("new_cat.php")
         fun postImage(
             @Header("Installation") uuid: String,
             @Body obj: PostUrlObject
-        ): Observable<ServerBaseResponse>
+        ): Call<ServerBaseResponse>
 
         @GET("like.php")
         fun updateLike(
             @Header("Installation") uuid: String,
             @Query("id") id: Int,
             @Query("val") change: Int
-        ): Observable<ServerBaseResponse>
+        ): Call<ServerBaseResponse>
 
         @GET("dislike.php")
         fun updateDislike(
             @Header("Installation") uuid: String,
             @Query("id") id: Int,
             @Query("val") change: Int
-        ): Observable<ServerBaseResponse>
+        ): Call<ServerBaseResponse>
 
         @GET("abuse.php")
         fun updateAbuse(
             @Header("Installation") uuid: String,
             @Query("id") id: Int,
             @Query("val") change: Int
-        ): Observable<ServerBaseResponse>
+        ): Call<ServerBaseResponse>
 
     }
 
@@ -74,7 +75,6 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
     @kotlinx.serialization.ExperimentalSerializationApi
     val service = Retrofit.Builder()
         .baseUrl("https://wtf-dev.ru/kitty/") //http://192.168.178.22/kitty/
-        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .addConverterFactory(jsonConverter.asConverterFactory(MediaType.get("application/json; charset=utf-8")))
         .build()
         .create(APIService::class.java)
@@ -84,11 +84,17 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
         onData: (json: List<ItemModel>) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.loadList(localRepo.getUUID()).subscribe({ response ->
-            onData(response)
+        service.loadList(localRepo.getUUID()).enqueue(object : Callback<List<ItemModel>> {
+            override fun onResponse(
+                call: Call<List<ItemModel>>,
+                response: Response<List<ItemModel>>
+            ) {
+                response.body()?.let { onData(it) }
+            }
 
-        }, { error ->
-            onError?.let { it(error.toString()) }
+            override fun onFailure(call: Call<List<ItemModel>>, t: Throwable) {
+                onError?.let { it(t.toString()) }
+            }
 
         })
     }
@@ -141,11 +147,20 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
         onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.updateLike(localRepo.getUUID(), id, value).subscribe({ response ->
-            onData(response)
-        }, { error ->
-            onError?.let { it(error.toString()) }
-        })
+        service.updateLike(localRepo.getUUID(), id, value)
+            .enqueue(object : Callback<ServerBaseResponse> {
+                override fun onResponse(
+                    call: Call<ServerBaseResponse>,
+                    response: Response<ServerBaseResponse>
+                ) {
+                    response.body()?.let { onData(it) }
+                }
+
+                override fun onFailure(call: Call<ServerBaseResponse>, t: Throwable) {
+                    onError?.let { it(t.toString()) }
+                }
+
+            })
     }
 
     override fun dislike(
@@ -154,11 +169,20 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
         onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.updateDislike(localRepo.getUUID(), id, value).subscribe({ response ->
-            onData(response)
-        }, { error ->
-            onError?.let { it(error.toString()) }
-        })
+        service.updateDislike(localRepo.getUUID(), id, value)
+            .enqueue(object : Callback<ServerBaseResponse> {
+                override fun onResponse(
+                    call: Call<ServerBaseResponse>,
+                    response: Response<ServerBaseResponse>
+                ) {
+                    response.body()?.let { onData(it) }
+                }
+
+                override fun onFailure(call: Call<ServerBaseResponse>, t: Throwable) {
+                    onError?.let { it(t.toString()) }
+                }
+
+            })
     }
 
     override fun abuse(
@@ -167,11 +191,21 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
         onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.updateAbuse(localRepo.getUUID(), id, value).subscribe({ response ->
-            onData(response)
-        }, { error ->
-            onError?.let { it(error.toString()) }
-        })
+        service.updateAbuse(localRepo.getUUID(), id, value)
+            .enqueue(object : Callback<ServerBaseResponse> {
+                override fun onResponse(
+                    call: Call<ServerBaseResponse>,
+                    response: Response<ServerBaseResponse>
+                ) {
+                    response.body()?.let { onData(it) }
+                }
+
+                override fun onFailure(call: Call<ServerBaseResponse>, t: Throwable) {
+                    onError?.let { it(t.toString()) }
+                }
+
+            })
+
     }
 
     @kotlinx.serialization.ExperimentalSerializationApi
@@ -179,10 +213,19 @@ class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) :
         data: PostUrlObject, onData: (json: ServerBaseResponse) -> Unit,
         onError: ((text: String) -> Unit)?
     ) {
-        service.postImage(localRepo.getUUID(), data).subscribe({ response ->
-            onData(response)
-        }, { error ->
-            onError?.let { it(error.toString()) }
-        })
+        service.postImage(localRepo.getUUID(), data)
+            .enqueue(object : Callback<ServerBaseResponse> {
+                override fun onResponse(
+                    call: Call<ServerBaseResponse>,
+                    response: Response<ServerBaseResponse>
+                ) {
+                    response.body()?.let { onData(it) }
+                }
+
+                override fun onFailure(call: Call<ServerBaseResponse>, t: Throwable) {
+                    onError?.let { it(t.toString()) }
+                }
+
+            })
     }
 }

@@ -9,8 +9,17 @@ import dagger.hilt.android.scopes.FragmentScoped
 import ru.wtfdev.kitty._models.network.INetwork
 import ru.wtfdev.kitty.add_link.IAddLinkRepository
 import ru.wtfdev.kitty.add_link.implementation.AddLinkRepository
-import ru.wtfdev.kitty.utils.AutoDisposable
+import ru.wtfdev.kitty.detail.IDetailsRepository
+import ru.wtfdev.kitty.detail.implementation.DetailsRepository
 
+
+/*
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+interface ActivityRetainedLinks {
+    @Binds
+    fun getLinksVModel(obj: AddLinkViewModel): IAddLinkViewModel
+}*/
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
@@ -22,7 +31,6 @@ class ActivityRetainedModule {
 
     @Provides
     @ActivityRetainedScoped
-    fun getAutoDisposable(): AutoDisposable = AutoDisposable()
-
+    fun getDetailsRepo(): IDetailsRepository = DetailsRepository()
 
 }

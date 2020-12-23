@@ -21,13 +21,11 @@ import ru.wtfdev.kitty._navigation.implementation.BaseFragment
 import ru.wtfdev.kitty.add_link.implementation.AddLinkViewModel
 import ru.wtfdev.kitty.databinding.FragmentAddLinkBinding
 import ru.wtfdev.kitty.utils.CloseGestureListener
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class AddLinkView : BaseFragment() {
 
-    //@Inject
     private val viewModel: AddLinkViewModel by viewModels()
 
     override fun onDataBing() {
@@ -46,7 +44,6 @@ class AddLinkView : BaseFragment() {
     }
 
     override fun onDataUnBing() {
-        viewModel.unsubscribeAll()
         hideKeyboard()
     }
 

@@ -4,7 +4,6 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import ru.wtfdev.kitty._models.data.ServerDone
 
@@ -16,7 +15,6 @@ interface IAddLinkViewModel {
     fun subscribeOnChange(callback: (data: ServerDone) -> Unit)
     fun subscribeOnError(callback: (error: String) -> Unit)
     fun subscribeOnImageSuccess(callback: (b: Boolean) -> Unit)
-    fun unsubscribeAll()
     fun extractUrl(text: String?): String
     fun getUrlFlow(
         intent: Intent?,

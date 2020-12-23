@@ -2,9 +2,10 @@ package ru.wtfdev.kitty.list.implementation
 
 import android.os.Bundle
 import android.widget.ImageView
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
-import io.reactivex.rxjava3.subjects.PublishSubject
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.data.ItemModel
 import ru.wtfdev.kitty._models.repo.IImageRepository
@@ -12,56 +13,51 @@ import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.list.IImageListRepository
 import ru.wtfdev.kitty.list.IImageListViewModel
-import ru.wtfdev.kitty.utils.AutoDisposable
 
 //Implementation
-class ImageListViewModel(
+class ImageListViewModel @ViewModelInject constructor(
     val navigation: INavigation,
     val repository: IImageListRepository,
-    val autoDisposable: AutoDisposable,
     val imageRepo: IImageRepository,
     val storage: ILocalStorageRepository,
     val parser: Json
-) : //ViewModel(),
+) : ViewModel(),
     IImageListViewModel {
 
 
-    private val data = BehaviorSubject.create<List<ItemModel>>()
-    private val error = PublishSubject.create<String>()
+    private val data =
+        MutableLiveData<List<ItemModel>>() //BehaviorSubject.create<List<ItemModel>>()
+    private val error = MutableLiveData<String>() //PublishSubject.create<String>()
 
     override fun updateList(force: Boolean) {
         val temp = storage.getDailyList()
         if ((temp == null) || (temp.isEmpty()) || force) {
             repository.fetchData({ arr ->
-                data.onNext(arr)
+                data.value = arr
             }, { text ->
-                error.onNext(text)
+                error.value = text
             })
         } else {
-            data.onNext(temp)
+            data.value = temp
         }
     }
 
+    lateinit var lifecycle: LifecycleOwner
+    override fun setLifeCycle(lifeC: LifecycleOwner) {
+        lifecycle = lifeC
+    }
+
+
     override fun subscribeOnChange(callback: (data: List<ItemModel>) -> Unit) {
-        autoDisposable.add(
-            data.observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    callback(it)
-                }
-        )
+        data.observe(lifecycle) {
+            callback(it)
+        }
     }
 
     override fun subscribeOnError(callback: (error: String) -> Unit) {
-        autoDisposable.add(
-            error.observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    callback(it)
-                }
-        )
-    }
-
-    override fun unsubscribeAll() {
-        autoDisposable.disconnectAllListeners()
+        error.observe(lifecycle) {
+            callback(it)
+        }
     }
 
     override fun selectItem(item: ItemModel) {

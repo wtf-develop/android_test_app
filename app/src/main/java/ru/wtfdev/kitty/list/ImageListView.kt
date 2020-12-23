@@ -5,21 +5,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import ru.wtfdev.kitty.R
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
 import ru.wtfdev.kitty.databinding.FragmentImageListBinding
+import ru.wtfdev.kitty.list.implementation.ImageListViewModel
 import ru.wtfdev.kitty.list.implementation.adapter.ListAdapter
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class ImageListView : BaseFragment() {
     private var scroll = 0
 
-    @Inject
-    lateinit var viewModel: IImageListViewModel
+
+    private val viewModel: ImageListViewModel by viewModels()
 
     private var _binding: FragmentImageListBinding? = null
     private val binding get() = _binding!!
@@ -37,6 +38,7 @@ class ImageListView : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.setLifeCycle(viewLifecycleOwner)
         scroll = savedInstanceState?.getInt("scroll", 0) ?: 0
         val orientation = this.resources.configuration.orientation
         val isTablet = resources.getBoolean(R.bool.is_tablet)
@@ -96,7 +98,7 @@ class ImageListView : BaseFragment() {
     }
 
     override fun onDataUnBing() {
-        viewModel.unsubscribeAll()
+
     }
 
 

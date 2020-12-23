@@ -5,12 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GestureDetectorCompat
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
 import ru.wtfdev.kitty.databinding.FragmentDetailsBinding
+import ru.wtfdev.kitty.detail.implementation.DetailsViewModel
 import ru.wtfdev.kitty.utils.CloseGestureListener
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -18,8 +18,7 @@ class DetailsView : BaseFragment() {
     private val BUNDLE_KEY = "JSON"
     private lateinit var external_data: String
 
-    @Inject
-    lateinit var viewModel: IDetailsViewModel
+    private val viewModel: DetailsViewModel by viewModels()
 
 
     private var _binding: FragmentDetailsBinding? = null
@@ -31,6 +30,7 @@ class DetailsView : BaseFragment() {
         arguments?.let {
             external_data = it.getString(BUNDLE_KEY) ?: ""
         }
+        viewModel.setLifeCycle(viewLifecycleOwner)
         viewModel.setDataString(external_data)
     }
 
@@ -64,7 +64,6 @@ class DetailsView : BaseFragment() {
     }
 
     override fun onDataUnBing() {
-        viewModel.unsubscribeAll()
     }
 
     override fun onDestroyView() {

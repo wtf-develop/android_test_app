@@ -1,6 +1,7 @@
 package ru.wtfdev.kitty.list
 
 import android.widget.ImageView
+import androidx.lifecycle.LifecycleOwner
 import ru.wtfdev.kitty._models.data.ItemModel
 
 //Interface
@@ -8,7 +9,7 @@ interface IImageListViewModel {
     fun updateList(force: Boolean = false)
     fun subscribeOnChange(callback: (data: List<ItemModel>) -> Unit)
     fun subscribeOnError(callback: (error: String) -> Unit)
-    fun unsubscribeAll()
+    fun setLifeCycle(lifeC: LifecycleOwner)
     fun selectItem(item: ItemModel)
     fun loadImageTo(img: ImageView, url: String)
     fun like(id: Int): Boolean
