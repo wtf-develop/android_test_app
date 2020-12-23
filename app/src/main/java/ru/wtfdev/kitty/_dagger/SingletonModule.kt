@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import ru.wtfdev.kitty._models.network.INetwork
 import ru.wtfdev.kitty._models.network.implementation.Network
@@ -17,6 +18,7 @@ import ru.wtfdev.kitty.list.IImageListRepository
 import ru.wtfdev.kitty.list.implementation.ImageListRepository
 import javax.inject.Singleton
 
+@ExperimentalSerializationApi
 @Module
 @InstallIn(SingletonComponent::class)
 class SingletonModule {

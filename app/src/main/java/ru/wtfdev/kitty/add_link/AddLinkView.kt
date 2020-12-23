@@ -18,6 +18,7 @@ import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
+import ru.wtfdev.kitty.add_link.implementation.AddLinkViewModel
 import ru.wtfdev.kitty.databinding.FragmentAddLinkBinding
 import ru.wtfdev.kitty.utils.CloseGestureListener
 import javax.inject.Inject
@@ -27,7 +28,7 @@ import javax.inject.Inject
 class AddLinkView : BaseFragment() {
 
     //@Inject
-    private val viewModel: IAddLinkViewModel by viewModels()
+    private val viewModel: AddLinkViewModel by viewModels()
 
     override fun onDataBing() {
         viewModel.subscribeOnChange {

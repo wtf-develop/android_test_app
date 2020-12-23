@@ -118,7 +118,7 @@ class LocalStorageRepository constructor(val ctx: Context, val parser: Json) :
             if (intValue == null) return intArr
             intArr.add(intValue)
         }
-        return intArr
+        //return intArr
     }
 
     val likes = loadArray(LIKES)

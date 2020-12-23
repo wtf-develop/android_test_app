@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import retrofit2.Retrofit
@@ -33,6 +34,7 @@ import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 //Implementation
 //Implementation
 //Implementation
+@ExperimentalSerializationApi
 class Network(val localRepo: ILocalStorageRepository, val jsonConverter: Json) : INetwork {
 
     interface APIService {

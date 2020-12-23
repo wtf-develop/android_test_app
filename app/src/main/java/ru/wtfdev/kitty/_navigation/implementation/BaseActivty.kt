@@ -52,7 +52,7 @@ abstract class BaseActivty : AppCompatActivity(), INavigationProvider {
                 }
                 mainFragment?.onUnsubscribeBindings()
             } else {
-                tag = startFragment
+                //tag = startFragment
                 fragment = mainFragment
             }
             if (backEntryCount > count) {

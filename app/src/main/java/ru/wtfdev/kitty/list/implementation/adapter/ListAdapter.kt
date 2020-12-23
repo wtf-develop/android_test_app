@@ -123,6 +123,7 @@ class ListAdapter(private val viewModel: IImageListViewModel) :
         if (Build.VERSION.SDK_INT >= 23) {
             view.setBackgroundColor(view.context.getColor(resid))
         } else {
+            @Suppress("DEPRECATION")
             view.setBackgroundColor(view.context.resources.getColor(resid))
         }
     }

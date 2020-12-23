@@ -59,9 +59,11 @@ abstract class BaseFragment : Fragment(), IBaseFragment {
             snackbar.setTextColor(activity?.getColor(R.color.light_text_color) ?: 0xffffff)
             snackbar.setActionTextColor(activity?.getColor(R.color.yellow_text_color) ?: 0xbfbf00)
         } else {
+            @Suppress("DEPRECATION")
             snackbar.setTextColor(
                 activity?.resources?.getColor(R.color.light_text_color) ?: 0xffffff
             )
+            @Suppress("DEPRECATION")
             snackbar.setActionTextColor(
                 activity?.resources?.getColor(R.color.yellow_text_color) ?: 0xbfbf00
             )

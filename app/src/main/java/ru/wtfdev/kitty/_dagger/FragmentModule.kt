@@ -11,9 +11,7 @@ import ru.wtfdev.kitty._models.repo.IImageRepository
 import ru.wtfdev.kitty._models.repo.ILocalStorageRepository
 import ru.wtfdev.kitty._navigation.INavigation
 import ru.wtfdev.kitty.add_link.IAddLinkRepository
-import ru.wtfdev.kitty.add_link.IAddLinkViewModel
 import ru.wtfdev.kitty.add_link.implementation.AddLinkRepository
-import ru.wtfdev.kitty.add_link.implementation.AddLinkViewModel
 import ru.wtfdev.kitty.detail.IDetailsRepository
 import ru.wtfdev.kitty.detail.IDetailsViewModel
 import ru.wtfdev.kitty.detail.implementation.DetailsRepository
@@ -34,14 +32,6 @@ class FragmentModule {
     fun getDetailsRepo(): IDetailsRepository = DetailsRepository()
 
 
-    @Provides
-    @FragmentScoped
-    fun getAddLink(network: INetwork): IAddLinkRepository = AddLinkRepository(network)
-
-
-    @Provides
-    @FragmentScoped
-    fun getAutoDisposable(): AutoDisposable = AutoDisposable()
 
 
     /*@Provides

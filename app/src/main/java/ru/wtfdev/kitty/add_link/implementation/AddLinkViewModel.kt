@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.*
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.ViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.wtfdev.kitty._models.data.ServerDone
 import ru.wtfdev.kitty._models.repo.IImageRepository
@@ -18,6 +20,7 @@ import ru.wtfdev.kitty.add_link.IAddLinkRepository
 import ru.wtfdev.kitty.add_link.IAddLinkViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.StringUtils
+import javax.inject.Inject
 
 /// Here i will test LiveData module
 class AddLinkViewModel @ViewModelInject constructor(
@@ -35,7 +38,7 @@ class AddLinkViewModel @ViewModelInject constructor(
     lateinit var lifecycle: LifecycleOwner
 
     override fun setLifeCycle(lifeC: LifecycleOwner) {
-        lifecycle=lifeC
+        lifecycle = lifeC
     }
 
 
@@ -46,7 +49,7 @@ class AddLinkViewModel @ViewModelInject constructor(
         }
         repository.postLinkToServer(successImageUrl, title, { result ->
             if (result.done.state) {
-                data.value=result.done
+                data.value = result.done
                 navigation.pop()
             } else if (result.error.state) {
                 error.onNext(result.error.message)
@@ -128,7 +131,7 @@ class AddLinkViewModel @ViewModelInject constructor(
     }
 
     override fun subscribeOnChange(callback: (data: ServerDone) -> Unit) {
-        data.observe(lifecycle){
+        data.observe(lifecycle) {
             callback(it)
         }
         /*autoDisposable.add(
