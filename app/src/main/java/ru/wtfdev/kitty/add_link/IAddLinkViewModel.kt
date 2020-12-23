@@ -4,6 +4,8 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import ru.wtfdev.kitty._models.data.ServerDone
 
 interface IAddLinkViewModel {
@@ -23,5 +25,6 @@ interface IAddLinkViewModel {
     ): String
 
     fun saveUrlState(outState: Bundle, url: String): Bundle
+    fun setLifeCycle(lifeC: LifecycleOwner)
 
 }

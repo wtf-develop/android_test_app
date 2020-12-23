@@ -5,6 +5,9 @@ import android.content.ClipboardManager
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.PublishSubject
@@ -16,17 +19,24 @@ import ru.wtfdev.kitty.add_link.IAddLinkViewModel
 import ru.wtfdev.kitty.utils.AutoDisposable
 import ru.wtfdev.kitty.utils.StringUtils
 
-
-class AddLinkViewModel(
+/// Here i will test LiveData module
+class AddLinkViewModel @ViewModelInject constructor(
     val navigation: INavigation,
     val repository: IAddLinkRepository,
     val autoDisposable: AutoDisposable,
-    val imageRepo: IImageRepository
-) : IAddLinkViewModel {
+    val imageRepo: IImageRepository,
+    @Assisted private val savedStateHandle: SavedStateHandle
 
-    private val data = BehaviorSubject.create<ServerDone>()
+) : IAddLinkViewModel, ViewModel() {
+
+    private val data = MutableLiveData<ServerDone>() //BehaviorSubject.create<ServerDone>()
     private val error = PublishSubject.create<String>()
     private val imageSuccess = PublishSubject.create<Boolean>()
+    lateinit var lifecycle: LifecycleOwner
+
+    override fun setLifeCycle(lifeC: LifecycleOwner) {
+        lifecycle=lifeC
+    }
 
 
     override fun saveLoadedImageUrl(title: String) {
@@ -36,7 +46,7 @@ class AddLinkViewModel(
         }
         repository.postLinkToServer(successImageUrl, title, { result ->
             if (result.done.state) {
-                data.onNext(result.done)
+                data.value=result.done
                 navigation.pop()
             } else if (result.error.state) {
                 error.onNext(result.error.message)
@@ -118,12 +128,15 @@ class AddLinkViewModel(
     }
 
     override fun subscribeOnChange(callback: (data: ServerDone) -> Unit) {
-        autoDisposable.add(
+        data.observe(lifecycle){
+            callback(it)
+        }
+        /*autoDisposable.add(
             data.observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback(it)
                 }
-        )
+        )*/
     }
 
     override fun subscribeOnError(callback: (error: String) -> Unit) {

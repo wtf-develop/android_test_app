@@ -17,6 +17,7 @@
 
         <activity
             android:name=".DialogActivity"
+            android:documentLaunchMode="always"
             android:theme="@style/AppDialog">
             <intent-filter android:label="@string/share_url">
                 <action android:name="android.intent.action.SEND" />

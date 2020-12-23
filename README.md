@@ -12,7 +12,7 @@ I try to build App with one Activity and Navigation object, that control a lot o
 
 Dependency injection: HILT
 
-Retrofit, Glide, RxKotlin
+Retrofit, Glide, LiveData, ViewModel
 
 ### Tests onboard
 - Unit tests (with Mockito also)

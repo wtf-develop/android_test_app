@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.core.view.GestureDetectorCompat
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import ru.wtfdev.kitty._navigation.implementation.BaseFragment
 import ru.wtfdev.kitty.databinding.FragmentAddLinkBinding
@@ -25,8 +26,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class AddLinkView : BaseFragment() {
 
-    @Inject
-    lateinit var viewModel: IAddLinkViewModel
+    //@Inject
+    private val viewModel: IAddLinkViewModel by viewModels()
 
     override fun onDataBing() {
         viewModel.subscribeOnChange {
@@ -69,6 +70,7 @@ class AddLinkView : BaseFragment() {
             savedInstanceState,
             activity?.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
         )
+        viewModel.setLifeCycle(viewLifecycleOwner)
         binding.linkUrl.setText(url)
         if (url.isNotEmpty()) {
             viewModel.loadImageTo(binding.imageUrl, url)

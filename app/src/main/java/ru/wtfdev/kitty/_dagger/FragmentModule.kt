@@ -44,14 +44,14 @@ class FragmentModule {
     fun getAutoDisposable(): AutoDisposable = AutoDisposable()
 
 
-    @Provides
+    /*@Provides
     @FragmentScoped
     fun getAddLinkViewModel(
         navigation: INavigation,
         repository: IAddLinkRepository,
         autoDisposable: AutoDisposable,
         imageRepo: IImageRepository
-    ): IAddLinkViewModel = AddLinkViewModel(navigation, repository, autoDisposable, imageRepo)
+    ): IAddLinkViewModel = AddLinkViewModel(navigation, repository, autoDisposable, imageRepo)*/
 
     @Provides
     @FragmentScoped
