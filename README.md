@@ -6,6 +6,8 @@ Kitty list. Daily updated list with cats. What i can tell you more about this ap
 You can rate cats, you can add cats to the list. This app only supports direct web links starting with http:// or https://. There is no way to upload images from your device yet. Images are pre-moderated and will only be visible after approval
 
 ### Technical details
+**Different implementations are in different branches. For example there is implementation with JavaRX and with LiveData in separate branches. Look into list**
+
 Single Activity application with multiple Fragments. 
 
 I try to build App with one Activity and Navigation object, that control a lot of Fragments as navigation targets.
